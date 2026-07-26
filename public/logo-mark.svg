@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="fb-green-grad" x1="60" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#468B79"/>
+      <stop offset="1" stop-color="#003828"/>
+    </linearGradient>
+    <clipPath id="fb-circle-clip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+    <radialGradient id="fb-sheen" cx="35%" cy="18%" r="55%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g clip-path="url(#fb-circle-clip)">
+    <!-- black comma (left half + hook curling into upper-right) -->
+    <path d="M100,0 A100,100 0 0,0 100,200 A50,50 0 0,0 100,100 A50,50 0 0,1 100,0 Z" fill="#0A0A0A"/>
+    <!-- green comma (right half + tail curling into lower area) -->
+    <path d="M100,0 A100,100 0 0,1 100,200 A50,50 0 0,1 100,100 A50,50 0 0,0 100,0 Z" fill="url(#fb-green-grad)"/>
+
+    <!-- white river dividing the two -->
+    <path d="M100,-4 A52,52 0 0,1 100,100 A52,52 0 0,0 100,204" fill="none" stroke="#FFFFFF" stroke-width="30" stroke-linecap="round"/>
+
+    <!-- ripple accents -->
+    <path d="M118,36 A20,20 0 0,1 128,54" fill="none" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+    <path d="M82,146 A20,20 0 0,1 72,164" fill="none" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round"/>
+    <path d="M70,118 A16,16 0 0,1 78,132" fill="none" stroke="#0A0A0A" stroke-opacity="0.25" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- subtle sheen for depth -->
+    <circle cx="100" cy="100" r="100" fill="url(#fb-sheen)"/>
+  </g>
+</svg>

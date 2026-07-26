@@ -1,0 +1,80 @@
+# Flowbound Brand Guidelines (v1)
+
+## Copy rules (read this first)
+No em dashes, ever, anywhere in this project. Not in headlines, body copy, button labels, code comments,
+or documentation. If a sentence wants an em dash, rewrite it as two sentences, or use a comma, a period,
+a colon, or "and" / "but" instead. This applies to every piece of text tied to Flowbound, not just the
+homepage.
+
+Overall voice: warm and human, not corporate, not "AI-generated" sounding. Write like a person who has
+actually talked to small business owners about their supply chain headaches, not like a pitch deck. Short
+sentences are good. Contractions are good. The goal is that a small business owner reads this and feels
+like Flowbound is written for them specifically, not for a Fortune 500 procurement committee.
+
+## Positioning
+Flowbound is an autonomous decision engine for supply chain. It's part decision-making system, part
+consulting wrapper, part chatbot agent that answers questions using a company's live operational data.
+It targets small and mid-sized businesses first, building a track record before moving upmarket to
+enterprise. The core pitch against SAP: making SAP-grade decision support accessible to companies that
+can't staff an SAP consulting engagement, and closing the gap legacy ERP leaves for everyone below
+enterprise scale. SAP isn't wrong for what it does. It's just priced for a different customer, and
+Flowbound exists for the ones SAP left behind.
+
+Voice: direct, plainspoken, a little blunt about the SAP-consultant-cost pain point. Not hype-y, not
+"AI will change everything." Reads like an operator wrote it, not a marketing team. Warm, not stiff.
+
+## Logo
+The mark is a circular badge split into a black "comma" and a green "comma" by a winding white river,
+representing flow through a decision process. The real logo file lives at `public/logo.png` (cropped
+tight to the circle with a transparent background, so it drops cleanly onto both light and dark
+sections) and is what's actually used in the nav and footer via `src/components/LogoMark.tsx`.
+`public/logo-mark.svg` and the `LogoMark` component in the same file are a hand-redrawn vector version,
+kept around for anywhere a crisp scalable version is useful, but the shipped `logo.png` is the source
+of truth for the real brand mark.
+
+Clear space: keep at least the width of the mark itself as padding on all sides. Don't recolor the mark,
+and don't place it on busy photographic backgrounds.
+
+## Color palette
+Sampled directly from the real logo file (`public/logo.png`), not estimated.
+
+| Token | Hex | Use |
+|---|---|---|
+| `fb-black` | `#0A0A0A` | Primary text, dark sections, footer |
+| `fb-green-500` | `#005840` | Primary brand green: CTAs, accents, links (matches the logo's flat green) |
+| `fb-green-600` | `#004838` | Hover states on green |
+| `fb-green-400` | `#468B79` | Lighter accent green, matches the logo's gloss highlight |
+| `fb-green-300` | `#66AE95` | Muted green accents on dark backgrounds |
+| `fb-white` | `#FFFFFF` | Cards, high-contrast surfaces |
+| `fb-paper` | `#F6F5F0` | Default page background (soft off-white, not stark white) |
+
+Full green scale (50 to 900) is defined in `tailwind.config.js` under `colors.fb.green` for tints and
+shades as needed. This is a deeper, more teal-leaning green than earlier drafts of this site used. If
+you ever update the logo file again, re-sample the palette rather than eyeballing it (there's a quick
+Python and Pillow script for this, ask and it can be redone in a couple of minutes).
+
+## Typography
+- **Display / headings and body:** Satoshi (one family across the whole site, differentiated by weight)
+- **Mono / labels / eyebrows / data callouts:** IBM Plex Mono
+
+Satoshi is loaded from Fontshare's CDN in `index.html` (weights 400, 500, 700, 900). It's free for
+personal and commercial use and doesn't ship a monospace companion, so IBM Plex Mono stays in place for
+the small uppercase mono labels (eyebrows, data callouts) since there's no "Satoshi Mono" to swap in.
+Headings are semibold with tight tracking, no letter-spacing tricks beyond what's already set. Eyebrow
+labels use mono, uppercase, wide tracking, green.
+
+## Layout principles
+- Left-aligned text blocks, not centered. This is an operator's tool, not a consumer app.
+- Card grids and bullet checklists over long paragraphs for feature breakdowns.
+- A full-bleed dark hero and a full-bleed black comparison section, so the dark end of the palette gets
+  used meaningfully and not just as an accent.
+- Square-ish corners (2 to 4px radius) throughout. No uniform pill or rounded-card look.
+- No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
+
+## Where things live
+- `public/logo.png`: the real logo file, cropped and transparent, used in nav, footer, and as favicon
+- `src/components/LogoMark.tsx`: logo lockup (mark plus wordmark), used in nav and footer
+- `public/logo-mark.svg`: hand-redrawn vector fallback, not currently used on the page itself
+- `src/components/FlowBackground.tsx`: full-bleed animated hero background (signals flowing into the core)
+- `tailwind.config.js`: full color scale, font families, radius scale
+- `src/index.css`: base styles, shared utility classes (`.container-fb`, `.eyebrow`), motion keyframes
