@@ -1,0 +1,237 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Cta from "../components/Cta.astro"
+import DemandForecastingBackground from "../components/DemandForecastingBackground.astro"
+import SectionIcon from "../components/icons/SectionIcon.astro"
+
+const GLOW_SIZE = 420
+
+const capabilities = [
+  {
+    title: "Learns Your Sales Patterns",
+    description:
+      "Flowbound looks at your actual sales history and seasonality, not an industry average, to build a forecast that reflects how your specific catalog actually moves.",
+  },
+  {
+    title: "Accounts for Lead Times",
+    description:
+      "Every forecast factors in how long it actually takes a supplier to deliver, so the reorder point accounts for the wait, not just the sales curve.",
+  },
+  {
+    title: "Flags Bestsellers Before They Run Out",
+    description:
+      "The moment a SKU is trending toward a stockout, Flowbound tells you, with enough lead time to actually do something about it.",
+  },
+  {
+    title: "Flags Dead Stock Early",
+    description:
+      "Slow-moving inventory gets flagged early too, so cash isn't sitting in a corner of the warehouse nobody's watching.",
+  },
+  {
+    title: "Adjusts as Reality Changes",
+    description:
+      "A late shipment, a slow week, a surprise spike: the forecast recalculates continuously instead of waiting for a monthly review to catch up.",
+  },
+  {
+    title: "Covers Every SKU, Not Just the Top Sellers",
+    description:
+      "The same model runs across your whole catalog, so the slow-moving, easy-to-forget SKUs get the same attention as your bestsellers.",
+  },
+]
+
+const signals = [
+  "Sales velocity by SKU",
+  "Seasonality and trend patterns",
+  "Supplier lead times",
+  "Current on-hand stock",
+  "Incoming purchase orders",
+  "Promotional and sales calendar",
+  "Return and cancellation rates",
+  "Channel mix across storefronts",
+]
+
+const steps = [
+  {
+    n: "01",
+    title: "It learns your baseline",
+    body: "Flowbound ingests your sales history and seasonality patterns to build a baseline forecast for every SKU, not just your top movers.",
+  },
+  {
+    n: "02",
+    title: "It factors in lead time and stock on hand",
+    body: "The forecast is checked against what's already on hand, what's incoming, and how long a reorder actually takes to arrive.",
+  },
+  {
+    n: "03",
+    title: "It tells you what to reorder, and when",
+    body: "You get a straight recommendation on quantity and timing, no spreadsheet to build and no report to wait on.",
+  },
+]
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Demand Forecasting",
+  applicationCategory: "BusinessApplication",
+  description:
+    "Flowbound's demand forecasting service predicts what a small or mid-sized business will need to reorder and when, using sales history, seasonality, and supplier lead times.",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Small and mid-sized businesses",
+  },
+}
+---
+
+<BaseLayout
+  title="Demand Forecasting | Flowbound"
+  description="Flowbound's demand forecasting looks at your sales history, seasonality, and supplier lead times to tell you what you'll actually need to reorder and when, no spreadsheet or consultant required."
+  path="/demand-forecasting"
+  schema={schema}
+>
+  <section class="relative min-h-[560px] overflow-hidden bg-fb-black md:min-h-[680px]">
+    <DemandForecastingBackground />
+    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+
+    <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 md:min-h-[680px]">
+      <div class="mb-5 flex items-center gap-3">
+        <SectionIcon name="crate" class="h-6 w-6 text-fb-green-300" />
+        <p class="eyebrow text-fb-green-300">Demand Forecasting</p>
+      </div>
+      <h1 class="max-w-2xl text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-fb-white md:text-[3.2rem]">
+        Know what you'll need before you run out, or overbuy.
+      </h1>
+      <p class="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-fb-white/65">
+        Flowbound looks at your sales history, seasonality, and supplier lead times to tell you what you'll
+        actually need to reorder and when, so you're not caught flat-footed on a bestseller or sitting on dead
+        stock.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#cta"
+          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        >
+          Request a pilot
+        </a>
+        <a
+          href="#how"
+          class="inline-flex items-center border border-fb-white/25 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:border-fb-white/60"
+        >
+          See how it works
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="what" class="border-b border-fb-black/10 bg-fb-paper bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="flex items-start justify-between gap-8">
+        <div class="max-w-xl">
+          <p class="eyebrow mb-4">What it is</p>
+          <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+            A forecast built from your numbers, not an industry average.
+          </h2>
+          <p class="mt-5 text-[0.98rem] leading-relaxed text-fb-black/65">
+            Demand forecasting is usually the first thing a small or mid-sized team gives up on: it takes a
+            spreadsheet, a consultant, or both, and it's stale the moment something changes. Flowbound builds
+            the forecast directly from your sales history, seasonality, and supplier lead times, and keeps it
+            current automatically, so you always know what's coming without asking anyone to run the numbers.
+          </p>
+        </div>
+        <SectionIcon name="crate" class="hidden h-[7.5rem] w-[7.5rem] shrink-0 text-fb-green-500/[14%] md:block" />
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="border-b border-fb-black/10 bg-fb-white bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">What it does</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          Built to catch a stockout or a pile of dead stock before it happens.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {capabilities.map((capability, i) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
+            <span class="font-mono text-sm text-fb-green-500">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="mt-3 text-[1.15rem] font-semibold leading-snug text-fb-black">{capability.title}</h3>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-fb-black/65">{capability.description}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-multiply"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="signals" class="border-b border-fb-black/10 bg-fb-black py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow text-fb-green-300 mb-4">What it watches</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-white md:text-[2.2rem]">
+          Every signal that actually moves a forecast, checked continuously.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {signals.map((signal) => (
+          <div class="flex items-start gap-3 border border-fb-white/15 bg-fb-white/5 px-5 py-4">
+            <SectionIcon name="crate" class="mt-0.5 h-5 w-5 shrink-0 text-fb-green-400" />
+            <span class="text-[0.98rem] leading-snug text-fb-white/80">{signal}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="border-b border-fb-black/10 bg-fb-white py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">How it works</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          From sales history to a reorder you can trust.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {steps.map((s) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-green-400/30 bg-fb-green-50 p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/40">
+            <span class="font-mono text-sm text-fb-green-500">{s.n}</span>
+            <h3 class="relative z-30 mt-3 text-[1.05rem] font-semibold leading-snug text-fb-black">{s.title}</h3>
+            <p class="relative z-30 mt-3 text-[0.92rem] leading-relaxed text-fb-black">{s.body}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-screen"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(255,255,255,0.55), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

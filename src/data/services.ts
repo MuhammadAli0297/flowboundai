@@ -1,6 +1,11 @@
 export type ServiceCapability = {
   title: string
   description: string
+  // Optional dedicated page for this capability. When set, the nav flyout
+  // links here instead of the service anchor, and the services page grid
+  // gets a centered CTA button under this capability's tile.
+  href?: string
+  ctaLabel?: string
 }
 
 export type ServiceTone = "paper" | "white" | "dark"
@@ -30,16 +35,22 @@ export const services: Service[] = [
         title: "Demand Forecasting",
         description:
           "Flowbound looks at your sales history, seasonality, and supplier lead times to tell you what you'll actually need to reorder and when, so you're not caught flat-footed on a bestseller or sitting on dead stock.",
+        href: "/demand-forecasting",
+        ctaLabel: "Explore Demand Forecasting",
       },
       {
         title: "Inventory Tracking",
         description:
           "Real-time visibility into what's on hand, what's incoming, and what's already spoken for. No more reordering something you already have or promising stock you don't.",
+        href: "/inventory-tracking",
+        ctaLabel: "Explore Inventory Tracking",
       },
       {
         title: "Shipping Optimization",
         description:
           "Flowbound compares carriers, lanes, and lead times automatically and recommends the option that gets your order there on time for the least cost. No manual rate shopping required.",
+        href: "/shipping-optimization",
+        ctaLabel: "Explore Shipping Optimization",
       },
     ],
   },
@@ -56,11 +67,15 @@ export const services: Service[] = [
         title: "Supplier Coordination",
         description:
           "Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, and flags the ones that need your attention before a delay turns into a stockout.",
+        href: "/supplier-coordination",
+        ctaLabel: "Explore Supplier Coordination",
       },
       {
         title: "Wholesale Account Management",
         description:
           "Track pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder goes out at the right terms without you having to double check the contract each time.",
+        href: "/wholesale-account-management",
+        ctaLabel: "Explore Wholesale Account Management",
       },
     ],
   },

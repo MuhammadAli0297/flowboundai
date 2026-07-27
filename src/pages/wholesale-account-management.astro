@@ -1,0 +1,236 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Cta from "../components/Cta.astro"
+import WholesaleAccountManagementBackground from "../components/WholesaleAccountManagementBackground.astro"
+import SectionIcon from "../components/icons/SectionIcon.astro"
+
+const GLOW_SIZE = 420
+
+const capabilities = [
+  {
+    title: "Pricing Tiers Tracked Per Account",
+    description:
+      "Every wholesale account keeps its own pricing tier on record, so a reorder never accidentally goes out at the wrong rate.",
+  },
+  {
+    title: "Order Minimums Enforced Automatically",
+    description:
+      "Minimum order quantities and dollar thresholds are checked before an order goes out, not caught after a customer calls to ask why it was rejected.",
+  },
+  {
+    title: "Standing Agreements Stay Current",
+    description:
+      "Contract terms, renewal dates, and special conditions live with the account itself, so nobody has to dig up the original agreement to confirm a detail.",
+  },
+  {
+    title: "One Record Per Wholesale Account",
+    description:
+      "Pricing, terms, order history, and contact details for an account live in one place, instead of split across a contract folder and a spreadsheet.",
+  },
+  {
+    title: "Flags Terms That Need a Refresh",
+    description:
+      "An agreement approaching renewal or a tier that no longer matches actual order volume gets surfaced, so terms don't go stale without anyone noticing.",
+  },
+  {
+    title: "Consistent Terms, Every Time",
+    description:
+      "Whoever processes the order, the account's actual terms are what goes out, removing the guesswork of double-checking a contract each time.",
+  },
+]
+
+const signals = [
+  "Pricing tier per wholesale account",
+  "Order minimums and quantity breaks",
+  "Standing agreement terms and renewal dates",
+  "Order history against agreed terms",
+  "Account-specific shipping or payment terms",
+  "Volume trends against current tier",
+  "Contract exceptions and special conditions",
+  "Account contact and billing details",
+]
+
+const steps = [
+  {
+    n: "01",
+    title: "It keeps the account's terms on record",
+    body: "Pricing tier, order minimums, and standing agreement details are attached to the account itself, not filed away in a separate contract.",
+  },
+  {
+    n: "02",
+    title: "It checks every order against those terms",
+    body: "Before an order goes out, it's checked against the account's actual pricing and minimums, so the terms applied are always the right ones.",
+  },
+  {
+    n: "03",
+    title: "It flags what's due for a second look",
+    body: "An agreement nearing renewal or a tier that no longer fits actual volume gets flagged, so terms stay current instead of going stale.",
+  },
+]
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Wholesale Account Management",
+  applicationCategory: "BusinessApplication",
+  description:
+    "Flowbound's wholesale account management service tracks pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder goes out at the right terms.",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Small and mid-sized businesses",
+  },
+}
+---
+
+<BaseLayout
+  title="Wholesale Account Management | Flowbound"
+  description="Flowbound tracks pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder goes out at the right terms without you having to double check the contract each time."
+  path="/wholesale-account-management"
+  schema={schema}
+>
+  <section class="relative min-h-[560px] overflow-hidden bg-fb-black md:min-h-[680px]">
+    <WholesaleAccountManagementBackground />
+    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+
+    <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 md:min-h-[680px]">
+      <div class="mb-5 flex items-center gap-3">
+        <SectionIcon name="network" class="h-6 w-6 text-fb-green-300" />
+        <p class="eyebrow text-fb-green-300">Wholesale Account Management</p>
+      </div>
+      <h1 class="max-w-2xl text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-fb-white md:text-[3.2rem]">
+        Every wholesale account, on the right terms, every time.
+      </h1>
+      <p class="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-fb-white/65">
+        Track pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder
+        goes out at the right terms without you having to double check the contract each time.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#cta"
+          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        >
+          Request a pilot
+        </a>
+        <a
+          href="#how"
+          class="inline-flex items-center border border-fb-white/25 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:border-fb-white/60"
+        >
+          See how it works
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="what" class="border-b border-fb-black/10 bg-fb-paper bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="flex items-start justify-between gap-8">
+        <div class="max-w-xl">
+          <p class="eyebrow mb-4">What it is</p>
+          <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+            The contract's terms, attached to the account, not buried in a folder.
+          </h2>
+          <p class="mt-5 text-[0.98rem] leading-relaxed text-fb-black/65">
+            Wholesale terms tend to live in whatever contract was signed and then get double-checked from
+            memory every time an order comes in. Flowbound keeps every account's pricing tier, order minimums,
+            and standing agreement details on record and applies them automatically, so the right terms go out
+            without anyone having to go dig up the original paperwork.
+          </p>
+        </div>
+        <SectionIcon name="network" class="hidden h-[7.5rem] w-[7.5rem] shrink-0 text-fb-green-500/[14%] md:block" />
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="border-b border-fb-black/10 bg-fb-white bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">What it does</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          Built so every account gets the terms it actually agreed to.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {capabilities.map((capability, i) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
+            <span class="font-mono text-sm text-fb-green-500">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="mt-3 text-[1.15rem] font-semibold leading-snug text-fb-black">{capability.title}</h3>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-fb-black/65">{capability.description}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-multiply"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="signals" class="border-b border-fb-black/10 bg-fb-black py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow text-fb-green-300 mb-4">What it watches</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-white md:text-[2.2rem]">
+          Every term that goes into a wholesale order, kept current.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {signals.map((signal) => (
+          <div class="flex items-start gap-3 border border-fb-white/15 bg-fb-white/5 px-5 py-4">
+            <SectionIcon name="network" class="mt-0.5 h-5 w-5 shrink-0 text-fb-green-400" />
+            <span class="text-[0.98rem] leading-snug text-fb-white/80">{signal}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="border-b border-fb-black/10 bg-fb-white py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">How it works</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          From a signed contract to the terms on every order.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {steps.map((s) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-green-400/30 bg-fb-green-50 p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/40">
+            <span class="font-mono text-sm text-fb-green-500">{s.n}</span>
+            <h3 class="relative z-30 mt-3 text-[1.05rem] font-semibold leading-snug text-fb-black">{s.title}</h3>
+            <p class="relative z-30 mt-3 text-[0.92rem] leading-relaxed text-fb-black">{s.body}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-screen"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(255,255,255,0.55), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

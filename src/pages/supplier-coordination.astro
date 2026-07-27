@@ -1,0 +1,236 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Cta from "../components/Cta.astro"
+import SupplierCoordinationBackground from "../components/SupplierCoordinationBackground.astro"
+import SectionIcon from "../components/icons/SectionIcon.astro"
+
+const GLOW_SIZE = 420
+
+const capabilities = [
+  {
+    title: "Every Conversation in One Place",
+    description:
+      "Supplier calls, emails, and purchase order updates land in a single record per vendor, so nothing important is buried in someone's personal inbox.",
+  },
+  {
+    title: "Tracks Every Lead Time Change",
+    description:
+      "When a supplier pushes back a delivery date, Flowbound logs it against the affected purchase orders immediately, not whenever someone happens to notice.",
+  },
+  {
+    title: "Flags What Needs Your Attention",
+    description:
+      "A slipping lead time or a purchase order going quiet gets surfaced right away, before it turns into a stockout nobody saw coming.",
+  },
+  {
+    title: "One Status Per Supplier",
+    description:
+      "Instead of piecing together a supplier's status from three email threads, you get one current answer: what's on order, what's late, and what's next.",
+  },
+  {
+    title: "No Chasing Status by Phone",
+    description:
+      "The updates that used to require a call to check in are already logged and visible, so your team spends less time chasing and more time deciding.",
+  },
+  {
+    title: "Works Across Every Vendor",
+    description:
+      "The same coordination applies whether you have three suppliers or thirty, so growing your vendor list doesn't mean growing the busywork.",
+  },
+]
+
+const signals = [
+  "Open purchase orders by supplier",
+  "Lead time changes and delivery updates",
+  "Supplier email and call history",
+  "Reorder points tied to each vendor",
+  "Pricing and quote changes",
+  "Late or at-risk shipments",
+  "Vendor performance over time",
+  "Upcoming renewals and standing orders",
+]
+
+const steps = [
+  {
+    n: "01",
+    title: "It keeps every supplier record current",
+    body: "Purchase orders, lead times, and conversations are logged in one place per supplier as they happen, not reconstructed after the fact.",
+  },
+  {
+    n: "02",
+    title: "It watches for anything drifting off track",
+    body: "A slipping delivery date or a stalled order gets checked against what it means for your stock, not just noted and forgotten.",
+  },
+  {
+    n: "03",
+    title: "It flags what actually needs you",
+    body: "You see the supplier situations that need a decision, with the context attached, instead of scanning every vendor to find them yourself.",
+  },
+]
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Supplier Coordination",
+  applicationCategory: "BusinessApplication",
+  description:
+    "Flowbound's supplier coordination service keeps every supplier conversation, purchase order, and lead time change in one place, and flags the ones that need attention before a delay turns into a stockout.",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Small and mid-sized businesses",
+  },
+}
+---
+
+<BaseLayout
+  title="Supplier Coordination | Flowbound"
+  description="Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, and flags the ones that need your attention before a delay turns into a stockout."
+  path="/supplier-coordination"
+  schema={schema}
+>
+  <section class="relative min-h-[560px] overflow-hidden bg-fb-black md:min-h-[680px]">
+    <SupplierCoordinationBackground />
+    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+
+    <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 md:min-h-[680px]">
+      <div class="mb-5 flex items-center gap-3">
+        <SectionIcon name="network" class="h-6 w-6 text-fb-green-300" />
+        <p class="eyebrow text-fb-green-300">Supplier Coordination</p>
+      </div>
+      <h1 class="max-w-2xl text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-fb-white md:text-[3.2rem]">
+        Every supplier relationship in one place, and nothing falling through the cracks.
+      </h1>
+      <p class="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-fb-white/65">
+        Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, and
+        flags the ones that need your attention before a delay turns into a stockout.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#cta"
+          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        >
+          Request a pilot
+        </a>
+        <a
+          href="#how"
+          class="inline-flex items-center border border-fb-white/25 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:border-fb-white/60"
+        >
+          See how it works
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="what" class="border-b border-fb-black/10 bg-fb-paper bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="flex items-start justify-between gap-8">
+        <div class="max-w-xl">
+          <p class="eyebrow mb-4">What it is</p>
+          <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+            One current status per supplier, not three email threads.
+          </h2>
+          <p class="mt-5 text-[0.98rem] leading-relaxed text-fb-black/65">
+            Most small teams manage suppliers through a mix of email, phone calls, and memory, which works
+            until a lead time slips and nobody notices until the shelf is empty. Flowbound keeps every
+            supplier's conversations, purchase orders, and delivery changes in one living record, and tells you
+            the moment something needs a decision instead of leaving you to go looking for it.
+          </p>
+        </div>
+        <SectionIcon name="network" class="hidden h-[7.5rem] w-[7.5rem] shrink-0 text-fb-green-500/[14%] md:block" />
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="border-b border-fb-black/10 bg-fb-white bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">What it does</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          Built to catch a slipping supplier before it costs you a stockout.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {capabilities.map((capability, i) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
+            <span class="font-mono text-sm text-fb-green-500">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="mt-3 text-[1.15rem] font-semibold leading-snug text-fb-black">{capability.title}</h3>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-fb-black/65">{capability.description}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-multiply"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="signals" class="border-b border-fb-black/10 bg-fb-black py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow text-fb-green-300 mb-4">What it watches</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-white md:text-[2.2rem]">
+          Every signal that matters for a supplier relationship, tracked continuously.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {signals.map((signal) => (
+          <div class="flex items-start gap-3 border border-fb-white/15 bg-fb-white/5 px-5 py-4">
+            <SectionIcon name="network" class="mt-0.5 h-5 w-5 shrink-0 text-fb-green-400" />
+            <span class="text-[0.98rem] leading-snug text-fb-white/80">{signal}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="border-b border-fb-black/10 bg-fb-white py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">How it works</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          From scattered supplier updates to the one that needs you.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {steps.map((s) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-green-400/30 bg-fb-green-50 p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/40">
+            <span class="font-mono text-sm text-fb-green-500">{s.n}</span>
+            <h3 class="relative z-30 mt-3 text-[1.05rem] font-semibold leading-snug text-fb-black">{s.title}</h3>
+            <p class="relative z-30 mt-3 text-[0.92rem] leading-relaxed text-fb-black">{s.body}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-screen"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(255,255,255,0.55), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

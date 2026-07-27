@@ -207,11 +207,26 @@ const schema = [
             class={`relative mt-14 grid grid-cols-1 gap-6 overflow-hidden ${gridCols}`}
           >
             {service.capabilities.map((capability, i) => (
-              <div class={`group relative z-10 overflow-hidden border p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 ${tone.card}`}>
-                <span class={`font-mono text-sm ${tone.index}`}>{String(i + 1).padStart(2, "0")}</span>
-                <h3 class={`mt-3 text-[1.15rem] font-semibold leading-snug ${tone.cardHeading}`}>{capability.title}</h3>
-                <p class={`mt-3 text-[0.95rem] leading-relaxed ${tone.cardBody}`}>{capability.description}</p>
-                <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.accentLine}`} />
+              <div class="flex flex-col">
+                <div class={`group relative z-10 flex-1 overflow-hidden border p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 ${tone.card}`}>
+                  <span class={`font-mono text-sm ${tone.index}`}>{String(i + 1).padStart(2, "0")}</span>
+                  <h3 class={`mt-3 text-[1.15rem] font-semibold leading-snug ${tone.cardHeading}`}>{capability.title}</h3>
+                  <p class={`mt-3 text-[0.95rem] leading-relaxed ${tone.cardBody}`}>{capability.description}</p>
+                  <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.accentLine}`} />
+                </div>
+                {capability.href && (
+                  <div class="mt-6 flex justify-center">
+                    <a
+                      href={capability.href}
+                      class="group relative inline-flex w-full max-w-[15rem] items-center justify-center gap-2 overflow-hidden rounded-full bg-fb-green-200 px-6 py-3 font-body text-[0.9rem] font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
+                    >
+                      <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+                      <SectionIcon name={service.icon} class="relative z-10 h-4 w-4 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:-translate-x-0.5 group-hover:rotate-45" />
+                      <span class="relative z-10">{capability.ctaLabel ?? `Explore ${capability.title}`}</span>
+                      <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1.5">&rarr;</span>
+                    </a>
+                  </div>
+                )}
               </div>
             ))}
 
