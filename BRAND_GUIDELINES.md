@@ -77,25 +77,44 @@ uppercase, wide tracking, green.
   - Small floating overlay UI (the nav's Services dropdown and its nested flyouts) is deliberately
     rounded (`rounded-2xl`), by explicit design direction, to read as a lighter-weight interactive layer
     distinct from the page's structural cards.
-  - A single "featured" CTA that hands off to another page (e.g. the `Explore Ask Flowbound` button on
-    `/services`, linking to `/ask-flowbound`) can be a fully rounded pill (`rounded-full`), by explicit
-    design direction, to visually distinguish "go explore this other thing" from the site's normal
-    square action buttons. Use sparingly, one per section at most, not as the new default button shape.
+  - A "featured" CTA that hands off to another page can be a fully rounded pill (`rounded-full`), by
+    explicit design direction, to visually distinguish "go explore this other thing" from the site's
+    normal square action buttons. Two variants exist on `/services`: the section-level `Explore Ask
+    Flowbound` button (one per section, centered under the whole capability grid), and a smaller
+    per-capability version centered directly under an individual tile whenever that capability has a
+    dedicated page (`href` set in `services.ts`), e.g. `Explore Demand Forecasting` under the Demand
+    Forecasting tile. A section can have multiple of the smaller per-tile pills (one per capability with
+    its own page) without breaking the "sparingly" rule, since each pill belongs to its own tile rather
+    than competing for the same spotlight. Don't animate this pill's hover state via `gap` (it changes the
+    label's wrapped line count inside the `max-w` pill and shifts the tile above it); use `translate-x` on
+    the icon and arrow instead to get the "spread apart" feel without affecting layout.
   Don't "fix" either of these back to square; they're intentional, not an inconsistency.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
 - Secondary-page hero: full-bleed dark section with an animated line-art graphic, same "vibe" as the
   homepage hero, but each page gets its **own** graphic composition rather than reusing `FlowBackground`
-  verbatim. Three exist so far: `ServicesOrbit.astro` for `/services` (a hub with capabilities orbiting
-  it, vs. the homepage's signals converging from fixed sources), and `AskFlowboundBackground.astro` for
+  verbatim. Seven exist so far: `ServicesOrbit.astro` for `/services` (a hub with capabilities orbiting
+  it, vs. the homepage's signals converging from fixed sources); `AskFlowboundBackground.astro` for
   `/ask-flowbound` (the `spark` `SectionIcon` itself, enlarged and slowly rotating, as the hub, trading
-  bidirectional question/answer pulses with small chat-bubble nodes rather than converging or orbiting).
-  Copy the pattern, not the file: same dark background, same green glow palette and pulse-ring motif,
-  new composition each time.
+  bidirectional question/answer pulses with small chat-bubble nodes); `DemandForecastingBackground.astro`
+  for `/demand-forecasting` (a rotating `crate` hub with historical sales nodes flowing in and a forecast
+  trend line climbing out); `InventoryTrackingBackground.astro` for `/inventory-tracking` (a fixed `crate`
+  hub with a rotating radar-sweep wedge and three orbiting live-status nodes); `ShippingOptimizationBackground.astro`
+  for `/shipping-optimization` (a fixed `crate` hub with several candidate lanes fanned out, one clearly
+  brighter with a package actually moving along it, the rest dim and still being compared);
+  `SupplierCoordinationBackground.astro` for `/supplier-coordination` (a rotating `network` hub with calm,
+  idle supplier nodes and one actively flagged and pulsing); and `WholesaleAccountManagementBackground.astro`
+  for `/wholesale-account-management` (a fixed `network` hub with steady, synced account nodes each
+  carrying a tier badge and a checkmark, no alert, no urgency). Copy the pattern, not the file: same dark
+  background, same green glow palette and pulse-ring motif, new composition each time, and vary whether
+  the hub itself rotates or stays fixed so consecutive pages don't feel identical.
 - A "featured" CTA button that hands off to a deeper page (see the pill-button exception above) can use a
   left-to-right color-sweep hover instead of an instant color change: an absolute `inset-0` overlay in the
   darker shade, `scale-x-0 origin-left`, transitioning to `scale-x-100` on `group-hover`, clipped by the
   parent's `overflow-hidden` and rounded shape. This reads as more deliberate than a flat color fade and
   pairs well with the pill shape above; it's not meant to replace the flat hover fades used elsewhere.
+- Capability tiles within the same row of a grid stay equal height (`flex-1` on the card inside a
+  `flex flex-col` wrapper), even when descriptions run different lengths, so per-tile CTA buttons line up
+  at a consistent baseline instead of trailing off at whatever height the shortest card happens to be.
 - For a page with multiple repeating content sections (like the Services page's per-service sections),
   alternate section backgrounds (paper/white) rather than stacking the same background repeatedly, and
   use one full dark "spotlight" section as a deliberate visual anchor partway down rather than none. A
@@ -119,6 +138,11 @@ uppercase, wide tracking, green.
 - `src/components/AskFlowboundBackground.astro`: full-bleed animated hero background for `/ask-flowbound`
   (the `spark` icon as a rotating hub, trading pulses with small chat nodes); a second reference example
   of the "own composition per page" rule above
+- `src/components/DemandForecastingBackground.astro`, `InventoryTrackingBackground.astro`,
+  `ShippingOptimizationBackground.astro`, `SupplierCoordinationBackground.astro`,
+  `WholesaleAccountManagementBackground.astro`: full-bleed animated hero backgrounds for the five
+  dedicated capability pages under Inventory and Supplier Management, each its own composition per the
+  "Secondary-page hero" rule above
 - `src/components/icons/SectionIcon.astro`: small monoline section icons (crate, network, bolt, chat,
   shield-check, spark), used top-right of a section's text block on content pages
 - `src/components/Seo.astro`: per-page title, description, canonical, OG/Twitter tags, and JSON-LD schema

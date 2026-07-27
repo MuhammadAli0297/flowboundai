@@ -31,11 +31,19 @@ Every push to `main` auto-deploys. No environment variables are required.
 - `/services`: services overview: Ask Flowbound, Inventory, Supplier Management, Autonomous, Customer
   Service, Quality Monitoring (`src/pages/services.astro`, content lives in `src/data/services.ts`). The
   Ask Flowbound section here is a short teaser with a CTA button through to `/ask-flowbound`, not the
-  full pitch.
+  full pitch. Any capability with an `href` set in `services.ts` (see below) gets the same treatment: a
+  centered pill CTA button directly under that capability's tile, linking to its own dedicated page.
 - `/ask-flowbound`: dedicated page for the agent (`src/pages/ask-flowbound.astro`), expanding the
   Services page teaser into its own hero, capability grid, sample questions, and how-it-works walkthrough.
   Content is inline in the page file, not data-driven like `services.ts`, since it's a one-off narrative
   page rather than a repeating list of similar items.
+- Dedicated capability pages, one per Inventory and Supplier Management capability, each following the
+  same five-section template (hero, what it is, what it does, what it watches, how it works, CTA):
+  `/demand-forecasting`, `/inventory-tracking`, `/shipping-optimization`, `/supplier-coordination`,
+  `/wholesale-account-management`. Each has its own hero background component (see Structure below); copy
+  this template for the remaining capabilities (Reorder, Pricing, Order Status & Tracking, Returns &
+  Claims Handling, Customer Inquiries, Defect & Damage Detection, Supplier Quality Scorecards, Inspection
+  Tracking) as they get dedicated pages too.
 - `/blog`: paginated post index; `/blog/[slug]`: individual posts; `/blog/tags/[tag]`: tag pages
 - `/404`: not found page
 
@@ -45,14 +53,19 @@ Every push to `main` auto-deploys. No environment variables are required.
 - `src/layouts/BaseLayout.astro`: shared page shell (nav, footer, font preloads, `<Seo>`)
 - `src/components/Seo.astro`: per-page title/description/canonical/OG/JSON-LD, used by every page
 - `src/components/`: homepage section components (Hero, ProductSystem, HowItWorks, WhyUs,
-  SapComparison, Mission, Cta, Nav, Footer, FlowBackground, ServicesOrbit, AskFlowboundBackground) plus
-  `icons/SectionIcon.astro`. Each secondary page gets its own full-bleed animated hero background
-  component rather than reusing another page's file; see BRAND_GUIDELINES.md's "Secondary-page hero" note.
+  SapComparison, Mission, Cta, Nav, Footer, FlowBackground, ServicesOrbit, AskFlowboundBackground,
+  DemandForecastingBackground, InventoryTrackingBackground, ShippingOptimizationBackground,
+  SupplierCoordinationBackground, WholesaleAccountManagementBackground) plus `icons/SectionIcon.astro`.
+  Each secondary page gets its own full-bleed animated hero background component rather than reusing
+  another page's file; see BRAND_GUIDELINES.md's "Secondary-page hero" note.
 - `src/data/nav.ts`: nav links and the Services dropdown's curated slug list. The dropdown's "Ask
   Flowbound" entry is hardcoded in `Nav.astro` (not part of the curated list) and links straight to
-  `/ask-flowbound`.
+  `/ask-flowbound`. Each service's nested flyout lists its capabilities; a capability with an `href` set
+  in `services.ts` links straight to its dedicated page instead of the `/services#slug` anchor.
 - `src/data/services.ts`: single source of truth for the Services page content; the nav dropdown and
-  the page's JSON-LD both derive from it, so adding a new service here is enough to appear in both
+  the page's JSON-LD both derive from it, so adding a new service here is enough to appear in both. A
+  capability can optionally set `href` and `ctaLabel` to get a dedicated page: doing so wires up the nav
+  flyout link and the services-page CTA button automatically, no other file needs to change.
 - `src/content/blog/`: blog posts (Markdown, via Astro's Content Layer API, config in `src/content.config.ts`)
 - `src/scripts/hoverGlow.ts`: shared vanilla-JS mouse-glow effect (no React or any JS framework ships
   anywhere on this site)
