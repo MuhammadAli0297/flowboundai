@@ -72,8 +72,21 @@ uppercase, wide tracking, green.
 - Card grids and bullet checklists over long paragraphs for feature breakdowns.
 - A full-bleed dark hero and a full-bleed black comparison section, so the dark end of the palette gets
   used meaningfully and not just as an accent.
-- Square-ish corners (2 to 4px radius) throughout. No uniform pill or rounded-card look.
+- Square-ish corners (2 to 4px radius) on cards, buttons, and page-level surfaces. No uniform pill or
+  rounded-card look. **Exception:** small floating overlay UI (the nav's Services dropdown and its
+  nested flyouts) is deliberately rounded (`rounded-2xl`), by explicit design direction, to read as a
+  lighter-weight interactive layer distinct from the page's structural cards. Don't "fix" this back to
+  square; it's intentional, not an inconsistency.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
+- Secondary-page hero: full-bleed dark section with an animated line-art graphic, same "vibe" as the
+  homepage hero, but each page gets its **own** graphic composition rather than reusing `FlowBackground`
+  verbatim (`ServicesOrbit.astro` for `/services` is the example: a hub with capabilities orbiting it,
+  vs. the homepage's signals converging from fixed sources). Copy the pattern, not the file.
+- For a page with multiple repeating content sections (like the Services page's per-service sections),
+  alternate section backgrounds (paper/white) rather than stacking the same background repeatedly, and
+  use one full dark "spotlight" section as a deliberate visual anchor partway down rather than none. A
+  small faint monoline icon (see `SectionIcon.astro`) in the top-right of each section's text block fills
+  the empty space next to left-aligned copy without competing with it.
 
 ## Where things live
 - `src/assets/logo.png`: the real logo file, cropped and transparent, run through Astro's image pipeline
@@ -84,8 +97,13 @@ uppercase, wide tracking, green.
 - `public/logo-mark.svg`: source vector for the mark, also the basis for the generated OG image
 - `public/favicon.svg`: the favicon (a vector version, not the PNG logo)
 - `public/fonts/`: self-hosted Satoshi and IBM Plex Mono `.woff2` files
-- `src/components/FlowBackground.astro`: full-bleed animated hero background (signals flowing into the
-  core)
+- `src/components/FlowBackground.astro`: full-bleed animated hero background for the homepage (signals
+  flowing into the core)
+- `src/components/ServicesOrbit.astro`: full-bleed animated hero background for the Services page (hub
+  and orbiting capability nodes); the template to follow for other secondary-page heroes, not to reuse
+  directly
+- `src/components/icons/SectionIcon.astro`: small monoline section icons (crate, network, bolt, chat,
+  shield-check, spark), used top-right of a section's text block on content pages
 - `src/components/Seo.astro`: per-page title, description, canonical, OG/Twitter tags, and JSON-LD schema
 - `src/layouts/BaseLayout.astro`: the shared page shell (nav, footer, font preloads, `<Seo>`), used by
   every page

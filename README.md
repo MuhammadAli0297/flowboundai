@@ -1,7 +1,8 @@
 # Flowbound Landing Page
 
-Vite + React + TypeScript + Tailwind. See `BRAND_GUIDELINES.md` for palette, type, logo usage, and the
-copy rules (short version: no em dashes, ever, and keep the tone warm and human).
+Astro + TypeScript + Tailwind, static output, zero client-side JS framework. See `BRAND_GUIDELINES.md`
+for palette, type, logo usage, and the copy rules (short version: no em dashes, ever, and keep the tone
+warm and human).
 
 ## Run locally
 
@@ -10,34 +11,49 @@ npm install
 npm run dev
 ```
 
-Open the local URL Vite prints (defaults to http://localhost:5173).
+Open the local URL Astro prints (defaults to http://localhost:4321).
 
 ## Build
 
 ```bash
-npm run build
+npm run build     # runs `astro check` then `astro build`
 npm run preview   # serve the production build locally
 ```
 
-## Deploying later (Vercel)
+## Deployment
 
-Not deployed yet, by design. When you're ready, push this folder to a GitHub repo and import it in
-Vercel. It will auto-detect the Vite framework preset (build command `npm run build`, output directory
-`dist`). No environment variables are required for the current static page.
+Live at flowbound.ai, hosted on Vercel, connected to the `MuhammadAli0297/flowboundai` GitHub repo.
+Every push to `main` auto-deploys. No environment variables are required.
+
+## Pages
+
+- `/`: homepage (`src/pages/index.astro`)
+- `/services`: services overview: Ask Flowbound, Inventory, Supplier Management, Autonomous, Customer
+  Service, Quality Monitoring (`src/pages/services.astro`, content lives in `src/data/services.ts`)
+- `/blog`: paginated post index; `/blog/[slug]`: individual posts; `/blog/tags/[tag]`: tag pages
+- `/404`: not found page
 
 ## Structure
 
-- `src/App.tsx`: page composition
-- `src/components/`: Nav, Hero, FlowBackground, ProductSystem, HowItWorks, WhyUs, SapComparison, Mission,
-  Cta, Footer, LogoMark, DecisionGraphic (currently unused, kept in case you want a boxed diagram again)
-- `tailwind.config.js`: brand color scale, fonts, radius
-- `public/logo-mark.svg`: standalone logo mark, also used as favicon
+- `src/pages/`: one file per route
+- `src/layouts/BaseLayout.astro`: shared page shell (nav, footer, font preloads, `<Seo>`)
+- `src/components/Seo.astro`: per-page title/description/canonical/OG/JSON-LD, used by every page
+- `src/components/`: homepage section components (Hero, ProductSystem, HowItWorks, WhyUs,
+  SapComparison, Mission, Cta, Nav, Footer, FlowBackground, ServicesOrbit) plus `icons/SectionIcon.astro`
+- `src/data/nav.ts`: nav links and the Services dropdown's curated slug list
+- `src/data/services.ts`: single source of truth for the Services page content; the nav dropdown and
+  the page's JSON-LD both derive from it, so adding a new service here is enough to appear in both
+- `src/content/blog/`: blog posts (Markdown, via Astro's Content Layer API, config in `src/content.config.ts`)
+- `src/scripts/hoverGlow.ts`: shared vanilla-JS mouse-glow effect (no React or any JS framework ships
+  anywhere on this site)
+- `public/fonts/`: self-hosted Satoshi + IBM Plex Mono (not loaded from a third-party CDN)
+- `tailwind.config.js`: brand color scale, fonts, radius scale
+- `public/favicon.svg`: favicon; `public/og-image.png`: default OG share image
 
 ## Known placeholders and things to double check
 
-- The logo mark is a hand-recreated SVG based on the reference image you shared. Exact colors were
-  estimated since no source file was available. Swap in your original logo asset if you have a vector
-  file and want pixel-exact reproduction.
+- The Customer Service and Quality Monitoring copy on `/services` is a reasonable extrapolation from
+  Flowbound's existing positioning, not confirmed product capabilities yet. Review before relying on it.
 - The pilot request buttons in the closing CTA open a plain mailto link. Swap in a real form or CRM
   integration whenever you're ready to capture leads properly.
-- Copy has been through a couple of passes now, but give it one more read before this goes live.
+- Only one blog post exists so far, added as a pipeline sample. Add real posts as they're written.
