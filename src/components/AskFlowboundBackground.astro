@@ -1,0 +1,90 @@
+---
+/**
+ * Full-bleed ambient hero background for the Ask Flowbound page. Same dark,
+ * glowing, green-on-black "vibe" as the other hero backgrounds, but a
+ * distinct composition: the spark icon itself is the hub (slowly rotating),
+ * and small chat nodes trade question/answer pulses with it, rather than
+ * signals converging from fixed sources or capability nodes orbiting.
+ */
+const hubX = 1180
+const hubY = 450
+
+const nodes = [
+  { x: 930, y: 300, delay: 0 },
+  { x: 1370, y: 330, delay: 1.8 },
+  { x: 1230, y: 670, delay: 3.6 },
+]
+
+const curveIn = (x: number, y: number) =>
+  `M${x},${y} Q${(x + hubX) / 2},${(y + hubY) / 2 - 50} ${hubX},${hubY}`
+const curveOut = (x: number, y: number) =>
+  `M${hubX},${hubY} Q${(x + hubX) / 2},${(y + hubY) / 2 + 50} ${x},${y}`
+
+// The "spark" icon path (SectionIcon), recentred on (0,0) so it can be scaled and rotated as the hub.
+const sparkPath = "M0,-20 L4,-4 L20,0 L4,4 L0,20 L-4,4 L-20,0 L-4,-4 Z"
+---
+
+<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+  <defs>
+    <radialGradient id="ask-hub-glow-outer" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.36" />
+      <stop offset="55%" stop-color="#468B79" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="ask-hub-glow-inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="ask-node-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx={hubX} cy={hubY} r="620" fill="url(#ask-hub-glow-outer)" />
+  <circle cx={hubX} cy={hubY} r="280" fill="url(#ask-hub-glow-inner)" />
+
+  {nodes.map((n) => (
+    <g>
+      <path d={curveIn(n.x, n.y)} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.5" />
+
+      <circle r="3.5" fill="#66AE95">
+        <animateMotion dur="3.6s" repeatCount="indefinite" begin={`${n.delay}s`} path={curveIn(n.x, n.y)} />
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3.6s" repeatCount="indefinite" begin={`${n.delay}s`} />
+      </circle>
+
+      <circle r="4.5" fill="#C7E3DA">
+        <animateMotion dur="2.2s" repeatCount="indefinite" begin={`${n.delay + 2}s`} path={curveOut(n.x, n.y)} />
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.75;1" dur="2.2s" repeatCount="indefinite" begin={`${n.delay + 2}s`} />
+      </circle>
+
+      <circle cx={n.x} cy={n.y} r="32" fill="url(#ask-node-glow)" />
+      <g transform={`translate(${n.x} ${n.y})`} class="fb-float" style={`animation-delay: ${n.delay * 0.4}s`}>
+        <rect x="-14" y="-10" width="28" height="18" rx="5" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
+        <path d="M-6,8 L-9,15 L-1,8" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-linejoin="round" />
+        <circle cx="-6" cy="-1" r="1.3" fill="#8FD0B8" />
+        <circle cx="0" cy="-1" r="1.3" fill="#8FD0B8" />
+        <circle cx="6" cy="-1" r="1.3" fill="#8FD0B8" />
+      </g>
+    </g>
+  ))}
+
+  <circle
+    cx={hubX}
+    cy={hubY}
+    r="92"
+    fill="none"
+    stroke="#8FD0B8"
+    stroke-opacity="0.5"
+    class="fb-core-pulse-ring"
+    style={`transform-origin: ${hubX}px ${hubY}px`}
+  />
+
+  <g transform={`translate(${hubX} ${hubY})`} class="fb-core-breathe">
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="48s" repeatCount="indefinite" />
+      <path d={sparkPath} transform="scale(3.4)" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" stroke-linejoin="round" />
+    </g>
+    <circle r="9" fill="#C7E3DA" />
+  </g>
+</svg>

@@ -31,7 +31,7 @@ const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transiti
             </a>
             <div class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/services:visible group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:opacity-100">
               <div class={outerPanelClass}>
-                <a href="/services#agent" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
+                <a href="/ask-flowbound" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
                 {menuServices.map(({ service, expand }, i) => {
                   const isLast = i === menuServices.length - 1
                   const roundedLast = isLast ? "rounded-b-2xl" : ""
