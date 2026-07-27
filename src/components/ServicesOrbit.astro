@@ -1,0 +1,85 @@
+---
+/**
+ * Full-bleed ambient hero background for secondary pages. Same dark, glowing,
+ * green-on-black "vibe" as the homepage's FlowBackground, but a distinct
+ * composition: three capability nodes orbit a central hub at different
+ * speeds and radii, rather than signals converging from fixed sources.
+ */
+const hubX = 1200
+const hubY = 430
+
+const orbits = [
+  { radius: 130, duration: 9, startAngle: 20 },
+  { radius: 210, duration: 15, startAngle: 160 },
+  { radius: 290, duration: 21, startAngle: 280 },
+]
+---
+
+<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+  <defs>
+    <radialGradient id="svc-hub-glow-outer" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.34" />
+      <stop offset="55%" stop-color="#468B79" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="svc-hub-glow-inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="svc-node-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx={hubX} cy={hubY} r="600" fill="url(#svc-hub-glow-outer)" />
+  <circle cx={hubX} cy={hubY} r="260" fill="url(#svc-hub-glow-inner)" />
+
+  {orbits.map((o) => (
+    <circle
+      cx={hubX}
+      cy={hubY}
+      r={o.radius}
+      fill="none"
+      stroke="#1F4438"
+      stroke-width="1"
+      stroke-dasharray="2 7"
+      stroke-opacity="0.6"
+    />
+  ))}
+
+  <circle
+    cx={hubX}
+    cy={hubY}
+    r="46"
+    fill="none"
+    stroke="#8FD0B8"
+    stroke-opacity="0.55"
+    class="fb-core-pulse-ring"
+    style={`transform-origin: ${hubX}px ${hubY}px`}
+  />
+  <circle cx={hubX} cy={hubY} r="30" fill="#003828" stroke="#66AE95" stroke-width="2" />
+  <circle cx={hubX} cy={hubY} r="30" fill="none" stroke="#8FD0B8" stroke-width="1.2" stroke-dasharray="2 5" stroke-opacity="0.8">
+    <animateTransform attributeName="transform" type="rotate" from={`0 ${hubX} ${hubY}`} to={`360 ${hubX} ${hubY}`} dur="18s" repeatCount="indefinite" />
+  </circle>
+  <circle cx={hubX} cy={hubY} r="6.5" fill="#C7E3DA" />
+
+  {orbits.map((o) => (
+    <g>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from={`${o.startAngle} ${hubX} ${hubY}`}
+        to={`${o.startAngle + 360} ${hubX} ${hubY}`}
+        dur={`${o.duration}s`}
+        repeatCount="indefinite"
+      />
+      <line x1={hubX} y1={hubY} x2={hubX + o.radius} y2={hubY} stroke="#2C6E58" stroke-width="1.5" stroke-opacity="0.45" />
+      <circle cx={hubX + o.radius} cy={hubY} r="26" fill="url(#svc-node-glow)" />
+      <circle cx={hubX + o.radius} cy={hubY} r="13" fill="#0C1F19" stroke="#66AE95" stroke-width="2" stroke-opacity="0.9" />
+      <circle cx={hubX + o.radius} cy={hubY} r="4.5" fill="#8FD0B8">
+        <animate attributeName="opacity" values="0.6;1;0.6" dur="2.4s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ))}
+</svg>

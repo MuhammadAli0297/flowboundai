@@ -1,0 +1,61 @@
+---
+const modules = [
+  {
+    tag: "Core",
+    title: "Decision Engine",
+    body:
+      "Keeps an eye on your inventory, lead times, and open purchase orders around the clock, and tells you what to do next. Reorder, hold, or reroute, before a stockout or an overbuy catches you off guard.",
+  },
+  {
+    tag: "Reasoning",
+    title: "Consulting Wrapper",
+    body:
+      "Every recommendation comes with the reasoning behind it, explained in plain language. It's the part you used to pay a consultant good money to walk you through.",
+  },
+  {
+    tag: "Interface",
+    title: "Ask Flowbound",
+    body:
+      "A chatbot that actually knows your supply chain. Ask why a reorder happened, or what a lead time slip would mean for next month, and get a real answer instead of a help doc.",
+  },
+]
+
+const GLOW_SIZE = 420
+---
+
+<section id="product" class="border-b border-fb-black/10 bg-fb-white py-20 md:py-28">
+  <div class="container-fb">
+    <div class="max-w-xl">
+      <p class="eyebrow mb-4">What Flowbound does</p>
+      <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+        One supply chain decision engine. Three ways to use it.
+      </h2>
+    </div>
+
+    <!-- mouse tracking is scoped to just this grid, so the glow can never
+         wander off into the section's padding and look disconnected -->
+    <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3">
+      {modules.map((m) => (
+        <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
+          <span class="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-fb-green-500">{m.tag}</span>
+          <h3 class="mt-3 text-[1.2rem] font-semibold leading-snug text-fb-black">{m.title}</h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-fb-black/65">{m.body}</p>
+          <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+        </div>
+      ))}
+
+      <!-- rendered last so it paints on top of the cards; mix-blend-multiply lets it
+           tint straight through their opaque white background instead of hiding behind it -->
+      <div
+        data-glow
+        aria-hidden="true"
+        class="glow-cursor z-20 rounded-full mix-blend-multiply"
+        style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
+      />
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

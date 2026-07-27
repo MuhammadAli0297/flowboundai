@@ -25,12 +25,14 @@ Voice: direct, plainspoken, a little blunt about the SAP-consultant-cost pain po
 
 ## Logo
 The mark is a circular badge split into a black "comma" and a green "comma" by a winding white river,
-representing flow through a decision process. The real logo file lives at `public/logo.png` (cropped
+representing flow through a decision process. The real logo file lives at `src/assets/logo.png` (cropped
 tight to the circle with a transparent background, so it drops cleanly onto both light and dark
-sections) and is what's actually used in the nav and footer via `src/components/LogoMark.tsx`.
-`public/logo-mark.svg` and the `LogoMark` component in the same file are a hand-redrawn vector version,
-kept around for anywhere a crisp scalable version is useful, but the shipped `logo.png` is the source
-of truth for the real brand mark.
+sections), imported through Astro's image pipeline in `src/components/LogoLockup.astro` (mark plus
+wordmark, used in the nav and footer) so it's automatically optimized and resized at build time.
+`public/logo-mark.svg` and `src/components/LogoMark.astro` are a hand-redrawn vector version, kept around
+for anywhere a crisp scalable version is useful (also the basis for the generated OG image), but the
+shipped `logo.png` is the source of truth for the real brand mark. The favicon is `public/favicon.svg`,
+a separate crisp vector version, not the PNG.
 
 Clear space: keep at least the width of the mark itself as padding on all sides. Don't recolor the mark,
 and don't place it on busy photographic backgrounds.
@@ -57,11 +59,13 @@ Python and Pillow script for this, ask and it can be redone in a couple of minut
 - **Display / headings and body:** Satoshi (one family across the whole site, differentiated by weight)
 - **Mono / labels / eyebrows / data callouts:** IBM Plex Mono
 
-Satoshi is loaded from Fontshare's CDN in `index.html` (weights 400, 500, 700, 900). It's free for
-personal and commercial use and doesn't ship a monospace companion, so IBM Plex Mono stays in place for
-the small uppercase mono labels (eyebrows, data callouts) since there's no "Satoshi Mono" to swap in.
-Headings are semibold with tight tracking, no letter-spacing tricks beyond what's already set. Eyebrow
-labels use mono, uppercase, wide tracking, green.
+Both are self-hosted (not loaded from a third-party CDN) as `.woff2` files in `public/fonts/`, declared
+via `@font-face` in `src/index.css` and preloaded in `src/layouts/BaseLayout.astro`. That was a deliberate
+performance call: no third-party font origin sitting in the critical path. Satoshi is free for personal
+and commercial use and doesn't ship a monospace companion, so IBM Plex Mono stays in place for the small
+uppercase mono labels (eyebrows, data callouts) since there's no "Satoshi Mono" to swap in. Headings are
+semibold with tight tracking, no letter-spacing tricks beyond what's already set. Eyebrow labels use mono,
+uppercase, wide tracking, green.
 
 ## Layout principles
 - Left-aligned text blocks, not centered. This is an operator's tool, not a consumer app.
@@ -72,9 +76,19 @@ labels use mono, uppercase, wide tracking, green.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
 
 ## Where things live
-- `public/logo.png`: the real logo file, cropped and transparent, used in nav, footer, and as favicon
-- `src/components/LogoMark.tsx`: logo lockup (mark plus wordmark), used in nav and footer
-- `public/logo-mark.svg`: hand-redrawn vector fallback, not currently used on the page itself
-- `src/components/FlowBackground.tsx`: full-bleed animated hero background (signals flowing into the core)
+- `src/assets/logo.png`: the real logo file, cropped and transparent, run through Astro's image pipeline
+  wherever it's used
+- `src/components/LogoLockup.astro`: logo lockup (mark plus wordmark), used in nav and footer
+- `src/components/LogoMark.astro`: hand-redrawn vector mark on its own, for anywhere the wordmark isn't
+  needed
+- `public/logo-mark.svg`: source vector for the mark, also the basis for the generated OG image
+- `public/favicon.svg`: the favicon (a vector version, not the PNG logo)
+- `public/fonts/`: self-hosted Satoshi and IBM Plex Mono `.woff2` files
+- `src/components/FlowBackground.astro`: full-bleed animated hero background (signals flowing into the
+  core)
+- `src/components/Seo.astro`: per-page title, description, canonical, OG/Twitter tags, and JSON-LD schema
+- `src/layouts/BaseLayout.astro`: the shared page shell (nav, footer, font preloads, `<Seo>`), used by
+  every page
 - `tailwind.config.js`: full color scale, font families, radius scale
-- `src/index.css`: base styles, shared utility classes (`.container-fb`, `.eyebrow`), motion keyframes
+- `src/index.css`: base styles, `@font-face` declarations, shared utility classes (`.container-fb`,
+  `.eyebrow`), motion keyframes

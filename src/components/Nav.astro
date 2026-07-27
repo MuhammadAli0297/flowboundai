@@ -1,0 +1,73 @@
+---
+import LogoLockup from "./LogoLockup.astro"
+import { navLinks, servicesMenu } from "../data/nav"
+import { services } from "../data/services"
+
+const menuServices = servicesMenu.map((entry) => ({
+  ...entry,
+  service: services.find((s) => s.slug === entry.slug)!,
+}))
+
+const linkClass = "font-body text-[0.9rem] text-fb-black/70 transition-colors hover:text-fb-green-600"
+// Leaf panels (no further nested flyout) can safely clip to their rounded corners.
+const panelClass = "w-64 overflow-hidden rounded-2xl border border-fb-black/10 bg-fb-white shadow-xl"
+// The top-level panel hosts nested flyouts that fly out past its own box, so it can't use
+// overflow-hidden (that would clip the flyouts). Round only the first/last row instead.
+const outerPanelClass = "w-64 rounded-2xl border border-fb-black/10 bg-fb-white shadow-xl"
+const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transition-colors hover:bg-fb-green-50/50 hover:text-fb-green-600"
+---
+
+<header class="sticky top-0 z-50 border-b border-fb-black/10 bg-fb-paper/90 backdrop-blur">
+  <div class="container-fb flex h-16 items-center justify-between">
+    <a href="/" class="shrink-0">
+      <LogoLockup />
+    </a>
+    <nav class="hidden items-center gap-8 md:flex">
+      {navLinks.map((l) =>
+        l.label === "Services" ? (
+          <div class="group/services relative">
+            <a href={l.href} class={`${linkClass} flex items-center gap-1`}>
+              Services
+            </a>
+            <div class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/services:visible group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:opacity-100">
+              <div class={outerPanelClass}>
+                <a href="/services#agent" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
+                {menuServices.map(({ service, expand }, i) => {
+                  const isLast = i === menuServices.length - 1
+                  const roundedLast = isLast ? "rounded-b-2xl" : ""
+                  return expand ? (
+                    <div class="group/item relative">
+                      <a href={`/services#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
+                        {service.name}
+                        <span class="font-mono text-xs text-fb-black/30">&rsaquo;</span>
+                      </a>
+                      <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all duration-150 group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
+                        <div class={panelClass}>
+                          {service.capabilities.map((capability) => (
+                            <a href={`/services#${service.slug}`} class={panelLinkClass}>{capability.title}</a>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <a href={`/services#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <a href={l.href} class={linkClass}>
+            {l.label}
+          </a>
+        )
+      )}
+    </nav>
+    <a
+      href="/#cta"
+      class="inline-flex items-center border border-fb-black bg-fb-black px-4 py-2 font-body text-[0.85rem] font-normal text-fb-white transition-colors hover:bg-fb-green-600 hover:border-fb-green-600"
+    >
+      Request a pilot
+    </a>
+  </div>
+</header>

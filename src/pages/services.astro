@@ -1,0 +1,223 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Cta from "../components/Cta.astro"
+import ServicesOrbit from "../components/ServicesOrbit.astro"
+import SectionIcon from "../components/icons/SectionIcon.astro"
+import { services } from "../data/services"
+
+const GLOW_SIZE = 420
+
+const toneStyles = {
+  paper: {
+    section: "bg-fb-paper bg-grain",
+    eyebrow: "eyebrow",
+    heading: "text-fb-black",
+    body: "text-fb-black/65",
+    card: "border-fb-black/10 bg-fb-white hover:border-fb-green-500/35 hover:bg-fb-green-50/50",
+    cardHeading: "text-fb-black",
+    cardBody: "text-fb-black/65",
+    index: "text-fb-green-500",
+    accentLine: "bg-fb-green-500",
+    glowBlend: "mix-blend-multiply",
+    glowStops: "rgba(0,88,64,0.16), transparent 70%",
+    icon: "text-fb-green-500/[14%]",
+  },
+  white: {
+    section: "bg-fb-white bg-grain",
+    eyebrow: "eyebrow",
+    heading: "text-fb-black",
+    body: "text-fb-black/65",
+    card: "border-fb-black/10 bg-fb-white hover:border-fb-green-500/35 hover:bg-fb-green-50/50",
+    cardHeading: "text-fb-black",
+    cardBody: "text-fb-black/65",
+    index: "text-fb-green-500",
+    accentLine: "bg-fb-green-500",
+    glowBlend: "mix-blend-multiply",
+    glowStops: "rgba(0,88,64,0.16), transparent 70%",
+    icon: "text-fb-green-500/[14%]",
+  },
+  dark: {
+    section: "bg-fb-black",
+    eyebrow: "eyebrow text-fb-green-300",
+    heading: "text-fb-white",
+    body: "text-fb-white/65",
+    card: "border-fb-white/15 bg-fb-white/5 hover:border-fb-green-400/40 hover:bg-fb-white/10",
+    cardHeading: "text-fb-white",
+    cardBody: "text-fb-white/60",
+    index: "text-fb-green-400",
+    accentLine: "bg-fb-green-400",
+    glowBlend: "",
+    glowStops: "rgba(70,139,121,0.4) 0%, rgba(70,139,121,0.14) 45%, transparent 75%",
+    icon: "text-fb-green-400/[18%]",
+  },
+} as const
+
+const agentCapabilities = [
+  {
+    title: "Ask, and Get an Answer",
+    description:
+      "Type a question about inventory, a supplier, an order, or a price, and get a straight answer pulled from your live data. No dashboard to dig through and no report to wait on.",
+  },
+  {
+    title: "Embedded, Not Separate",
+    description:
+      "The agent lives inside the web app your team already uses every day. There's no extra tool to log into and nothing new to learn.",
+  },
+  {
+    title: "Knows Your Business",
+    description:
+      "It answers from your actual numbers: your suppliers, your SKUs, your orders, not a generic help doc. Every answer is specific to your operation.",
+  },
+]
+
+const agentSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Ask Flowbound",
+  applicationCategory: "BusinessApplication",
+  description:
+    "An on-demand supply chain consultant embedded in the Flowbound web app, answering questions and pulling live data the moment a team asks for it.",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Small and mid-sized businesses",
+  },
+}
+
+const schema = [
+  agentSchema,
+  ...services.map((service) => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    serviceType: service.name,
+    name: service.headline,
+    description: service.description,
+    provider: { "@type": "Organization", name: "Flowbound" },
+    audience: {
+      "@type": "Audience",
+      audienceType: "Small and mid-sized businesses",
+    },
+  })),
+]
+---
+
+<BaseLayout
+  title="Services | Flowbound"
+  description="Flowbound's supply chain services for small and mid-sized businesses: inventory, supplier management, autonomous reordering and pricing, customer service, and quality monitoring, explained in plain language and priced for teams without an SAP budget."
+  path="/services"
+  schema={schema}
+>
+  <section class="relative min-h-[420px] overflow-hidden bg-fb-black md:min-h-[520px]">
+    <ServicesOrbit />
+    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+
+    <div class="container-fb relative flex min-h-[420px] flex-col justify-center py-20 md:min-h-[520px]">
+      <p class="eyebrow mb-4 text-fb-green-300">Services</p>
+      <h1 class="max-w-2xl text-[2rem] font-semibold leading-tight tracking-tight text-fb-white md:text-[2.4rem]">
+        Supply chain services built for teams without an SAP budget.
+      </h1>
+      <p class="mt-5 max-w-xl text-[1.02rem] leading-relaxed text-fb-white/65">
+        Every Flowbound service works the same way: watch the signal, make the call, and explain the reasoning
+        in plain language. No dashboards to interpret yourself and no consultant required to make sense of it.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#cta"
+          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        >
+          Request a pilot
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="agent" class={`border-b border-fb-black/10 py-20 md:py-28 ${toneStyles.paper.section}`}>
+    <div class="container-fb">
+      <div class="flex items-start justify-between gap-8">
+        <div class="max-w-xl">
+          <p class={`${toneStyles.paper.eyebrow} mb-4`}>Ask Flowbound</p>
+          <h2 class={`text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${toneStyles.paper.heading}`}>
+            A consultant on demand, built into your web app.
+          </h2>
+          <p class={`mt-5 text-[0.98rem] leading-relaxed ${toneStyles.paper.body}`}>
+            Every service on this page runs through the same agent. It's not a separate tool you have to log
+            into or a report you have to request: it's a consultant on demand, built right into your web app,
+            that pulls whatever data you need the moment you ask for it.
+          </p>
+        </div>
+        <SectionIcon name="spark" class={`hidden h-[7.5rem] w-[7.5rem] shrink-0 md:block ${toneStyles.paper.icon}`} />
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
+      >
+        {agentCapabilities.map((capability, i) => (
+          <div class={`group relative z-10 overflow-hidden border p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 ${toneStyles.paper.card}`}>
+            <span class={`font-mono text-sm ${toneStyles.paper.index}`}>{String(i + 1).padStart(2, "0")}</span>
+            <h3 class={`mt-3 text-[1.15rem] font-semibold leading-snug ${toneStyles.paper.cardHeading}`}>{capability.title}</h3>
+            <p class={`mt-3 text-[0.95rem] leading-relaxed ${toneStyles.paper.cardBody}`}>{capability.description}</p>
+            <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${toneStyles.paper.accentLine}`} />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class={`glow-cursor z-20 rounded-full ${toneStyles.paper.glowBlend}`}
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, ${toneStyles.paper.glowStops});`}
+        />
+      </div>
+    </div>
+  </section>
+
+  {services.map((service) => {
+    const tone = toneStyles[service.tone]
+    const gridCols = service.capabilities.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"
+    return (
+      <section id={service.slug} class={`border-b border-fb-black/10 py-20 md:py-28 ${tone.section}`}>
+        <div class="container-fb">
+          <div class="flex items-start justify-between gap-8">
+            <div class="max-w-xl">
+              <p class={`${tone.eyebrow} mb-4`}>{service.name}</p>
+              <h2 class={`text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${tone.heading}`}>
+                {service.headline}
+              </h2>
+              <p class={`mt-5 text-[0.98rem] leading-relaxed ${tone.body}`}>{service.description}</p>
+            </div>
+            <SectionIcon name={service.icon} class={`hidden h-[7.5rem] w-[7.5rem] shrink-0 md:block ${tone.icon}`} />
+          </div>
+
+          <div
+            data-glow-container
+            data-glow-size={GLOW_SIZE}
+            class={`relative mt-14 grid grid-cols-1 gap-6 overflow-hidden ${gridCols}`}
+          >
+            {service.capabilities.map((capability, i) => (
+              <div class={`group relative z-10 overflow-hidden border p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 ${tone.card}`}>
+                <span class={`font-mono text-sm ${tone.index}`}>{String(i + 1).padStart(2, "0")}</span>
+                <h3 class={`mt-3 text-[1.15rem] font-semibold leading-snug ${tone.cardHeading}`}>{capability.title}</h3>
+                <p class={`mt-3 text-[0.95rem] leading-relaxed ${tone.cardBody}`}>{capability.description}</p>
+                <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.accentLine}`} />
+              </div>
+            ))}
+
+            <div
+              data-glow
+              aria-hidden="true"
+              class={`glow-cursor z-20 rounded-full ${tone.glowBlend}`}
+              style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, ${tone.glowStops});`}
+            />
+          </div>
+        </div>
+      </section>
+    )
+  })}
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

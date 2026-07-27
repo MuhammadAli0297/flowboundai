@@ -1,0 +1,63 @@
+---
+export type SectionIconName = "spark" | "crate" | "network" | "bolt" | "chat" | "shield-check"
+
+interface Props {
+  name: SectionIconName
+  class?: string
+}
+
+const { name, class: className = "" } = Astro.props
+---
+
+<svg viewBox="0 0 48 48" fill="none" class={className} aria-hidden="true">
+  {name === "spark" && (
+    <path
+      d="M24,4 L28,20 L44,24 L28,28 L24,44 L20,28 L4,24 L20,20 Z"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+  )}
+
+  {name === "crate" && (
+    <g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M24,6 L40,15 L40,33 L24,42 L8,33 L8,15 Z" />
+      <path d="M24,24 L24,6 M24,24 L40,33 M24,24 L8,33" />
+    </g>
+  )}
+
+  {name === "network" && (
+    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M12,34 L36,34 M12,34 L24,10 M36,34 L24,10" />
+      <circle cx="12" cy="34" r="4" />
+      <circle cx="36" cy="34" r="4" />
+      <circle cx="24" cy="10" r="4" />
+    </g>
+  )}
+
+  {name === "bolt" && (
+    <path
+      d="M26,4 L14,26 L22,26 L18,44 L34,20 L24,20 Z"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linejoin="round"
+    />
+  )}
+
+  {name === "chat" && (
+    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="8" width="36" height="24" rx="6" />
+      <path d="M14,32 L10,40 L20,32" />
+      <circle cx="18" cy="20" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="24" cy="20" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="30" cy="20" r="1.6" fill="currentColor" stroke="none" />
+    </g>
+  )}
+
+  {name === "shield-check" && (
+    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M24,4 L40,10 L40,22 C40,34 32,42 24,44 C16,42 8,34 8,22 L8,10 Z" />
+      <path d="M17,24 L22,29 L32,18" />
+    </g>
+  )}
+</svg>

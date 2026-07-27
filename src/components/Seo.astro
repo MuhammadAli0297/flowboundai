@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string
+  description: string
+  path?: string
+  ogImage?: string
+  schema?: Record<string, unknown> | Record<string, unknown>[]
+}
+
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  ogImage = "/og-image.png",
+  schema,
+} = Astro.props
+
+const canonical = new URL(path, Astro.site).toString()
+const ogImageUrl = new URL(ogImage, Astro.site).toString()
+const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : []
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Flowbound" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:url" content={canonical} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+{schemaList.map((item) => <script type="application/ld+json" is:inline set:html={JSON.stringify(item)} />)}

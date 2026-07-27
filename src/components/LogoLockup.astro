@@ -1,0 +1,17 @@
+---
+import { Image } from "astro:assets"
+import logo from "../assets/logo.png"
+
+interface Props {
+  dark?: boolean
+}
+
+const { dark = false } = Astro.props
+---
+
+<div class="flex items-center gap-2.5">
+  <Image src={logo} alt="Flowbound logo" width={30} height={30} class="h-[30px] w-[30px]" />
+  <span class:list={["font-display text-[1.15rem] font-semibold tracking-tight", dark ? "text-fb-white" : "text-fb-black"]}>
+    Flowbound<span class={dark ? "text-fb-green-400" : "text-fb-green-500"}>.ai</span>
+  </span>
+</div>

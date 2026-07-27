@@ -1,0 +1,86 @@
+---
+const rows = [
+  {
+    label: "Who it's built for",
+    legacy: "Enterprise teams with a dedicated SI budget",
+    flowbound: "Small and mid-sized businesses without one",
+  },
+  {
+    label: "Time to a decision",
+    legacy: "A consultant reviews the data and reports back in days",
+    flowbound: "Continuous. The engine reads your signal in real time.",
+  },
+  {
+    label: "Cost structure",
+    legacy: "Licensing plus a consulting bill on top",
+    flowbound: "One subscription, no SI required",
+  },
+  {
+    label: "Rollout time",
+    legacy: "Months of implementation and configuration",
+    flowbound: "Connected in days",
+  },
+  {
+    label: "Getting an answer",
+    legacy: "File a ticket and wait for the consultant",
+    flowbound: "Ask the agent directly and get context right away",
+  },
+]
+
+const GLOW_SIZE = 300
+---
+
+<section
+  id="sap"
+  data-glow-container
+  data-glow-size={GLOW_SIZE}
+  class="relative overflow-hidden border-b border-fb-black/10 bg-fb-black py-20 text-fb-white md:py-28"
+>
+  <div
+    data-glow
+    aria-hidden="true"
+    class="glow-cursor rounded-full"
+    style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(70,139,121,0.4) 0%, rgba(70,139,121,0.14) 45%, transparent 75%);`}
+  />
+
+  <div class="container-fb relative z-10">
+    <div class="max-w-xl">
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-fb-green-400">Why not just use SAP</p>
+      <h2 class="mt-4 text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem]">
+        SAP isn't wrong. It just wasn't built for you.
+      </h2>
+      <p class="mt-5 text-[0.98rem] leading-relaxed text-fb-white/60">
+        SAP was priced and built for companies with a full consulting team on retainer. If that's not you, you're
+        not the customer it was designed for, and that's not your fault. Flowbound gives small and mid-sized
+        operations the same class of decision making, without the six-figure implementation and without the
+        year-long rollout. We built this because we think you deserve the same clarity the big guys get, at a
+        price that actually makes sense for you.
+      </p>
+    </div>
+
+    <div class="mt-14 overflow-x-auto">
+      <table class="w-full min-w-[640px] border-collapse text-left">
+        <thead>
+          <tr class="border-b border-fb-white/15">
+            <th class="w-1/4 py-4 pr-4 font-mono text-xs font-normal uppercase tracking-wider text-fb-white/40">&nbsp;</th>
+            <th class="py-4 pr-8 font-mono text-xs font-normal uppercase tracking-wider text-fb-white/40">Legacy ERP plus consultants</th>
+            <th class="py-4 font-mono text-xs font-normal uppercase tracking-wider text-fb-green-400">Flowbound</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr class="border-b border-fb-white/10">
+              <td class="py-5 pr-4 text-[0.85rem] font-medium text-fb-white/50">{r.label}</td>
+              <td class="py-5 pr-8 text-[0.95rem] text-fb-white/55">{r.legacy}</td>
+              <td class="py-5 text-[0.95rem] text-fb-white">{r.flowbound}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

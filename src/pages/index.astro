@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Hero from "../components/Hero.astro"
+import ProductSystem from "../components/ProductSystem.astro"
+import HowItWorks from "../components/HowItWorks.astro"
+import WhyUs from "../components/WhyUs.astro"
+import SapComparison from "../components/SapComparison.astro"
+import Mission from "../components/Mission.astro"
+import Cta from "../components/Cta.astro"
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Flowbound",
+  applicationCategory: "BusinessApplication",
+  description:
+    "Flowbound is an autonomous decision engine and chatbot agent that helps small and mid-sized businesses manage supply chain decisions without an SAP consultant.",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Small and mid-sized businesses",
+  },
+}
+---
+
+<BaseLayout
+  title="Flowbound | Supply Chain Software Built for Small Business"
+  description="Flowbound is supply chain software built for small and mid-sized businesses. Get clear, explained reorder and inventory decisions without hiring an SAP consultant or paying enterprise prices."
+  path="/"
+  schema={schema}
+>
+  <Hero />
+  <ProductSystem />
+  <HowItWorks />
+  <WhyUs />
+  <SapComparison />
+  <Mission />
+  <Cta />
+</BaseLayout>
