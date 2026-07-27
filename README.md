@@ -29,7 +29,13 @@ Every push to `main` auto-deploys. No environment variables are required.
 
 - `/`: homepage (`src/pages/index.astro`)
 - `/services`: services overview: Ask Flowbound, Inventory, Supplier Management, Autonomous, Customer
-  Service, Quality Monitoring (`src/pages/services.astro`, content lives in `src/data/services.ts`)
+  Service, Quality Monitoring (`src/pages/services.astro`, content lives in `src/data/services.ts`). The
+  Ask Flowbound section here is a short teaser with a CTA button through to `/ask-flowbound`, not the
+  full pitch.
+- `/ask-flowbound`: dedicated page for the agent (`src/pages/ask-flowbound.astro`), expanding the
+  Services page teaser into its own hero, capability grid, sample questions, and how-it-works walkthrough.
+  Content is inline in the page file, not data-driven like `services.ts`, since it's a one-off narrative
+  page rather than a repeating list of similar items.
 - `/blog`: paginated post index; `/blog/[slug]`: individual posts; `/blog/tags/[tag]`: tag pages
 - `/404`: not found page
 
@@ -39,8 +45,12 @@ Every push to `main` auto-deploys. No environment variables are required.
 - `src/layouts/BaseLayout.astro`: shared page shell (nav, footer, font preloads, `<Seo>`)
 - `src/components/Seo.astro`: per-page title/description/canonical/OG/JSON-LD, used by every page
 - `src/components/`: homepage section components (Hero, ProductSystem, HowItWorks, WhyUs,
-  SapComparison, Mission, Cta, Nav, Footer, FlowBackground, ServicesOrbit) plus `icons/SectionIcon.astro`
-- `src/data/nav.ts`: nav links and the Services dropdown's curated slug list
+  SapComparison, Mission, Cta, Nav, Footer, FlowBackground, ServicesOrbit, AskFlowboundBackground) plus
+  `icons/SectionIcon.astro`. Each secondary page gets its own full-bleed animated hero background
+  component rather than reusing another page's file; see BRAND_GUIDELINES.md's "Secondary-page hero" note.
+- `src/data/nav.ts`: nav links and the Services dropdown's curated slug list. The dropdown's "Ask
+  Flowbound" entry is hardcoded in `Nav.astro` (not part of the curated list) and links straight to
+  `/ask-flowbound`.
 - `src/data/services.ts`: single source of truth for the Services page content; the nav dropdown and
   the page's JSON-LD both derive from it, so adding a new service here is enough to appear in both
 - `src/content/blog/`: blog posts (Markdown, via Astro's Content Layer API, config in `src/content.config.ts`)

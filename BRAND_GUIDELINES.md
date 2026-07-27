@@ -73,15 +73,29 @@ uppercase, wide tracking, green.
 - A full-bleed dark hero and a full-bleed black comparison section, so the dark end of the palette gets
   used meaningfully and not just as an accent.
 - Square-ish corners (2 to 4px radius) on cards, buttons, and page-level surfaces. No uniform pill or
-  rounded-card look. **Exception:** small floating overlay UI (the nav's Services dropdown and its
-  nested flyouts) is deliberately rounded (`rounded-2xl`), by explicit design direction, to read as a
-  lighter-weight interactive layer distinct from the page's structural cards. Don't "fix" this back to
-  square; it's intentional, not an inconsistency.
+  rounded-card look. **Exceptions:**
+  - Small floating overlay UI (the nav's Services dropdown and its nested flyouts) is deliberately
+    rounded (`rounded-2xl`), by explicit design direction, to read as a lighter-weight interactive layer
+    distinct from the page's structural cards.
+  - A single "featured" CTA that hands off to another page (e.g. the `Explore Ask Flowbound` button on
+    `/services`, linking to `/ask-flowbound`) can be a fully rounded pill (`rounded-full`), by explicit
+    design direction, to visually distinguish "go explore this other thing" from the site's normal
+    square action buttons. Use sparingly, one per section at most, not as the new default button shape.
+  Don't "fix" either of these back to square; they're intentional, not an inconsistency.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
 - Secondary-page hero: full-bleed dark section with an animated line-art graphic, same "vibe" as the
   homepage hero, but each page gets its **own** graphic composition rather than reusing `FlowBackground`
-  verbatim (`ServicesOrbit.astro` for `/services` is the example: a hub with capabilities orbiting it,
-  vs. the homepage's signals converging from fixed sources). Copy the pattern, not the file.
+  verbatim. Three exist so far: `ServicesOrbit.astro` for `/services` (a hub with capabilities orbiting
+  it, vs. the homepage's signals converging from fixed sources), and `AskFlowboundBackground.astro` for
+  `/ask-flowbound` (the `spark` `SectionIcon` itself, enlarged and slowly rotating, as the hub, trading
+  bidirectional question/answer pulses with small chat-bubble nodes rather than converging or orbiting).
+  Copy the pattern, not the file: same dark background, same green glow palette and pulse-ring motif,
+  new composition each time.
+- A "featured" CTA button that hands off to a deeper page (see the pill-button exception above) can use a
+  left-to-right color-sweep hover instead of an instant color change: an absolute `inset-0` overlay in the
+  darker shade, `scale-x-0 origin-left`, transitioning to `scale-x-100` on `group-hover`, clipped by the
+  parent's `overflow-hidden` and rounded shape. This reads as more deliberate than a flat color fade and
+  pairs well with the pill shape above; it's not meant to replace the flat hover fades used elsewhere.
 - For a page with multiple repeating content sections (like the Services page's per-service sections),
   alternate section backgrounds (paper/white) rather than stacking the same background repeatedly, and
   use one full dark "spotlight" section as a deliberate visual anchor partway down rather than none. A
@@ -102,6 +116,9 @@ uppercase, wide tracking, green.
 - `src/components/ServicesOrbit.astro`: full-bleed animated hero background for the Services page (hub
   and orbiting capability nodes); the template to follow for other secondary-page heroes, not to reuse
   directly
+- `src/components/AskFlowboundBackground.astro`: full-bleed animated hero background for `/ask-flowbound`
+  (the `spark` icon as a rotating hub, trading pulses with small chat nodes); a second reference example
+  of the "own composition per page" rule above
 - `src/components/icons/SectionIcon.astro`: small monoline section icons (crate, network, bolt, chat,
   shield-check, spark), used top-right of a section's text block on content pages
 - `src/components/Seo.astro`: per-page title, description, canonical, OG/Twitter tags, and JSON-LD schema
