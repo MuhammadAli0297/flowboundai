@@ -50,12 +50,14 @@ const networkNodes = [
       <path d={`M${hubX},${hubY} L${a.x},${a.y}`} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.5" class="fb-dash-flow" />
 
       <circle cx={a.x} cy={a.y} r="26" fill="url(#wa-node-glow)" />
-      <g transform={`translate(${a.x} ${a.y})`} class="fb-float" style={`animation-delay: ${a.delay * 0.4}s`}>
-        <rect x="-14" y="-11" width="28" height="22" rx="4" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
-        {Array.from({ length: a.tier }).map((_, i) => (
-          <rect x={-9 + i * 6} y={4 - i * 3} width="3.5" height={3 + i * 3} fill="#8FD0B8" />
-        ))}
-        <path d="M5,-6 L8,-3 L13,-9" fill="none" stroke="#8FD0B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+      <g transform={`translate(${a.x} ${a.y})`}>
+        <g class="fb-float" style={`animation-delay: ${a.delay * 0.4}s`}>
+          <rect x="-14" y="-11" width="28" height="22" rx="4" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
+          {Array.from({ length: a.tier }).map((_, i) => (
+            <rect x={-9 + i * 6} y={4 - i * 3} width="3.5" height={3 + i * 3} fill="#8FD0B8" />
+          ))}
+          <path d="M5,-6 L8,-3 L13,-9" fill="none" stroke="#8FD0B8" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
       </g>
     </g>
   ))}
@@ -78,6 +80,5 @@ const networkNodes = [
         <circle cx={n.x} cy={n.y} r="4" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" />
       ))}
     </g>
-    <circle r="7" fill="#C7E3DA" />
   </g>
 </svg>

@@ -53,9 +53,11 @@ const networkNodes = [
     <g>
       <path d={`M${s.x},${s.y} L${hubX},${hubY}`} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.45" />
       <circle cx={s.x} cy={s.y} r="22" fill="url(#sc-node-glow-idle)" />
-      <g transform={`translate(${s.x} ${s.y})`} class="fb-float" style={`animation-delay: ${s.delay * 0.4}s`}>
-        <circle r="8" fill="#0C1F19" stroke="#2C6E58" stroke-width="1.5" stroke-opacity="0.8" />
-        <circle r="2.5" fill="#468B79" />
+      <g transform={`translate(${s.x} ${s.y})`}>
+        <g class="fb-float" style={`animation-delay: ${s.delay * 0.4}s`}>
+          <circle r="8" fill="#0C1F19" stroke="#2C6E58" stroke-width="1.5" stroke-opacity="0.8" />
+          <circle r="2.5" fill="#468B79" />
+        </g>
       </g>
     </g>
   ))}
@@ -108,6 +110,5 @@ const networkNodes = [
         ))}
       </g>
     </g>
-    <circle r="7" fill="#C7E3DA" />
   </g>
 </svg>
