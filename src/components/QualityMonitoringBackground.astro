@@ -1,0 +1,107 @@
+---
+/**
+ * Full-bleed ambient hero background for the Quality Monitoring page. Same
+ * dark, glowing, green-on-black "vibe" as the other hero backgrounds, but a
+ * distinct composition: the shield-check icon rotates as the hub, three
+ * incoming batches pass inspection calmly, and one is actively flagged with
+ * a brighter, pulsing ring and an alert mark, sending a pulse in to the hub
+ * rather than sitting idle like the rest.
+ */
+const hubX = 1190
+const hubY = 460
+
+const batches = [
+  { x: 900, y: 290, ok: true, delay: 0 },
+  { x: 1460, y: 280, ok: true, delay: 1.8 },
+  { x: 910, y: 650, ok: true, delay: 3.2 },
+  { x: 1470, y: 660, ok: false, delay: 0 },
+]
+
+// The "shield-check" icon path (SectionIcon), recentred on (0,0) so it can be scaled and rotated as the hub.
+const shieldPath = "M0,-20 L16,-14 L16,-2 C16,10 8,18 0,20 C-8,18 -16,10 -16,-2 L-16,-14 Z"
+const checkPath = "M-7,0 L-2,5 L8,-6"
+---
+
+<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+  <defs>
+    <radialGradient id="qm-hub-glow-outer" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.36" />
+      <stop offset="55%" stop-color="#468B79" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="qm-hub-glow-inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="qm-node-glow-ok" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="qm-node-glow-flag" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx={hubX} cy={hubY} r="620" fill="url(#qm-hub-glow-outer)" />
+  <circle cx={hubX} cy={hubY} r="280" fill="url(#qm-hub-glow-inner)" />
+
+  {batches.filter((b) => b.ok).map((b) => (
+    <g>
+      <path d={`M${b.x},${b.y} L${hubX},${hubY}`} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.45" />
+      <circle cx={b.x} cy={b.y} r="22" fill="url(#qm-node-glow-ok)" />
+      <g transform={`translate(${b.x} ${b.y})`}>
+        <g class="fb-float" style={`animation-delay: ${b.delay * 0.4}s`}>
+          <rect x="-9" y="-8" width="18" height="16" rx="3" fill="#0C1F19" stroke="#2C6E58" stroke-width="1.5" stroke-opacity="0.8" />
+          <path d="M-4,0 L-1,3 L5,-4" fill="none" stroke="#468B79" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+      </g>
+    </g>
+  ))}
+
+  {batches.filter((b) => !b.ok).map((b) => (
+    <g>
+      <path d={`M${b.x},${b.y} L${hubX},${hubY}`} fill="none" stroke="#66AE95" stroke-width="1.75" stroke-opacity="0.6" />
+
+      <circle r="4" fill="#C7E3DA">
+        <animateMotion dur="2.6s" repeatCount="indefinite" path={`M${b.x},${b.y} L${hubX},${hubY}`} />
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="2.6s" repeatCount="indefinite" />
+      </circle>
+
+      <circle cx={b.x} cy={b.y} r="34" fill="url(#qm-node-glow-flag)" />
+      <circle
+        cx={b.x}
+        cy={b.y}
+        r="17"
+        fill="none"
+        stroke="#8FD0B8"
+        stroke-opacity="0.6"
+        class="fb-core-pulse-ring"
+        style={`transform-origin: ${b.x}px ${b.y}px`}
+      />
+      <g transform={`translate(${b.x} ${b.y})`}>
+        <rect x="-9" y="-8" width="18" height="16" rx="3" fill="#003828" stroke="#8FD0B8" stroke-width="1.6" stroke-opacity="0.95" />
+        <path d="M0,-4 L0,1 M0,4 L0,4.3" stroke="#C7E3DA" stroke-width="1.6" stroke-linecap="round" />
+      </g>
+    </g>
+  ))}
+
+  <circle
+    cx={hubX}
+    cy={hubY}
+    r="92"
+    fill="none"
+    stroke="#8FD0B8"
+    stroke-opacity="0.5"
+    class="fb-core-pulse-ring"
+    style={`transform-origin: ${hubX}px ${hubY}px`}
+  />
+
+  <g transform={`translate(${hubX} ${hubY})`} class="fb-core-breathe">
+    <g>
+      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="45s" repeatCount="indefinite" />
+      <path d={shieldPath} transform="scale(2.6)" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" stroke-linejoin="round" />
+      <path d={checkPath} transform="scale(2.6)" fill="none" stroke="#8FD0B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+</svg>

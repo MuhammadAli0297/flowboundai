@@ -19,6 +19,14 @@ export type Service = {
   headline: string
   description: string
   capabilities: ServiceCapability[]
+  // Optional dedicated page for the service as a whole (used instead of
+  // per-capability pages when the capabilities are better told as one
+  // narrative, e.g. Customer Service, Quality Monitoring). When set, the
+  // nav's top-level link goes straight here instead of the services anchor,
+  // and the services page grid gets a centered CTA button under the whole
+  // section, matching the Ask Flowbound teaser pattern.
+  href?: string
+  ctaLabel?: string
 }
 
 export const services: Service[] = [
@@ -92,11 +100,15 @@ export const services: Service[] = [
         title: "Reorder",
         description:
           "Flowbound places the purchase order the moment your reorder point is hit, at the quantity and supplier it already recommended, so restocking doesn't wait on someone opening their laptop.",
+        href: "/reorder",
+        ctaLabel: "Explore Reorder",
       },
       {
         title: "Pricing",
         description:
           "When supplier costs shift or demand moves, Flowbound adjusts your sell price within the bounds you set, so your margin holds without you re-running the math every time something changes.",
+        href: "/pricing",
+        ctaLabel: "Explore Pricing",
       },
     ],
   },
@@ -125,6 +137,8 @@ export const services: Service[] = [
           "The same agent that runs your supply chain answers customer questions in plain language, using your real data, so your team only steps in for the calls that actually need a person.",
       },
     ],
+    href: "/customer-service",
+    ctaLabel: "Explore Customer Service",
   },
   {
     slug: "quality-monitoring",
@@ -151,5 +165,7 @@ export const services: Service[] = [
           "Incoming inspection results get logged and checked automatically, and anything that fails gets flagged before it ever reaches your shelf.",
       },
     ],
+    href: "/quality-monitoring",
+    ctaLabel: "Explore Quality Monitoring",
   },
 ]

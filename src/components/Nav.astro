@@ -50,7 +50,7 @@ const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transiti
                       </div>
                     </div>
                   ) : (
-                    <a href={`/services#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
+                    <a href={service.href ?? `/services#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
                   )
                 })}
               </div>
