@@ -79,20 +79,29 @@ uppercase, wide tracking, green.
     distinct from the page's structural cards.
   - A "featured" CTA that hands off to another page can be a fully rounded pill (`rounded-full`), by
     explicit design direction, to visually distinguish "go explore this other thing" from the site's
-    normal square action buttons. Two variants exist on `/services`: the section-level `Explore Ask
-    Flowbound` button (one per section, centered under the whole capability grid), and a smaller
-    per-capability version centered directly under an individual tile whenever that capability has a
-    dedicated page (`href` set in `services.ts`), e.g. `Explore Demand Forecasting` under the Demand
-    Forecasting tile. A section can have multiple of the smaller per-tile pills (one per capability with
-    its own page) without breaking the "sparingly" rule, since each pill belongs to its own tile rather
-    than competing for the same spotlight. Don't animate this pill's hover state via `gap` (it changes the
-    label's wrapped line count inside the `max-w` pill and shifts the tile above it); use `translate-x` on
-    the icon and arrow instead to get the "spread apart" feel without affecting layout.
+    normal square action buttons. Two variants exist on `/services`, plus the same section-level variant
+    on the homepage's `ProductSystem.astro` (`See the full product`, under the four-tile grid, linking to
+    `/product`) and `HowItWorks.astro` (`See how it works in depth`, under the four-step grid, linking to
+    `/how-it-works`): the section-level button (one per section, centered under the whole capability grid, e.g.
+    `Explore Ask Flowbound`, `Explore Customer Service`, `Explore Quality Monitoring`, wired via
+    `href`/`ctaLabel` set on the whole service in `services.ts` rather than on an individual capability),
+    and a smaller per-capability version centered
+    directly under an individual tile whenever that capability has a dedicated page (`href` set on the
+    capability instead), e.g. `Explore Demand Forecasting` under the Demand Forecasting tile. A service
+    sets `href` at either the whole-service level or the per-capability level depending on whether its
+    capabilities are better told as one narrative page or split into one page each, never both at once.
+    A section can have multiple of the smaller per-tile pills (one per capability with its own page)
+    without breaking the "sparingly" rule, since each pill belongs to its own tile rather than competing
+    for the same spotlight. Don't animate this pill's hover state via `gap` (it changes the label's
+    wrapped line count inside the `max-w` pill and shifts the tile above it); use `translate-x` on the
+    icon and arrow instead to get the "spread apart" feel without affecting layout. The larger
+    section-level pill is the exception: it's a fixed-width, one-per-section button, so `hover:gap-4` is
+    fine there and won't shift surrounding layout.
   Don't "fix" either of these back to square; they're intentional, not an inconsistency.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
 - Secondary-page hero: full-bleed dark section with an animated line-art graphic, same "vibe" as the
   homepage hero, but each page gets its **own** graphic composition rather than reusing `FlowBackground`
-  verbatim. Seven exist so far: `ServicesOrbit.astro` for `/services` (a hub with capabilities orbiting
+  verbatim. Thirteen exist so far: `ServicesOrbit.astro` for `/services` (a hub with capabilities orbiting
   it, vs. the homepage's signals converging from fixed sources); `AskFlowboundBackground.astro` for
   `/ask-flowbound` (the `spark` `SectionIcon` itself, enlarged and slowly rotating, as the hub, trading
   bidirectional question/answer pulses with small chat-bubble nodes); `DemandForecastingBackground.astro`
@@ -102,11 +111,27 @@ uppercase, wide tracking, green.
   for `/shipping-optimization` (a fixed `crate` hub with several candidate lanes fanned out, one clearly
   brighter with a package actually moving along it, the rest dim and still being compared);
   `SupplierCoordinationBackground.astro` for `/supplier-coordination` (a rotating `network` hub with calm,
-  idle supplier nodes and one actively flagged and pulsing); and `WholesaleAccountManagementBackground.astro`
+  idle supplier nodes and one actively flagged and pulsing); `WholesaleAccountManagementBackground.astro`
   for `/wholesale-account-management` (a fixed `network` hub with steady, synced account nodes each
-  carrying a tier badge and a checkmark, no alert, no urgency). Copy the pattern, not the file: same dark
-  background, same green glow palette and pulse-ring motif, new composition each time, and vary whether
-  the hub itself rotates or stays fixed so consecutive pages don't feel identical.
+  carrying a tier badge and a checkmark, no alert, no urgency); `ReorderBackground.astro` for `/reorder`
+  (a fixed `bolt` hub with a stock gauge draining toward a dashed reorder-point line that fires a pulse
+  into the hub the instant it crosses, which fires straight back out to purchase-order nodes flashing to
+  life); `PricingBackground.astro` for `/pricing` (a rotating `bolt` hub with a supplier-cost signal
+  and a demand signal flowing in, and a price-tag node whose needle sweeps back and forth but never passes
+  two fixed bound markers); `CustomerServiceBackground.astro` for `/customer-service` (a fixed `chat` hub
+  with customer questions flowing in, most answered directly with a return pulse along the same path, and
+  one routed out to a separate handoff node instead, standing in for the cases that need a person);
+  `QualityMonitoringBackground.astro` for `/quality-monitoring` (a rotating `shield-check` hub with three
+  calm, passing inspection batches and one actively flagged with a brighter, pulsing ring and an alert
+  mark); `ProductBackground.astro` for `/product` (four pillar nodes, one per corner, converging on a
+  fixed `compass` hub, standing in for "one system, reached four ways," the compass's four ticks echoing
+  the four pillars converging on it); and `HowItWorksBackground.astro` for `/how-it-works` (a single
+  `gear` hub, rotating clockwise, with the four step nodes, connect, signal, decision, ask, flowing into
+  it). Copy the pattern, not the file: same
+  dark background, same green glow palette and pulse-ring motif, new composition each time, and vary
+  whether the hub itself rotates or stays fixed so consecutive pages don't feel identical. None of the
+  hubs use a small center "core dot" anymore; a few early ones shipped with one to fill the empty middle
+  of a hollow icon, but it read as a stray artifact once you looked for it, so it was dropped everywhere.
 - A "featured" CTA button that hands off to a deeper page (see the pill-button exception above) can use a
   left-to-right color-sweep hover instead of an instant color change: an absolute `inset-0` overlay in the
   darker shade, `scale-x-0 origin-left`, transitioning to `scale-x-100` on `group-hover`, clipped by the
@@ -143,8 +168,25 @@ uppercase, wide tracking, green.
   `WholesaleAccountManagementBackground.astro`: full-bleed animated hero backgrounds for the five
   dedicated capability pages under Inventory and Supplier Management, each its own composition per the
   "Secondary-page hero" rule above
+- `src/components/ReorderBackground.astro`, `PricingBackground.astro`: full-bleed animated hero
+  backgrounds for the two dedicated capability pages under Autonomous, same rule, using the `bolt` icon
+  as their hub instead of `crate` or `network`
+- `src/components/CustomerServiceBackground.astro`, `QualityMonitoringBackground.astro`: full-bleed
+  animated hero backgrounds for the two whole-service narrative pages (`/customer-service`,
+  `/quality-monitoring`), same rule, using the `chat` and `shield-check` icons as their hub respectively,
+  the first hero use of either icon
+- `src/components/ProductBackground.astro`: full-bleed animated hero background for `/product`, same
+  rule, a fixed `compass` hub with four pillar nodes converging on it
+- `src/components/HowItWorksBackground.astro`: full-bleed animated hero background for `/how-it-works`,
+  same rule, a single rotating `gear` hub with the four step nodes flowing in
 - `src/components/icons/SectionIcon.astro`: small monoline section icons (crate, network, bolt, chat,
-  shield-check, spark), used top-right of a section's text block on content pages
+  shield-check, spark, compass, gear), used top-right of a section's text block on content pages. `gear`
+  is computed rather than hand-drawn: a proper flat-toothed cog outline (an 8-point polygon alternating
+  outer/inner radius per tooth, not spokes on a ring) plus eight small connector nodes radiating off it,
+  each a short line ending in a hollow dot, echoing "the engine, wired into everything else." The same
+  `gearOutline`/`polar` helpers are duplicated (not imported) in `HowItWorksBackground.astro` for the
+  hero's rotating hub, matching this codebase's convention of small per-component duplication over a
+  shared utils file.
 - `src/components/Seo.astro`: per-page title, description, canonical, OG/Twitter tags, and JSON-LD schema
 - `src/layouts/BaseLayout.astro`: the shared page shell (nav, footer, font preloads, `<Seo>`), used by
   every page
