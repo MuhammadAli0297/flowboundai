@@ -2,8 +2,6 @@ export const navLinks = [
   { label: "Product", href: "/product" },
   { label: "Services", href: "/services" },
   { label: "How it works", href: "/how-it-works" },
-  { label: "vs. SAP", href: "/#sap" },
-  { label: "For SMBs", href: "/#smb" },
 ]
 
 // Curated Services nav dropdown. `expand: true` gives that service a nested
