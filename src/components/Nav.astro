@@ -18,16 +18,27 @@ const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transiti
 ---
 
 <header class="sticky top-0 z-50 border-b border-fb-black/10 bg-fb-paper/90 backdrop-blur">
-  <div class="container-fb flex h-16 items-center justify-between">
+  <div class="container-fb flex h-16 items-center">
     <a href="/" class="shrink-0">
       <LogoLockup />
     </a>
-    <nav class="hidden items-center gap-8 md:flex">
+    <nav class="ml-auto hidden items-center gap-8 md:flex">
       {navLinks.map((l) =>
         l.label === "Services" ? (
           <div class="group/services relative">
             <a href={l.href} class={`${linkClass} flex items-center gap-1`}>
               Services
+              <svg
+                class="h-3 w-3 shrink-0 transition-transform duration-150 group-hover/services:-rotate-180 group-focus-within/services:-rotate-180"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
             </a>
             <div class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/services:visible group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:opacity-100">
               <div class={outerPanelClass}>
@@ -65,7 +76,7 @@ const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transiti
     </nav>
     <a
       href="/#cta"
-      class="inline-flex items-center border border-fb-black bg-fb-black px-4 py-2 font-body text-[0.85rem] font-normal text-fb-white transition-colors hover:bg-fb-green-600 hover:border-fb-green-600"
+      class="ml-10 inline-flex items-center border border-fb-black bg-fb-black px-4 py-2 font-body text-[0.85rem] font-normal text-fb-white transition-colors hover:bg-fb-green-600 hover:border-fb-green-600"
     >
       Request a pilot
     </a>
