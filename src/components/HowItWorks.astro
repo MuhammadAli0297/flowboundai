@@ -1,4 +1,6 @@
 ---
+import SectionIcon from "./icons/SectionIcon.astro"
+
 const steps = [
   {
     n: "01",
@@ -52,6 +54,18 @@ const GLOW_SIZE = 420
         class="glow-cursor z-20 rounded-full mix-blend-screen"
         style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(255,255,255,0.55), transparent 70%);`}
       />
+    </div>
+
+    <div class="mt-12 flex justify-center">
+      <a
+        href="/how-it-works"
+        class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-fb-green-200 px-10 py-4 font-body font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
+      >
+        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+        <SectionIcon name="gear" class="relative z-10 h-5 w-5 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:rotate-45" />
+        <span class="relative z-10">See how it works in depth</span>
+        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+      </a>
     </div>
   </div>
 </section>

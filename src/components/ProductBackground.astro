@@ -1,0 +1,113 @@
+---
+/**
+ * Full-bleed ambient hero background for the Product page. Same dark,
+ * glowing, green-on-black "vibe" as the other hero backgrounds, but a
+ * distinct composition: the four pillar nodes (engine, reasoning, chat,
+ * web app) sit on all four corners and flow inward, converging on a fixed
+ * `compass` hub, standing in for "one system, reached four ways" (the
+ * compass's four ticks echo the four pillars converging on it).
+ */
+const hubX = 1190
+const hubY = 460
+
+// The "compass" icon path (SectionIcon), recentred on (0,0) so it can be scaled as the fixed hub.
+const compassRing = { r: 13 }
+const compassTicks = "M0,-20 L0,-13 M0,20 L0,13 M-20,0 L-13,0 M20,0 L13,0"
+
+const pillars = [
+  { x: 850, y: 250, delay: 0 },
+  { x: 830, y: 660, delay: 1.4 },
+  { x: 1520, y: 240, delay: 0.7 },
+  { x: 1520, y: 670, delay: 2.1 },
+]
+
+const curveIn = (x: number, y: number) =>
+  `M${x},${y} Q${(x + hubX) / 2},${(y + hubY) / 2 - 30} ${hubX},${hubY}`
+---
+
+<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+  <defs>
+    <radialGradient id="pr-hub-glow-outer" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.38" />
+      <stop offset="55%" stop-color="#468B79" stop-opacity="0.17" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="pr-hub-glow-inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="pr-node-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx={hubX} cy={hubY} r="640" fill="url(#pr-hub-glow-outer)" />
+  <circle cx={hubX} cy={hubY} r="300" fill="url(#pr-hub-glow-inner)" />
+
+  {pillars.map((p) => (
+    <g>
+      <path d={curveIn(p.x, p.y)} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.5" />
+
+      <circle r="4" fill="#8FD0B8">
+        <animateMotion dur="4.2s" repeatCount="indefinite" begin={`${p.delay}s`} path={curveIn(p.x, p.y)} />
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.85;1" dur="4.2s" repeatCount="indefinite" begin={`${p.delay}s`} />
+      </circle>
+
+      <circle cx={p.x} cy={p.y} r="26" fill="url(#pr-node-glow)" />
+    </g>
+  ))}
+
+  <!-- Decision Engine: a small crate/gauge mark, top left -->
+  <g transform={`translate(${pillars[0].x} ${pillars[0].y})`}>
+    <g class="fb-float" style={`animation-delay: ${pillars[0].delay * 0.4}s`}>
+      <path d="M0,-9 L8,-4.5 L8,4.5 L0,9 L-8,4.5 L-8,-4.5 Z" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
+      <path d="M0,0 L0,-9 M0,0 L8,4.5 M0,0 L-8,4.5" stroke="#8FD0B8" stroke-width="1" stroke-opacity="0.8" />
+    </g>
+  </g>
+
+  <!-- Consulting Wrapper: a small notes/explanation mark, bottom left -->
+  <g transform={`translate(${pillars[1].x} ${pillars[1].y})`}>
+    <g class="fb-float" style={`animation-delay: ${pillars[1].delay * 0.4}s`}>
+      <rect x="-10" y="-8" width="20" height="16" rx="3" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
+      <path d="M-10,-1 L10,-1 M-6,4 L6,4" stroke="#8FD0B8" stroke-width="1.2" />
+    </g>
+  </g>
+
+  <!-- Ask Flowbound: a small chat bubble mark, top right -->
+  <g transform={`translate(${pillars[2].x} ${pillars[2].y})`}>
+    <g class="fb-float" style={`animation-delay: ${pillars[2].delay * 0.4}s`}>
+      <rect x="-10" y="-8" width="20" height="14" rx="4" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
+      <circle cx="-4" cy="-1" r="1.2" fill="#8FD0B8" />
+      <circle cx="0" cy="-1" r="1.2" fill="#8FD0B8" />
+      <circle cx="4" cy="-1" r="1.2" fill="#8FD0B8" />
+    </g>
+  </g>
+
+  <!-- Web App: a small window/dashboard mark, bottom right -->
+  <g transform={`translate(${pillars[3].x} ${pillars[3].y})`}>
+    <g class="fb-float" style={`animation-delay: ${pillars[3].delay * 0.4}s`}>
+      <rect x="-11" y="-9" width="22" height="18" rx="3" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
+      <path d="M-11,-4 L11,-4" stroke="#66AE95" stroke-width="1" stroke-opacity="0.7" />
+      <rect x="-7" y="3" width="3" height="3" fill="#8FD0B8" />
+      <rect x="-2" y="0" width="3" height="6" fill="#8FD0B8" />
+      <rect x="3" y="-3" width="3" height="9" fill="#8FD0B8" />
+    </g>
+  </g>
+
+  <circle
+    cx={hubX}
+    cy={hubY}
+    r="104"
+    fill="none"
+    stroke="#8FD0B8"
+    stroke-opacity="0.5"
+    class="fb-core-pulse-ring"
+    style={`transform-origin: ${hubX}px ${hubY}px`}
+  />
+
+  <g transform={`translate(${hubX} ${hubY})`} class="fb-core-breathe">
+    <circle r={compassRing.r} transform="scale(2.4)" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" />
+    <path d={compassTicks} transform="scale(2.4)" fill="none" stroke="#8FD0B8" stroke-width="1.6" stroke-linecap="round" />
+  </g>
+</svg>

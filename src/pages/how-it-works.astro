@@ -1,0 +1,179 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Cta from "../components/Cta.astro"
+import HowItWorksBackground from "../components/HowItWorksBackground.astro"
+import SectionIcon from "../components/icons/SectionIcon.astro"
+
+const GLOW_SIZE = 420
+
+const steps = [
+  {
+    n: "01",
+    title: "Connect your systems",
+    body:
+      "Point Flowbound at your ERP, spreadsheets, or supplier feeds, whatever you're already using to run the business. There's no migration and no new system of record to maintain. Flowbound reads what's already there.",
+  },
+  {
+    n: "02",
+    title: "The engine reads the signal",
+    body:
+      "Inventory levels, lead times, open orders, and demand history get reconciled continuously, not once a month when someone finally opens the spreadsheet. By the time something needs a call, Flowbound already has the full picture.",
+  },
+  {
+    n: "03",
+    title: "You get a decision, not a dashboard",
+    body:
+      "Reorder 400 units from Supplier B, expedite shipment #4471, or hold the PO to Supplier A. Every call comes with the reasoning attached: which numbers it pulled, why this option and not another, so you're never just taking its word for it.",
+  },
+  {
+    n: "04",
+    title: "Ask it anything",
+    body:
+      "The same engine that made the call answers your team's questions about it, in plain language, pulling from the same live data behind the decision. No separate report to request and no consultant to schedule.",
+  },
+]
+
+const offYourPlate = [
+  "Reconciling inventory across a spreadsheet and your ERP by hand",
+  "Chasing a supplier for a lead time update",
+  "Guessing when to reorder before it's already too late",
+  "Re-running the math every time a cost or demand shifts",
+  "Explaining a decision after the fact instead of having the reasoning upfront",
+  "Checking five different tools to answer one customer question",
+  "Waiting on a consultant to tell you what your own data already knows",
+]
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "How Flowbound Works",
+  applicationCategory: "BusinessApplication",
+  description:
+    "Flowbound connects to the systems you already use, reads inventory, lead time, and demand signals continuously, and turns them into a decision with the reasoning attached, answerable in plain language whenever your team has a question.",
+  audience: {
+    "@type": "Audience",
+    audienceType: "Small and mid-sized businesses",
+  },
+}
+---
+
+<BaseLayout
+  title="How It Works | Flowbound"
+  description="Four steps between your data and a decision you can act on: connect your systems, the engine reads the signal, you get a decision with the reasoning attached, and you can ask it anything."
+  path="/how-it-works"
+  schema={schema}
+>
+  <section class="relative min-h-[560px] overflow-hidden bg-fb-black md:min-h-[680px]">
+    <HowItWorksBackground />
+    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+
+    <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 md:min-h-[680px]">
+      <div class="mb-5 flex items-center gap-3">
+        <SectionIcon name="gear" class="h-6 w-6 text-fb-green-300" />
+        <p class="eyebrow text-fb-green-300">How it works</p>
+      </div>
+      <h1 class="max-w-2xl text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-fb-white md:text-[3.2rem]">
+        Four steps between your data and a decision you can act on.
+      </h1>
+      <p class="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-fb-white/65">
+        Flowbound doesn't ask you to rip out your ERP or learn a new system. Connect what you already have,
+        and the engine takes it from there: reading the signal, making the call, and explaining why, every
+        time.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#cta"
+          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        >
+          Request a pilot
+        </a>
+        <a
+          href="#steps"
+          class="inline-flex items-center border border-fb-white/25 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:border-fb-white/60"
+        >
+          See the four steps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="what" class="border-b border-fb-black/10 bg-fb-paper bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="flex items-start justify-between gap-8">
+        <div class="max-w-xl">
+          <p class="eyebrow mb-4">What it is</p>
+          <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+            Set up once. It runs continuously after that.
+          </h2>
+          <p class="mt-5 text-[0.98rem] leading-relaxed text-fb-black/65">
+            Most tools ask you to check in: open a dashboard, run a report, remember to look before
+            something goes wrong. Flowbound works the other way. Once it's connected to your systems, it
+            watches continuously and comes to you the moment something actually needs a call, instead of
+            waiting for you to go looking for it.
+          </p>
+        </div>
+        <SectionIcon name="gear" class="hidden h-[7.5rem] w-[7.5rem] shrink-0 text-fb-green-500/[14%] md:block" />
+      </div>
+    </div>
+  </section>
+
+  <section id="steps" class="border-b border-fb-black/10 bg-fb-white bg-grain py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow mb-4">The four steps</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+          From raw signal to a decision you can act on.
+        </h2>
+      </div>
+
+      <div
+        data-glow-container
+        data-glow-size={GLOW_SIZE}
+        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-2"
+      >
+        {steps.map((s) => (
+          <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
+            <span class="font-mono text-sm text-fb-green-500">{s.n}</span>
+            <h3 class="mt-3 text-[1.15rem] font-semibold leading-snug text-fb-black">{s.title}</h3>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-fb-black/65">{s.body}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
+        ))}
+
+        <div
+          data-glow
+          aria-hidden="true"
+          class="glow-cursor z-20 rounded-full mix-blend-multiply"
+          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="off-your-plate" class="border-b border-fb-black/10 bg-fb-black py-20 md:py-28">
+    <div class="container-fb">
+      <div class="max-w-xl">
+        <p class="eyebrow text-fb-green-300 mb-4">What comes off your plate</p>
+        <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-white md:text-[2.2rem]">
+          The busywork this replaces, not just the dashboard.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {offYourPlate.map((item) => (
+          <div class="flex items-start gap-3 border border-fb-white/15 bg-fb-white/5 px-5 py-4">
+            <SectionIcon name="gear" class="mt-0.5 h-5 w-5 shrink-0 text-fb-green-400" />
+            <span class="text-[0.98rem] leading-snug text-fb-white/80">{item}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Cta />
+</BaseLayout>
+
+<script>
+  import "../scripts/hoverGlow"
+</script>

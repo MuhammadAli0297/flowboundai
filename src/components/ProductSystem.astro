@@ -1,4 +1,6 @@
 ---
+import SectionIcon from "./icons/SectionIcon.astro"
+
 const modules = [
   {
     tag: "Core",
@@ -18,6 +20,12 @@ const modules = [
     body:
       "A chatbot that actually knows your supply chain. Ask why a reorder happened, or what a lead time slip would mean for next month, and get a real answer instead of a help doc.",
   },
+  {
+    tag: "Workspace",
+    title: "Web App",
+    body:
+      "The web app your team actually works in: agent status at a glance, a reorder queue you approve with one click, and Ask Flowbound sitting right alongside it. Whitelisted to your team the moment your trial starts, no extra login and nothing to stitch together yourself.",
+  },
 ]
 
 const GLOW_SIZE = 420
@@ -28,13 +36,13 @@ const GLOW_SIZE = 420
     <div class="max-w-xl">
       <p class="eyebrow mb-4">What Flowbound does</p>
       <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
-        One supply chain decision engine. Three ways to use it.
+        One supply chain decision engine. Four ways to use it.
       </h2>
     </div>
 
     <!-- mouse tracking is scoped to just this grid, so the glow can never
          wander off into the section's padding and look disconnected -->
-    <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3">
+    <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-2">
       {modules.map((m) => (
         <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
           <span class="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-fb-green-500">{m.tag}</span>
@@ -52,6 +60,18 @@ const GLOW_SIZE = 420
         class="glow-cursor z-20 rounded-full mix-blend-multiply"
         style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
       />
+    </div>
+
+    <div class="mt-12 flex justify-center">
+      <a
+        href="/product"
+        class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-fb-green-200 px-10 py-4 font-body font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
+      >
+        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+        <SectionIcon name="spark" class="relative z-10 h-5 w-5 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:rotate-45" />
+        <span class="relative z-10">See the full product</span>
+        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+      </a>
     </div>
   </div>
 </section>

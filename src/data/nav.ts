@@ -1,7 +1,7 @@
 export const navLinks = [
-  { label: "Product", href: "/#product" },
+  { label: "Product", href: "/product" },
   { label: "Services", href: "/services" },
-  { label: "How it works", href: "/#how-it-works" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "vs. SAP", href: "/#sap" },
   { label: "For SMBs", href: "/#smb" },
 ]
@@ -19,9 +19,9 @@ export const servicesMenu: { slug: string; expand: boolean }[] = [
 
 export const footerLinks = {
   product: [
-    { label: "What it is", href: "/#product" },
+    { label: "What it is", href: "/product" },
     { label: "Services", href: "/services" },
-    { label: "How it works", href: "/#how-it-works" },
+    { label: "How it works", href: "/how-it-works" },
     { label: "vs. SAP", href: "/#sap" },
   ],
   company: [

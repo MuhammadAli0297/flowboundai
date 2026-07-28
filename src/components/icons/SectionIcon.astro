@@ -1,5 +1,5 @@
 ---
-export type SectionIconName = "spark" | "crate" | "network" | "bolt" | "chat" | "shield-check"
+export type SectionIconName = "spark" | "crate" | "network" | "bolt" | "chat" | "shield-check" | "compass" | "gear"
 
 interface Props {
   name: SectionIconName
@@ -7,6 +7,33 @@ interface Props {
 }
 
 const { name, class: className = "" } = Astro.props
+
+// The "gear" icon is computed rather than hand-drawn: a proper flat-toothed cog silhouette (not just
+// spokes on a ring), plus small connector nodes radiating off it, echoing "the engine, wired into
+// everything else." Shared by the small icon here and the hero's rotating hub in HowItWorksBackground.astro.
+const polar = (cx: number, cy: number, r: number, deg: number): [number, number] => {
+  const rad = (deg * Math.PI) / 180
+  return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)]
+}
+
+const gearOutline = (cx: number, cy: number, teeth: number, outerR: number, innerR: number, toothHalfDeg: number) => {
+  const step = 360 / teeth
+  const points: [number, number][] = []
+  for (let i = 0; i < teeth; i++) {
+    const center = i * step
+    const valleyCenter = center + step / 2
+    points.push(
+      polar(cx, cy, outerR, center - toothHalfDeg),
+      polar(cx, cy, outerR, center + toothHalfDeg),
+      polar(cx, cy, innerR, valleyCenter - toothHalfDeg),
+      polar(cx, cy, innerR, valleyCenter + toothHalfDeg)
+    )
+  }
+  return `M${points.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" L")} Z`
+}
+
+const gearNodeAngles = [0, 45, 90, 135, 180, 225, 270, 315]
+const gearPath = gearOutline(24, 24, 8, 17, 13, 7)
 ---
 
 <svg viewBox="0 0 48 48" fill="none" class={className} aria-hidden="true">
@@ -58,6 +85,30 @@ const { name, class: className = "" } = Astro.props
     <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M24,4 L40,10 L40,22 C40,34 32,42 24,44 C16,42 8,34 8,22 L8,10 Z" />
       <path d="M17,24 L22,29 L32,18" />
+    </g>
+  )}
+
+  {name === "compass" && (
+    <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <circle cx="24" cy="24" r="13" />
+      <path d="M24,4 L24,11 M24,37 L24,44 M4,24 L11,24 M37,24 L44,24" />
+    </g>
+  )}
+
+  {name === "gear" && (
+    <g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+      <path d={gearPath} />
+      <circle cx="24" cy="24" r="5.5" />
+      {gearNodeAngles.map((angle) => {
+        const [ix, iy] = polar(24, 24, 18, angle)
+        const [ox, oy] = polar(24, 24, 21.5, angle)
+        return (
+          <g>
+            <line x1={ix} y1={iy} x2={ox} y2={oy} />
+            <circle cx={ox} cy={oy} r="1.6" />
+          </g>
+        )
+      })}
     </g>
   )}
 </svg>
