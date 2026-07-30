@@ -2,9 +2,11 @@
 
 ## Copy rules (read this first)
 No em dashes, ever, anywhere in this project. Not in headlines, body copy, button labels, code comments,
-or documentation. If a sentence wants an em dash, rewrite it as two sentences, or use a comma, a period,
-a colon, or "and" / "but" instead. This applies to every piece of text tied to Flowbound, not just the
-homepage.
+or documentation, and not in Claude's own chat responses while working in this repo, written or spoken
+aloud. If a sentence wants an em dash, rewrite it as two sentences, or use a comma, a period, a colon, or
+"and" / "but" instead. This applies to every piece of text tied to Flowbound, not just the homepage, and
+it applies for the life of the project, not just this session: treat it as a permanent hard rule, and
+rewrite on the spot the moment an em dash shows up, rather than letting it stand.
 
 Overall voice: warm and human, not corporate, not "AI-generated" sounding. Write like a person who has
 actually talked to small business owners about their supply chain headaches, not like a pitch deck. Short

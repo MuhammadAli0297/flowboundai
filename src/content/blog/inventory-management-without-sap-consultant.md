@@ -14,7 +14,7 @@ were priced for companies with a seven-figure IT budget and a consultant on reta
 ## Why SAP-style tools don't fit small teams
 
 Enterprise ERP platforms like SAP were built for organizations that can absorb a multi-month implementation
-and a standing relationship with a systems integrator. That's not a knock on SAP — it's just not who the
+and a standing relationship with a systems integrator. That's not a knock on SAP, it's just not who the
 product was designed for. If you're a small or mid-sized operator, you're paying for a rollout process and a
 support model that assumes a team you don't have.
 
@@ -23,15 +23,15 @@ support model that assumes a team you don't have.
 Underneath the enterprise tooling, the job is simple to describe even if it's hard to do well:
 
 - Watch inventory levels, lead times, and open purchase orders continuously, not once a month.
-- Turn that signal into a specific call — reorder, hold, or reroute — before a stockout or an overbuy happens.
+- Turn that signal into a specific call: reorder, hold, or reroute, before a stockout or an overbuy happens.
 - Explain the reasoning behind every recommendation in plain language, so someone without a supply chain
   background can trust and act on it.
 
 ## Getting there without a consultant
 
 You don't need a six-figure implementation to get continuous, explained inventory decisions. What you need is
-a system that connects to the tools you already use — your spreadsheets, your supplier feeds, your existing
-ERP if you have one — and starts reasoning over that data directly, instead of asking you to hire someone to
+a system that connects to the tools you already use: your spreadsheets, your supplier feeds, your existing
+ERP if you have one, and starts reasoning over that data directly, instead of asking you to hire someone to
 interpret it for you.
 
 That's the gap Flowbound is built to close: the decision quality of an enterprise supply chain team, without
