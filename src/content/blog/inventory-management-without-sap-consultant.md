@@ -3,6 +3,7 @@ title: "How Small Businesses Can Manage Inventory Without an SAP Consultant"
 description: "SAP and other enterprise ERPs were priced for companies with a consulting budget. Here's how small and mid-sized teams can get the same quality of inventory decisions without one."
 publishDate: 2026-07-20
 author: "Flowbound"
+category: "Inventory Management"
 tags: ["inventory management", "small business", "sap alternative"]
 ---
 
