@@ -127,7 +127,10 @@ uppercase, wide tracking, green.
   fixed `compass` hub, standing in for "one system, reached four ways," the compass's four ticks echoing
   the four pillars converging on it); and `HowItWorksBackground.astro` for `/how-it-works` (a single
   `gear` hub, rotating clockwise, with the four step nodes, connect, signal, decision, ask, flowing into
-  it). Copy the pattern, not the file: same
+  it); and `BlogBackground.astro` for `/blog` (a fixed `document` hub sending pulses outward to three small
+  open-book "reader" nodes, the only hero where signals flow out from the hub rather than converging into
+  it, standing in for insight reaching readers instead of signal reaching a decision). Copy the pattern, not
+  the file: same
   dark background, same green glow palette and pulse-ring motif, new composition each time, and vary
   whether the hub itself rotates or stays fixed so consecutive pages don't feel identical. None of the
   hubs use a small center "core dot" anymore; a few early ones shipped with one to fill the empty middle
@@ -179,8 +182,11 @@ uppercase, wide tracking, green.
   rule, a fixed `compass` hub with four pillar nodes converging on it
 - `src/components/HowItWorksBackground.astro`: full-bleed animated hero background for `/how-it-works`,
   same rule, a single rotating `gear` hub with the four step nodes flowing in
+- `src/components/BlogBackground.astro`: full-bleed animated hero background for `/blog`, same rule, a
+  fixed `document` hub sending pulses outward to three open-book reader nodes
 - `src/components/icons/SectionIcon.astro`: small monoline section icons (crate, network, bolt, chat,
-  shield-check, spark, compass, gear), used top-right of a section's text block on content pages. `gear`
+  shield-check, spark, compass, gear, document), used top-right of a section's text block on content pages.
+  `gear`
   is computed rather than hand-drawn: a proper flat-toothed cog outline (an 8-point polygon alternating
   outer/inner radius per tooth, not spokes on a ring) plus eight small connector nodes radiating off it,
   each a short line ending in a hollow dot, echoing "the engine, wired into everything else." The same

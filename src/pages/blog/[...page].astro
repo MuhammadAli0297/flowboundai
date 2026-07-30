@@ -2,51 +2,194 @@
 import type { GetStaticPaths } from "astro"
 import { getCollection } from "astro:content"
 import BaseLayout from "../../layouts/BaseLayout.astro"
+import BlogBackground from "../../components/BlogBackground.astro"
+import BlogThumbnail from "../../components/BlogThumbnail.astro"
+import SectionIcon from "../../components/icons/SectionIcon.astro"
+import Cta from "../../components/Cta.astro"
+import { blogCategories } from "../../data/blogCategories"
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
     (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
   )
-  return paginate(posts, { pageSize: 10 })
+
+  const categoriesWithCounts = blogCategories.map((c) => ({
+    ...c,
+    count: posts.filter((p) => p.data.category === c.name).length,
+  }))
+
+  return paginate(posts, { pageSize: 9, props: { categoriesWithCounts, allPosts: posts } })
 }) satisfies GetStaticPaths
 
-const { page } = Astro.props
+const { page, categoriesWithCounts, allPosts } = Astro.props
+
+const currentPageIds = new Set(page.data.map((p) => p.id))
+
+const formatDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+
+const searchIndex = (post: (typeof allPosts)[number]) =>
+  [post.data.title, post.data.description, post.data.category, ...post.data.tags].join(" ").toLowerCase()
 ---
 
 <BaseLayout
-  title="Blog | Flowbound"
+  title={page.currentPage === 1 ? "Blog | Flowbound" : `Blog | Page ${page.currentPage} | Flowbound`}
   description="Supply chain and inventory management insights for small and mid-sized businesses."
   path="/blog"
 >
-  <section class="container-fb py-20 md:py-28">
-    <p class="eyebrow mb-4">Blog</p>
-    <h1 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
-      Supply chain insights for small business teams.
-    </h1>
+  <section class="relative min-h-[520px] overflow-hidden bg-fb-black md:min-h-[620px]">
+    <BlogBackground />
+    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
 
-    <ul class="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2">
-      {page.data.map((post) => (
-        <li class="border-t border-fb-black/10 pt-6">
-          <a href={`/blog/${post.id}`} class="group">
-            <p class="font-mono text-xs uppercase tracking-wider text-fb-black/40">
-              {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </p>
-            <h2 class="mt-2 text-[1.2rem] font-semibold leading-snug text-fb-black group-hover:text-fb-green-600">
-              {post.data.title}
-            </h2>
-            <p class="mt-2 text-[0.95rem] leading-relaxed text-fb-black/65">{post.data.description}</p>
-          </a>
-        </li>
-      ))}
-    </ul>
-
-    <div class="mt-14 flex items-center justify-between border-t border-fb-black/10 pt-6">
-      {page.url.prev ? (
-        <a href={page.url.prev} class="text-sm text-fb-green-600 hover:underline">&larr; Newer posts</a>
-      ) : <span />}
-      {page.url.next ? (
-        <a href={page.url.next} class="text-sm text-fb-green-600 hover:underline">Older posts &rarr;</a>
-      ) : <span />}
+    <div class="container-fb relative flex min-h-[520px] flex-col justify-center py-20 md:min-h-[620px]">
+      <div class="mb-5 flex items-center gap-3">
+        <SectionIcon name="document" class="h-6 w-6 text-fb-green-300" />
+        <p class="eyebrow text-fb-green-300">Blog</p>
+      </div>
+      <h1 class="max-w-2xl text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-fb-white md:text-[3.2rem]">
+        Supply chain insights for small business teams.
+      </h1>
+      <p class="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-fb-white/65">
+        Practical, plain-language write-ups on inventory, suppliers, and the decisions that eat up an
+        operator's week. Written for people running the business, not for a procurement committee.
+      </p>
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href="#posts"
+          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        >
+          Read the latest
+        </a>
+        <a
+          href="#cta"
+          class="inline-flex items-center border border-fb-white/25 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:border-fb-white/60"
+        >
+          Request a pilot
+        </a>
+      </div>
     </div>
   </section>
+
+  <section id="posts" class="border-b border-fb-black/10 bg-fb-paper bg-grain py-20 md:py-28">
+    <div class="container-fb grid grid-cols-1 gap-12 lg:grid-cols-[240px_1fr] lg:gap-10">
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <label class="sr-only" for="blog-search">Search posts</label>
+        <div class="relative">
+          <input
+            id="blog-search"
+            type="text"
+            placeholder="Search posts"
+            data-blog-search
+            class="w-full border border-fb-black/15 bg-fb-white px-4 py-2.5 pr-10 font-body text-sm text-fb-black placeholder:text-fb-black/40 focus:border-fb-green-500 focus:outline-none"
+          />
+          <svg
+            class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-fb-black/35"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m20 20-3.2-3.2" />
+          </svg>
+        </div>
+
+        <div class="mt-8">
+          <p class="eyebrow mb-4">Categories</p>
+          <ul class="space-y-3">
+            {categoriesWithCounts.map((c) => (
+              <li>
+                <label class="flex cursor-pointer items-center justify-between gap-2 text-sm text-fb-black/70 hover:text-fb-black">
+                  <span class="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      value={c.name}
+                      data-category-filter
+                      class="h-3.5 w-3.5 shrink-0 accent-fb-green-500"
+                    />
+                    {c.name}
+                  </span>
+                  <span class="font-mono text-xs text-fb-black/35">{c.count}</span>
+                </label>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <button
+          type="button"
+          data-blog-reset
+          class="mt-8 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-fb-green-600 hover:underline"
+        >
+          Reset all filters
+        </button>
+      </aside>
+
+      <div>
+        <p data-blog-results-count class="mb-8 font-mono text-xs uppercase tracking-wider text-fb-black/40">
+          {page.data.length} of {allPosts.length} posts
+        </p>
+
+        <ul class="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
+          {allPosts.map((post) => {
+            const isCurrentPage = currentPageIds.has(post.id)
+            return (
+              <li
+                data-post-card
+                data-current-page={isCurrentPage ? "true" : "false"}
+                data-category={post.data.category}
+                data-search={searchIndex(post)}
+                class={isCurrentPage ? "" : "hidden"}
+              >
+                <a
+                  href={`/blog/${post.id}`}
+                  class="group flex h-full flex-col border border-fb-black/10 bg-fb-white transition-all duration-300 hover:-translate-y-0.5 hover:border-fb-green-500/40"
+                >
+                  <BlogThumbnail category={post.data.category} class="aspect-[16/10] w-full" />
+                  <div class="flex flex-1 flex-col p-5">
+                    <div class="flex items-center justify-between gap-3">
+                      <span class="border border-fb-black/15 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-fb-green-600">
+                        {post.data.category}
+                      </span>
+                      <span class="shrink-0 font-mono text-[0.65rem] uppercase tracking-wider text-fb-black/35">
+                        {formatDate(post.data.publishDate)}
+                      </span>
+                    </div>
+                    <h2 class="mt-3 text-[1.05rem] font-semibold leading-snug text-fb-black group-hover:text-fb-green-600">
+                      {post.data.title}
+                    </h2>
+                  </div>
+                </a>
+              </li>
+            )
+          })}
+        </ul>
+
+        <p data-blog-empty-state class="mt-14 hidden text-sm text-fb-black/50">
+          No posts match your filters.
+        </p>
+
+        {page.lastPage > 1 && (
+          <div data-blog-pagination class="mt-14 flex items-center justify-between border-t border-fb-black/10 pt-6">
+            {page.url.prev ? (
+              <a href={page.url.prev} class="text-sm text-fb-green-600 hover:underline">&larr; Newer posts</a>
+            ) : <span />}
+            <span class="font-mono text-xs uppercase tracking-wider text-fb-black/35">
+              Page {page.currentPage} of {page.lastPage}
+            </span>
+            {page.url.next ? (
+              <a href={page.url.next} class="text-sm text-fb-green-600 hover:underline">Older posts &rarr;</a>
+            ) : <span />}
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <Cta />
 </BaseLayout>
+
+<script>
+  import "../../scripts/blogFilter"
+</script>

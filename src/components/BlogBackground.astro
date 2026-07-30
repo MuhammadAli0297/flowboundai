@@ -1,0 +1,91 @@
+---
+/**
+ * Full-bleed ambient hero background for the Blog index. Same dark,
+ * glowing, green-on-black "vibe" as the other hero backgrounds, but a
+ * distinct composition: a fixed `document` hub sends pulses outward to
+ * small open-book "reader" nodes, standing in for insight flowing out to
+ * readers, the reverse direction of every other hero, where signals flow
+ * inward to the hub.
+ */
+const hubX = 1180
+const hubY = 460
+
+// The "document" icon path (SectionIcon), recentred on (0,0) so it can be scaled as the fixed hub.
+const docOutline = "M-11,-20 L4,-20 L11,-13 L11,20 L-11,20 Z"
+const docFold = "M4,-20 L4,-13 L11,-13"
+const docLines = "M-6,-4 L6,-4 M-6,3 L6,3 M-6,10 L1,10"
+
+const readers = [
+  { x: 870, y: 260, delay: 0 },
+  { x: 1540, y: 310, delay: 1.6 },
+  { x: 1490, y: 700, delay: 3.2 },
+]
+
+const curveOut = (x: number, y: number) =>
+  `M${hubX},${hubY} Q${(x + hubX) / 2},${(y + hubY) / 2 - 30} ${x},${y}`
+---
+
+<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
+  <defs>
+    <radialGradient id="bl-hub-glow-outer" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.38" />
+      <stop offset="55%" stop-color="#468B79" stop-opacity="0.17" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="bl-hub-glow-inner" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.45" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="bl-node-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#468B79" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx={hubX} cy={hubY} r="640" fill="url(#bl-hub-glow-outer)" />
+  <circle cx={hubX} cy={hubY} r="300" fill="url(#bl-hub-glow-inner)" />
+
+  {readers.map((n) => (
+    <g>
+      <path d={curveOut(n.x, n.y)} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.5" />
+
+      <circle r="4" fill="#8FD0B8">
+        <animateMotion dur="4.2s" repeatCount="indefinite" begin={`${n.delay}s`} path={curveOut(n.x, n.y)} />
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.85;1" dur="4.2s" repeatCount="indefinite" begin={`${n.delay}s`} />
+      </circle>
+
+      <circle cx={n.x} cy={n.y} r="26" fill="url(#bl-node-glow)" />
+
+      <!-- reader: a small open-book mark -->
+      <g transform={`translate(${n.x} ${n.y})`}>
+        <g class="fb-float" style={`animation-delay: ${n.delay * 0.4}s`}>
+          <path
+            d="M-9,-6 Q0,-9 9,-6 L9,7 Q0,4 -9,7 Z"
+            fill="#0C1F19"
+            stroke="#66AE95"
+            stroke-width="1.4"
+            stroke-linejoin="round"
+          />
+          <path d="M0,-7.5 L0,5.5" stroke="#8FD0B8" stroke-width="1.2" stroke-linecap="round" />
+        </g>
+      </g>
+    </g>
+  ))}
+
+  <circle
+    cx={hubX}
+    cy={hubY}
+    r="102"
+    fill="none"
+    stroke="#8FD0B8"
+    stroke-opacity="0.5"
+    class="fb-core-pulse-ring"
+    style={`transform-origin: ${hubX}px ${hubY}px`}
+  />
+
+  <g transform={`translate(${hubX} ${hubY})`} class="fb-core-breathe">
+    <path d={docOutline} transform="scale(2.6)" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" stroke-linejoin="round" />
+    <path d={docFold} transform="scale(2.6)" fill="none" stroke="#8FD0B8" stroke-width="1.3" stroke-linejoin="round" />
+    <path d={docLines} transform="scale(2.6)" fill="none" stroke="#8FD0B8" stroke-width="1.3" stroke-linecap="round" />
+  </g>
+</svg>
