@@ -12,8 +12,11 @@ npm run lint       # oxlint
 ```
 
 There is no test suite. Verification is: `astro check` + `astro build` succeed, plus a real headless-browser
-screenshot check (`shot.mjs` via Playwright, against `npm run preview` on port 4173) before calling any
-visual change done. Always do this for UI changes; don't just trust the build passing.
+screenshot check (`shot.mjs` via Playwright, against `npm run preview`) before calling any visual change
+done. Always do this for UI changes; don't just trust the build passing. `npm run preview` does not
+reliably run on port 4173: Astro's actual default is 4321, falling back to the next free port (4322, etc.)
+if something else, like `npm run dev`, already holds 4321. Check the actual port the command prints rather
+than assuming one.
 
 ## Architecture
 
@@ -28,6 +31,24 @@ hover effects, hero background animation) is vanilla JS/SVG in `.astro` files or
 - `src/components/Seo.astro`: per-page title/description/canonical/OG/Twitter/JSON-LD, used by every page
 - `src/content/blog/`: Markdown blog posts via Astro's Content Layer API, schema in `src/content.config.ts`;
   `/blog` (paginated index), `/blog/[slug]`, `/blog/tags/[tag]` all derive from this collection
+
+### Blog
+
+Every post needs a `category` (one fixed value from `src/data/blogCategories.ts`, each mapped to a
+`SectionIcon` name) plus any number of freeform `tags` (used only by `/blog/tags/[tag]`, unrelated to
+category). `/blog` (`src/pages/blog/[...page].astro`) shows 9 posts per page, newest first, with a search
+box and category checkboxes in a sidebar. Search and category filters match across **every** post on the
+site, not just the current page: every post is rendered into every page's HTML (hidden via a class if it
+isn't on that particular page), and `src/scripts/blogFilter.ts` shows/hides across all of them once a
+filter is active, hiding the pagination controls while it does. Sidebar category counts are computed from
+the full collection, not the current page. Card thumbnails (`src/components/BlogThumbnail.astro`) are
+generated from the category icon, not real photos, so there's no imagery to source as posts get added.
+`BlogBackground.astro` is the page's hero, per the hero background rule below, the one hero where signal
+flows outward from the hub rather than converging into it (see BRAND_GUIDELINES.md).
+
+Be cautious about publishing volume: a plan to add many posts a day for months risks Google's "scaled
+content abuse" policy if quality drops to hit a quota. Favor fewer, genuinely useful posts over hitting a
+cadence target.
 
 ### Data-driven pages vs. narrative pages
 
