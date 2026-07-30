@@ -1,0 +1,26 @@
+---
+/**
+ * Generated card thumbnail for a blog post: no photography or per-post image
+ * assets to source or maintain as the blog scales, just the post's category
+ * icon on the same dark, green-glow "vibe" as the hero backgrounds, so every
+ * card reads as one system no matter how many posts get added later.
+ */
+import SectionIcon from "./icons/SectionIcon.astro"
+import { categoryIcon } from "../data/blogCategories"
+
+interface Props {
+  category: string
+  class?: string
+}
+
+const { category, class: className = "" } = Astro.props
+---
+
+<div class={`relative flex items-center justify-center overflow-hidden bg-fb-black ${className}`} aria-hidden="true">
+  <div
+    class="absolute inset-0"
+    style="background: radial-gradient(circle at 50% 45%, rgba(70,139,121,0.4), transparent 65%);"
+  />
+  <div class="absolute h-16 w-16 rounded-full border border-fb-green-300/25" />
+  <SectionIcon name={categoryIcon(category)} class="relative h-9 w-9 text-fb-green-300" />
+</div>
