@@ -13,107 +13,98 @@ npm run dev
 
 Open the local URL Astro prints (defaults to http://localhost:4321).
 
-## Build
+## Build, lint, and verify
 
 ```bash
 npm run build     # runs `astro check` then `astro build`
 npm run preview   # serve the production build locally
+npm run lint      # oxlint
 ```
+
+There's no test suite. For any UI change, `astro check` and `astro build` passing isn't enough on its own:
+verify it visually with a real headless-browser screenshot against `npm run preview` before calling it done.
 
 ## Deployment
 
-Live at flowbound.ai, hosted on Vercel, connected to the `MuhammadAli0297/flowboundai` GitHub repo.
-Every push to `main` auto-deploys. No environment variables are required.
+Live at flowbound.ai, hosted on Vercel, connected to the `MuhammadAli0297/flowboundai` GitHub repo. Every
+push to `main` auto-deploys. No environment variables are required. Split commits by concern
+(feature/bugfix/docs/content) rather than bundling unrelated changes.
 
 ## Pages
 
-- `/`: homepage (`src/pages/index.astro`)
-- `/product`: dedicated page for the product as a whole (`src/pages/product.astro`), expanding the
-  homepage's "What Flowbound does" section (`ProductSystem.astro`, the four-tile Decision Engine /
-  Consulting Wrapper / Ask Flowbound / Web App grid) into its own hero, unifying "what it is" narrative, a
-  deeper pass on each of the four pillars, and a how-it-works walkthrough. The nav's "Product" link and
-  the footer's "What it is" link both point here now instead of the homepage's `#product` anchor (the
-  anchor and section still exist on the homepage itself, just no longer the nav target, the same
-  promotion `/services` already went through). The homepage section also gets a centered "See the full
-  product" pill CTA under its grid, linking here, matching the Ask Flowbound teaser pattern. Content is
-  inline in the page file, not data-driven, since it's a one-off narrative page.
-- `/how-it-works`: dedicated page for the process (`src/pages/how-it-works.astro`), expanding the
-  homepage's "How it works" section (`HowItWorks.astro`, the four-step Connect / Read the Signal /
-  Decide / Ask grid) into its own hero, a "set up once, runs continuously" narrative, a deeper pass on
-  each of the four steps, and a closing "what comes off your plate" list contrasting the manual busywork
-  it replaces. Same promotion as `/product`: the nav's and footer's "How it works" links point here now
-  instead of the homepage's `#how-it-works` anchor (the anchor and section still exist on the homepage,
-  including the homepage hero's own "See how it works" button, which still scrolls to that in-page
-  section rather than navigating away, same as every other page's hero secondary button). The homepage
-  section also gets a centered "See how it works in depth" pill CTA under its grid.
-- `/services`: services overview: Ask Flowbound, Inventory, Supplier Management, Autonomous, Customer
-  Service, Quality Monitoring (`src/pages/services.astro`, content lives in `src/data/services.ts`). The
-  Ask Flowbound section here is a short teaser with a CTA button through to `/ask-flowbound`, not the
-  full pitch. Any capability with an `href` set in `services.ts` gets the same treatment: a centered pill
-  CTA button directly under that capability's tile, linking to its own dedicated page. A whole service can
-  also set `href`/`ctaLabel` (instead of its individual capabilities): Customer Service and Quality
-  Monitoring do this, so their section gets one centered pill CTA under the full capability grid, linking
-  to one dedicated page for the whole service, the same treatment the Ask Flowbound section gets.
-- `/ask-flowbound`, `/customer-service`, `/quality-monitoring`: one-off narrative pages, each covering an
-  entire service (or the agent, for Ask Flowbound) as a single page rather than splitting it into one page
-  per capability (`src/pages/ask-flowbound.astro`, `customer-service.astro`, `quality-monitoring.astro`).
-  Each expands its Services page teaser into its own hero, capability grid, a third list section (sample
-  questions for Ask Flowbound and Customer Service, since both are chat-agent-facing; signals watched for
-  Quality Monitoring, matching the capability-page pattern), and a how-it-works walkthrough. Content is
-  inline in the page file, not data-driven like `services.ts`, since these are one-off narrative pages
-  rather than a repeating list of similar items.
-- Dedicated capability pages, one per capability with a page built so far, each following the same
-  five-section template (hero, what it is, what it does, what it watches, how it works, CTA):
-  `/demand-forecasting`, `/inventory-tracking`, `/shipping-optimization`, `/supplier-coordination`,
-  `/wholesale-account-management` (Inventory and Supplier Management), plus `/reorder` and `/pricing`
-  (Autonomous). Each has its own hero background component (see Structure below). Customer Service and
-  Quality Monitoring capabilities intentionally do NOT get this per-capability treatment; see the
-  one-off narrative pages above instead.
-- `/blog`: paginated post index; `/blog/[slug]`: individual posts; `/blog/tags/[tag]`: tag pages
-- `/404`: not found page
+| Route | File | Notes |
+|---|---|---|
+| `/` | `src/pages/index.astro` | Homepage |
+| `/product` | `src/pages/product.astro` | Expands the homepage's "What Flowbound does" section into its own page |
+| `/how-it-works` | `src/pages/how-it-works.astro` | Expands the homepage's "How it works" section into its own page |
+| `/services` | `src/pages/services.astro` | Services overview; content lives in `src/data/services.ts` |
+| `/ask-flowbound`, `/customer-service`, `/quality-monitoring` | `src/pages/*.astro` | One-off pages, each covering a whole service on one page instead of splitting it into per-capability pages |
+| `/demand-forecasting`, `/inventory-tracking`, `/shipping-optimization`, `/supplier-coordination`, `/wholesale-account-management`, `/reorder`, `/pricing` | `src/pages/*.astro` | Dedicated capability pages, all following the same five-section template: hero, what it is, what it does, what it watches, how it works, CTA |
+| `/blog` | `src/pages/blog/[...page].astro` | Paginated blog index, see Blog below |
+| `/blog/[slug]` | `src/pages/blog/[slug].astro` | Individual post |
+| `/blog/tags/[tag]` | `src/pages/blog/tags/[tag].astro` | Posts filtered by tag |
+| `/rss.xml` | `src/pages/rss.xml.ts` | RSS feed of all posts |
+| `/404` | `src/pages/404.astro` | Not found page |
+
+**A few patterns worth knowing before adding a page:**
+- `/product` and `/how-it-works` were promoted out of the homepage's own in-page sections: the nav and
+  footer link to the dedicated page, but the original anchor and section still exist on the homepage
+  (including its own hero button, which still scrolls in-page rather than navigating away). Each homepage
+  section also keeps a small pill CTA under its grid linking through to the dedicated page. `/services`
+  went through the same promotion earlier.
+- `src/data/services.ts` is the single source of truth for `/services`: the nav dropdown and the page's
+  JSON-LD both derive from it, so adding a service there is enough for it to show up in both. A capability,
+  or a whole service, can set `href`/`ctaLabel` there to get a dedicated page wired up automatically
+  (comments in that file spell out exactly how).
+- Customer Service and Quality Monitoring are each told as one narrative page rather than split into a
+  page per capability; every other Inventory, Supplier Management, and Autonomous capability gets its own
+  page instead.
+- Every secondary page gets its own full-bleed animated hero background component rather than reusing
+  another page's file. See BRAND_GUIDELINES.md's "Secondary-page hero" section for the full catalog of
+  existing compositions before building a new one.
+
+## Blog
+
+- Posts are Markdown files in `src/content/blog/`, schema in `src/content.config.ts`. Each post needs a
+  `category`, one of the fixed list in `src/data/blogCategories.ts` (each mapped to a `SectionIcon`), and
+  can carry any number of freeform `tags`, used by the `/blog/tags/[tag]` pages.
+- `/blog` shows 9 posts per page, newest first, with a search box and per-category checkboxes in a
+  sidebar. Every post on the site is rendered into every page's HTML (hidden if it isn't on that
+  particular page), so search and category filters match across the whole blog, not just the page you're
+  currently on. See `src/scripts/blogFilter.ts`. Sidebar category counts are computed from all posts, not
+  just the current page.
+- Card thumbnails (`src/components/BlogThumbnail.astro`) are generated from the post's category icon
+  rather than real images, so there's no photography to source or maintain as more posts get added.
+- `src/components/BlogBackground.astro` is the `/blog` hero's animated background, following the same
+  per-page hero convention as every other secondary page.
 
 ## Structure
 
 - `src/pages/`: one file per route
 - `src/layouts/BaseLayout.astro`: shared page shell (nav, footer, font preloads, `<Seo>`)
 - `src/components/Seo.astro`: per-page title/description/canonical/OG/JSON-LD, used by every page
-- `src/components/`: homepage section components (Hero, ProductSystem, HowItWorks, WhyUs,
-  SapComparison, Mission, Cta, Nav, Footer, FlowBackground, ServicesOrbit, AskFlowboundBackground,
-  DemandForecastingBackground, InventoryTrackingBackground, ShippingOptimizationBackground,
-  SupplierCoordinationBackground, WholesaleAccountManagementBackground, ReorderBackground,
-  PricingBackground, CustomerServiceBackground, QualityMonitoringBackground, ProductBackground,
-  HowItWorksBackground) plus `icons/SectionIcon.astro`. Each secondary page gets its own full-bleed
-  animated hero background component rather than reusing another page's file; see BRAND_GUIDELINES.md's
-  "Secondary-page hero" note. An early version of `ProductBackground.astro` used the real `LogoMark`
-  component as its hub; that was scrapped (the brand mark read as a generic yin-yang symbol at hero
-  scale, not as Flowbound) in favor of a new `compass` `SectionIcon`, same as every other hero. None of
-  the hero hubs carry the small center "core dot" some of them shipped with originally; it read as a
-  stray artifact once you looked for it, so it was removed everywhere, not just where first noticed.
-- `src/data/nav.ts`: nav links and the Services dropdown's curated slug list. The dropdown's "Ask
-  Flowbound" entry is hardcoded in `Nav.astro` (not part of the curated list) and links straight to
-  `/ask-flowbound`. Each service's nested flyout lists its capabilities; a capability with an `href` set
-  in `services.ts` links straight to its dedicated page instead of the `/services#slug` anchor. A
-  non-expanding top-level service entry (Customer Service, Quality Monitoring) links straight to the
-  service's own `href` when set, the same fallback logic as capabilities.
-- `src/data/services.ts`: single source of truth for the Services page content; the nav dropdown and
-  the page's JSON-LD both derive from it, so adding a new service here is enough to appear in both. A
-  capability can optionally set `href` and `ctaLabel` to get a dedicated page: doing so wires up the nav
-  flyout link and the services-page CTA button automatically, no other file needs to change. A whole
-  service can set the same two fields instead, when its capabilities are better told as one narrative
-  page rather than split into one page each (see Customer Service and Quality Monitoring): doing so wires
-  up the nav's top-level link and a section-level CTA button under the whole capability grid.
-- `src/content/blog/`: blog posts (Markdown, via Astro's Content Layer API, config in `src/content.config.ts`)
-- `src/scripts/hoverGlow.ts`: shared vanilla-JS mouse-glow effect (no React or any JS framework ships
-  anywhere on this site)
+- `src/components/`: `LogoLockup`/`LogoMark` (logo), `Nav`/`Footer`, homepage sections (`Hero`,
+  `ProductSystem`, `HowItWorks`, `WhyUs`, `SapComparison`, `Mission`, `Cta`), one animated hero background
+  component per secondary page (`FlowBackground` is the homepage's; every other `*Background.astro` is a
+  secondary page's own composition, see BRAND_GUIDELINES.md for the full catalog), `BlogThumbnail`
+  (generated card images), and `icons/SectionIcon.astro` (the small monoline icons used as hero hubs and
+  section decoration)
+- `src/data/nav.ts`: nav links and the Services dropdown's curated slug list
+- `src/data/services.ts`: single source of truth for `/services` content (see Pages above)
+- `src/data/blogCategories.ts`: fixed blog category list, each mapped to a `SectionIcon` name
+- `src/content/blog/`: blog posts (Markdown, via Astro's Content Layer API), schema in
+  `src/content.config.ts`
+- `src/lib/tags.ts`: slug helper shared by the tag pages and post pages
+- `src/scripts/`: vanilla JS/TS, no framework ships anywhere on this site. `hoverGlow.ts` is the shared
+  mouse-glow hover effect; `blogFilter.ts` is the `/blog` search-and-category-filter logic
 - `public/fonts/`: self-hosted Satoshi + IBM Plex Mono (not loaded from a third-party CDN)
 - `tailwind.config.js`: brand color scale, fonts, radius scale
 - `public/favicon.svg`: favicon; `public/og-image.png`: default OG share image
 
 ## Known placeholders and things to double check
 
-- The Customer Service and Quality Monitoring copy, on `/services` and their dedicated pages
-  (`/customer-service`, `/quality-monitoring`), is a reasonable extrapolation from Flowbound's existing
-  positioning, not confirmed product capabilities yet. Review before relying on it.
+- The Customer Service and Quality Monitoring copy, on `/services` and their dedicated pages, is a
+  reasonable extrapolation from Flowbound's existing positioning, not confirmed product capabilities yet.
+  Review before relying on it.
 - The pilot request buttons in the closing CTA open a plain mailto link. Swap in a real form or CRM
   integration whenever you're ready to capture leads properly.
-- Only one blog post exists so far, added as a pipeline sample. Add real posts as they're written.
