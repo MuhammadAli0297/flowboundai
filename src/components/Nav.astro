@@ -8,21 +8,32 @@ const menuServices = servicesMenu.map((entry) => ({
   service: services.find((s) => s.slug === entry.slug)!,
 }))
 
-const linkClass = "font-body text-[0.9rem] text-fb-black/70 transition-colors hover:text-fb-green-600"
+// Nav (and Footer, and the logo) now use the homepage's ocean palette rather than the sitewide
+// fb-* one, at the user's explicit request, extending it beyond the homepage for the first time.
+// Link text is full-opacity ocean-950, not the /70 that fb-black used: at the smaller of the two
+// backgrounds this nav sits on (ocean-100), ocean-950 at 70% opacity measures out to roughly a
+// 3.8:1 contrast ratio, below the 4.5:1 AA text needs, confirmed with the actual blended-color
+// math rather than eyeballing it (same lesson as the homepage eyebrow-text bug this repo already
+// shipped once). Full opacity clears it comfortably.
+// font-medium here, font-normal (the default, unset) on panelLinkClass below: the flyout's
+// contents read a step lighter than the top-level nav items that open them, one of several
+// deliberate weight contrasts across Nav/Footer/the homepage now that Amulya's variable weight
+// axis (300 to 700) makes that easy, instead of everything sitting at the same default weight.
+const linkClass = "font-amulya text-[0.9rem] font-medium text-ocean-950 transition-colors hover:text-ocean-600"
 // Leaf panels (no further nested flyout) can safely clip to their rounded corners.
-const panelClass = "w-64 overflow-hidden rounded-2xl border border-fb-black/10 bg-fb-white shadow-xl"
+const panelClass = "w-64 overflow-hidden rounded-2xl border border-ocean-900/10 bg-fb-white shadow-xl"
 // The top-level panel hosts nested flyouts that fly out past its own box, so it can't use
 // overflow-hidden (that would clip the flyouts). Round only the first/last row instead.
-const outerPanelClass = "w-64 rounded-2xl border border-fb-black/10 bg-fb-white shadow-xl"
-const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transition-colors hover:bg-fb-green-50/50 hover:text-fb-green-600"
+const outerPanelClass = "w-64 rounded-2xl border border-ocean-900/10 bg-fb-white shadow-xl"
+const panelLinkClass = "font-amulya block px-4 py-3 text-[0.88rem] font-normal text-ocean-950 transition-colors hover:bg-ocean-100/60 hover:text-ocean-600"
 ---
 
-<header class="sticky top-0 z-50 border-b border-fb-black/10 bg-fb-paper/90 backdrop-blur">
+<header class="sticky top-0 z-50 border-b border-ocean-700/15 bg-ocean-100/90 font-amulya backdrop-blur">
   <div class="container-fb flex h-16 items-center">
     <a href="/" class="shrink-0">
       <LogoLockup />
     </a>
-    <nav class="ml-auto hidden items-center gap-8 md:flex">
+    <nav class="ml-auto hidden items-center gap-6 md:flex lg:gap-8">
       {navLinks.map((l) =>
         l.label === "Services" ? (
           <div class="group/services relative">
@@ -50,7 +61,7 @@ const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transiti
                     <div class="group/item relative">
                       <a href={`/services#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
                         {service.name}
-                        <span class="font-mono text-xs text-fb-black/30">&rsaquo;</span>
+                        <span class="font-mono text-xs text-ocean-950/30">&rsaquo;</span>
                       </a>
                       <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all duration-150 group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
                         <div class={panelClass}>
@@ -76,9 +87,11 @@ const panelLinkClass = "block px-4 py-3 text-[0.88rem] text-fb-black/70 transiti
     </nav>
     <a
       href="/#cta"
-      class="ml-10 inline-flex items-center border border-fb-black bg-fb-black px-4 py-2 font-body text-[0.85rem] font-normal text-fb-white transition-colors hover:bg-fb-green-600 hover:border-fb-green-600"
+      class="group relative ml-6 inline-flex shrink-0 items-center gap-1.5 overflow-hidden whitespace-nowrap rounded-md border border-ocean-700 bg-ocean-700 px-3 py-2 font-amulya text-[0.8rem] font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-2.5 hover:shadow-[0_10px_22px_-8px_rgba(79,109,122,0.55)] sm:px-4 sm:text-[0.85rem] lg:ml-10"
     >
-      Request a pilot
+      <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+      <span class="relative z-10">Request a pilot</span>
+      <span aria-hidden="true" class="relative z-10 hidden transition-transform duration-300 ease-out group-hover:translate-x-1 sm:inline">&rarr;</span>
     </a>
   </div>
 </header>

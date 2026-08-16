@@ -1,0 +1,55 @@
+---
+// Homepage-only hero background: a dark cinematic backdrop with a real WebGL (three.js) particle
+// wave, driven by src/scripts/heroWave.ts, standing in for an AI "signal" ribbon, in the ocean
+// palette. three.js is imported only by that one script, so it never ships on any other page.
+---
+
+<div class="hero-canvas-wrap absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class="hero-base-gradient absolute inset-0"></div>
+  <span class="hero-streak"></span>
+  <canvas id="hero-wave" class="absolute inset-0 h-full w-full"></canvas>
+  <div class="absolute inset-0 bg-grain opacity-20 mix-blend-overlay"></div>
+</div>
+
+<style>
+  .hero-base-gradient {
+    background:
+      radial-gradient(120% 90% at 15% 15%, rgba(74, 111, 165, 0.35), transparent 60%),
+      radial-gradient(90% 70% at 85% 100%, rgba(79, 109, 122, 0.35), transparent 60%),
+      #0c3454;
+  }
+
+  .hero-streak {
+    position: absolute;
+    top: -20%;
+    left: 62%;
+    width: 3px;
+    height: 140%;
+    background: linear-gradient(180deg, transparent 0%, rgba(219, 233, 238, 0.5) 45%, rgba(219, 233, 238, 0.9) 50%, rgba(219, 233, 238, 0.5) 55%, transparent 100%);
+    filter: blur(6px);
+    transform: rotate(11deg);
+    opacity: 0.55;
+    animation: hero-streak-drift 14s ease-in-out infinite;
+  }
+
+  @keyframes hero-streak-drift {
+    0%, 100% {
+      transform: rotate(11deg) translateX(0);
+      opacity: 0.4;
+    }
+    50% {
+      transform: rotate(11deg) translateX(-40px);
+      opacity: 0.7;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-streak {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import "../scripts/heroWave"
+</script>

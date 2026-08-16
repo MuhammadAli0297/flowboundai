@@ -2,35 +2,56 @@
 interface Props {
   size?: number
   class?: string
+  // "fb" matches the real logo.png exactly (dark green). "ocean" recolors the accent comma to
+  // the homepage's ocean palette, for use anywhere ocean has been extended to (Nav, Footer): the
+  // raster logo.png can't be recolored without re-exporting the asset and risking gradient/edge
+  // artifacts, but this hand-drawn vector's gradient stops are just hex values, so it's the
+  // reliable way to get an ocean-toned mark. Same shape either way, only the fill colors change.
+  palette?: "fb" | "ocean"
+  // Needed because Nav and Footer both render this on the same page at once: two <svg> defs with
+  // the same gradient id would collide (duplicate IDs in one document), so each instance needs
+  // its own.
+  id?: string
 }
 
-const { size = 32, class: className = "" } = Astro.props
+const { size = 32, class: className = "", palette = "fb", id = "fb-mark" } = Astro.props
+const gradId = `${id}-grad`
+const clipId = `${id}-clip`
+
+const commaFill = palette === "ocean" ? "#104866" : "#0A0A0A"
+const gradFrom = palette === "ocean" ? "#4A6FA5" : "#468B79"
+const gradTo = palette === "ocean" ? "#166088" : "#003828"
+// The river was pure white in both palettes originally. For "ocean" it's now ocean-100 (Alice
+// Blue, #DBE9EE) instead, at the user's request: still light enough for a clean divide against
+// the dark comma (ocean-950) and the mid-blue gradient comma, but pulled from the same five-color
+// family instead of sitting outside it. "fb" (the untouched real brand mark) keeps true white.
+const riverColor = palette === "ocean" ? "#DBE9EE" : "#FFFFFF"
 ---
 
 <svg width={size} height={size} viewBox="0 0 200 200" class={className} aria-hidden="true">
   <defs>
-    <linearGradient id="fb-green-grad-inline" x1="60" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#468B79" />
-      <stop offset="1" stop-color="#003828" />
+    <linearGradient id={gradId} x1="60" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color={gradFrom} />
+      <stop offset="1" stop-color={gradTo} />
     </linearGradient>
-    <clipPath id="fb-circle-clip-inline">
+    <clipPath id={clipId}>
       <circle cx="100" cy="100" r="100" />
     </clipPath>
   </defs>
-  <g clip-path="url(#fb-circle-clip-inline)">
-    <path d="M100,0 A100,100 0 0,0 100,200 A50,50 0 0,0 100,100 A50,50 0 0,1 100,0 Z" fill="#0A0A0A" />
+  <g clip-path={`url(#${clipId})`}>
+    <path d="M100,0 A100,100 0 0,0 100,200 A50,50 0 0,0 100,100 A50,50 0 0,1 100,0 Z" fill={commaFill} />
     <path
       d="M100,0 A100,100 0 0,1 100,200 A50,50 0 0,1 100,100 A50,50 0 0,0 100,0 Z"
-      fill="url(#fb-green-grad-inline)"
+      fill={`url(#${gradId})`}
     />
     <path
       d="M100,-4 A52,52 0 0,1 100,100 A52,52 0 0,0 100,204"
       fill="none"
-      stroke="#FFFFFF"
+      stroke={riverColor}
       stroke-width="30"
       stroke-linecap="round"
     />
-    <path d="M118,36 A20,20 0 0,1 128,54" fill="none" stroke="#0A0A0A" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round" />
-    <path d="M82,146 A20,20 0 0,1 72,164" fill="none" stroke="#0A0A0A" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round" />
+    <path d="M118,36 A20,20 0 0,1 128,54" fill="none" stroke={commaFill} stroke-opacity="0.35" stroke-width="3" stroke-linecap="round" />
+    <path d="M82,146 A20,20 0 0,1 72,164" fill="none" stroke={commaFill} stroke-opacity="0.3" stroke-width="3" stroke-linecap="round" />
   </g>
 </svg>

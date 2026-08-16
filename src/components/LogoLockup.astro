@@ -1,6 +1,5 @@
 ---
-import { Image } from "astro:assets"
-import logo from "../assets/logo.png"
+import LogoMark from "./LogoMark.astro"
 
 interface Props {
   dark?: boolean
@@ -10,8 +9,8 @@ const { dark = false } = Astro.props
 ---
 
 <div class="flex items-center gap-2.5">
-  <Image src={logo} alt="Flowbound logo" width={30} height={30} class="h-[30px] w-[30px]" />
-  <span class:list={["font-display text-[1.15rem] font-semibold tracking-tight", dark ? "text-fb-white" : "text-fb-black"]}>
-    Flowbound<span class={dark ? "text-fb-green-400" : "text-fb-green-500"}>.ai</span>
+  <LogoMark size={30} palette="ocean" id={dark ? "footer-mark" : "nav-mark"} />
+  <span class:list={["font-amulya text-[1.15rem] font-bold tracking-tight", dark ? "text-fb-white" : "text-ocean-950"]}>
+    Flowbound<span class:list={["font-medium", dark ? "text-ocean-100" : "text-ocean-600"]}>.ai</span>
   </span>
 </div>

@@ -1,11 +1,17 @@
-<section id="smb" class="border-b border-fb-black/10 py-20 md:py-28">
-  <div class="container-fb max-w-2xl">
-    <p class="eyebrow mb-4">Who we build for</p>
-    <p class="text-[1.3rem] font-normal leading-snug tracking-tight text-fb-black md:text-[1.5rem]">
-      We're built for small and local businesses, period. You deserve the same caliber of tools the big companies
-      use, without the price tag or the consultants.
+<section id="smb" class="relative overflow-hidden border-b border-ocean-700/15 bg-ocean-200 py-20 font-amulya md:py-28">
+  <!-- a single slow-drifting wash, quieter than ProductSystem's pair since this section is mostly
+       type: atmosphere behind the words, not something competing with them for attention -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <span class="mission-ambient-blob"></span>
+  </div>
+
+  <div class="container-fb relative max-w-2xl">
+    <p class="reveal-item mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950" data-reveal>Who we build for</p>
+    <p class="reveal-item text-[1.3rem] font-light leading-snug tracking-tight text-ocean-950 md:text-[1.5rem]" data-reveal style="transition-delay: 90ms">
+      We're built for small and local businesses, <span class="font-medium italic">period</span>. You deserve the
+      same caliber of tools the big companies use, without the price tag or the consultants.
     </p>
-    <p class="mt-6 text-[1.02rem] leading-relaxed text-fb-black/65">
+    <p class="reveal-item mt-6 text-[1.02rem] font-normal leading-relaxed text-ocean-950" data-reveal style="transition-delay: 180ms">
       We integrate with your tools, learn your numbers in a few weeks, then start making calls, tuning the whole
       way. This isn't a stepping stone for us. Small and local businesses are exactly who we're building for, and
       our goal is simple: help you run your operation with the same confidence and firepower as companies twice
@@ -13,3 +19,34 @@
     </p>
   </div>
 </section>
+
+<style>
+  .mission-ambient-blob {
+    position: absolute;
+    top: -25%;
+    left: 55%;
+    width: 38vw;
+    height: 38vw;
+    max-width: 520px;
+    max-height: 520px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(74, 111, 165, 0.14) 0%, transparent 70%);
+    animation: mission-ambient-drift 26s ease-in-out infinite;
+  }
+
+  @keyframes mission-ambient-drift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-3vw, 4vh); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mission-ambient-blob {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import "../scripts/scrollReveal"
+</script>

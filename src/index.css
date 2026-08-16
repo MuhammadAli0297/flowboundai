@@ -46,6 +46,26 @@
   font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
 }
+/* Amulya (from Fontshare): scoped to the homepage, Nav, Footer, and the logo only, applied via the
+   `font-amulya` utility, not the shared `display`/`body` tokens (those stay Satoshi everywhere
+   else). It's a true variable font (one file covers weight 300 to 700, not a set of static
+   per-weight files like Satoshi above), which is what lets that one file stand in for every weight
+   from Light to Bold used across the homepage for typographic depth, instead of downloading five
+   separate static files to get the same range. */
+@font-face {
+  font-family: "Amulya";
+  src: url("/fonts/amulya-variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Amulya";
+  src: url("/fonts/amulya-variable-italic.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 @layer base {
   html {
@@ -62,6 +82,18 @@
 @layer utilities {
   .container-fb {
     @apply mx-auto w-full max-w-[1180px] px-6 md:px-10;
+  }
+  /* Full-screen hero: fills the viewport below the sticky nav (h-16 = 4rem, constant across
+     breakpoints), not the whole viewport, since the nav overlays the top 4rem once scrolled.
+     dvh (not vh) so it tracks the real visible viewport as mobile browser chrome shows/hides on
+     scroll, rather than the largest possible viewport; vh is a fallback for browsers without dvh
+     support (an unsupported value is ignored, not the whole declaration, so the vh line above it
+     still applies). min-height, not height, so a very short window still grows rather than
+     clipping content. ProductSystem and HowItWorks used this too at one point but went back to
+     their normal content-driven height; only the hero keeps it. */
+  .min-h-screen-nav {
+    min-height: calc(100vh - 4rem);
+    min-height: calc(100dvh - 4rem);
   }
   .eyebrow {
     @apply font-mono text-xs uppercase tracking-[0.2em] text-fb-green-500;
@@ -179,6 +211,138 @@
   .fb-label-glow-2,
   .fb-label-glow-3,
   .fb-label-glow-4 {
+    animation: none;
+  }
+}
+
+/* Scroll-in reveal (scrollReveal.ts) and cursor tilt (cardTilt.ts), used on ProductSystem.astro
+   and HowItWorks.astro. */
+.reveal-item {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.tilt-card {
+  transition: transform 0.15s ease-out, border-color 0.5s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-item {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .tilt-card {
+    transition: border-color 0.5s ease-out;
+  }
+}
+
+/* Three more [data-reveal] treatments, same is-revealed toggle from scrollReveal.ts, different
+   motion per variant. Introduced for /services so its sections don't all reveal the same way the
+   homepage and /product do (reveal-item everywhere); pick whichever variant fits a given section's
+   content instead of defaulting back to reveal-item out of habit. */
+.reveal-slide {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-slide.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.88);
+  transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* left-to-right wipe via clip-path rather than a transform, a genuinely different reveal
+   mechanism (mask, not motion). `.reveal-clip` itself stays inert (no opacity/clip-path of its
+   own): an element whose OWN clip-path collapses it to zero visible width is reported as
+   never-intersecting by IntersectionObserver in Chromium, so if the observed [data-reveal]
+   element carried the clip-path directly, .is-revealed could never fire and the content stayed
+   permanently hidden, a real bug caught on /services (see CLAUDE.md's "Services page" note). The
+   actual clip animation lives on a `.reveal-clip-mask` child instead, one level in, which
+   IntersectionObserver never looks at directly. */
+.reveal-clip-mask {
+  opacity: 0;
+  clip-path: inset(0 100% 0 0);
+  transition: opacity 0.5s ease-out, clip-path 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-clip.is-revealed .reveal-clip-mask {
+  opacity: 1;
+  clip-path: inset(0 0 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-clip-mask {
+    opacity: 1;
+    clip-path: none;
+    transition: none;
+  }
+  .reveal-slide,
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+}
+
+/* Decorative watermark SectionIcon treatment (first used on /product's compass icon, generic and
+   reusable from there on): a slow continuous spin, a soft breathing ring behind it, and a subtle
+   scroll-linked drift via --icon-drift (set by sectionIconDrift.ts) so it reads as a small living
+   hub instead of a flat static graphic. Opt in by wrapping the icon in a [data-icon-drift]
+   element with a `.icon-pulse-ring` sibling span, and giving the icon itself `.icon-spin`. */
+[data-icon-drift] {
+  transform: translateY(calc(var(--icon-drift, 0) * -14px));
+}
+
+.icon-spin {
+  animation: icon-spin 26s linear infinite;
+}
+
+@keyframes icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-pulse-ring {
+  animation: icon-pulse 4.5s ease-in-out infinite;
+}
+
+@keyframes icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 0.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-icon-drift] {
+    transform: none;
+  }
+  .icon-spin,
+  .icon-pulse-ring {
     animation: none;
   }
 }

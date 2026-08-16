@@ -34,22 +34,22 @@ const GLOW_SIZE = 300
   id="sap"
   data-glow-container
   data-glow-size={GLOW_SIZE}
-  class="relative overflow-hidden border-b border-fb-black/10 bg-fb-black py-20 text-fb-white md:py-28"
+  class="relative overflow-hidden border-b border-fb-white/10 bg-ocean-900 py-20 font-amulya text-fb-white md:py-28"
 >
   <div
     data-glow
     aria-hidden="true"
     class="glow-cursor rounded-full"
-    style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(70,139,121,0.4) 0%, rgba(70,139,121,0.14) 45%, transparent 75%);`}
+    style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%);`}
   />
 
   <div class="container-fb relative z-10">
-    <div class="max-w-xl">
-      <p class="font-mono text-xs uppercase tracking-[0.2em] text-fb-green-400">Why not just use SAP</p>
-      <h2 class="mt-4 text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem]">
+    <div class="reveal-item max-w-xl" data-reveal>
+      <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Why not just use SAP</p>
+      <h2 class="mt-4 font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem]">
         SAP isn't wrong. It just wasn't built for you.
       </h2>
-      <p class="mt-5 text-[0.98rem] leading-relaxed text-fb-white/60">
+      <p class="mt-5 text-[0.98rem] font-normal leading-relaxed text-fb-white/80">
         SAP was priced and built for companies with a full consulting team on retainer. If that's not you, you're
         not the customer it was designed for, and that's not your fault. Flowbound gives small and mid-sized
         operations the same class of decision making, without the six-figure implementation and without the
@@ -58,21 +58,28 @@ const GLOW_SIZE = 300
       </p>
     </div>
 
-    <div class="mt-14 overflow-x-auto">
+    <div class="reveal-item mt-14 overflow-x-auto" data-reveal style="transition-delay: 120ms">
       <table class="w-full min-w-[640px] border-collapse text-left">
         <thead>
           <tr class="border-b border-fb-white/15">
-            <th class="w-1/4 py-4 pr-4 font-mono text-xs font-normal uppercase tracking-wider text-fb-white/40">&nbsp;</th>
-            <th class="py-4 pr-8 font-mono text-xs font-normal uppercase tracking-wider text-fb-white/40">Legacy ERP plus consultants</th>
-            <th class="py-4 font-mono text-xs font-normal uppercase tracking-wider text-fb-green-400">Flowbound</th>
+            <th class="w-1/4 py-4 pr-4 font-mono text-xs font-normal uppercase tracking-wider text-fb-white/80">&nbsp;</th>
+            <th class="py-4 pr-8 font-mono text-xs font-normal uppercase tracking-wider text-fb-white/80">Legacy ERP plus consultants</th>
+            <th class="py-4 font-mono text-xs font-normal uppercase tracking-wider text-ocean-100">Flowbound</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr class="border-b border-fb-white/10">
-              <td class="py-5 pr-4 text-[0.85rem] font-medium text-fb-white/50">{r.label}</td>
-              <td class="py-5 pr-8 text-[0.95rem] text-fb-white/55">{r.legacy}</td>
-              <td class="py-5 text-[0.95rem] text-fb-white">{r.flowbound}</td>
+            <tr class="sap-row border-b border-fb-white/10 transition-colors duration-300">
+              <td class="py-5 pr-4 text-[0.85rem] font-medium text-fb-white/80">{r.label}</td>
+              <td class="py-5 pr-8 text-[0.95rem] font-normal text-fb-white/80">{r.legacy}</td>
+              <td class="py-5 text-[0.95rem] font-medium text-fb-white">
+                <span class="flex items-start gap-2.5">
+                  <svg class="mt-1 h-3.5 w-3.5 shrink-0 text-ocean-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m5 12 5 5 9-9" />
+                  </svg>
+                  {r.flowbound}
+                </span>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -81,6 +88,13 @@ const GLOW_SIZE = 300
   </div>
 </section>
 
+<style>
+  .sap-row:hover {
+    background: rgba(74, 111, 165, 0.08);
+  }
+</style>
+
 <script>
   import "../scripts/hoverGlow"
+  import "../scripts/scrollReveal"
 </script>

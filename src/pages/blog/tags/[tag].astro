@@ -26,24 +26,30 @@ const { tag, posts } = Astro.props
   description={`Posts tagged "${tag}" on the Flowbound blog.`}
   path={`/blog/tags/${slugifyTag(tag)}`}
 >
-  <section class="container-fb py-20 md:py-28">
-    <p class="eyebrow mb-4">Tag</p>
-    <h1 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">#{tag}</h1>
+  <section class="bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
+    <div class="container-fb">
+      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">Tag</p>
+      <h1 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.2rem]">#{tag}</h1>
 
-    <ul class="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2">
-      {posts.map((post) => (
-        <li class="border-t border-fb-black/10 pt-6">
-          <a href={`/blog/${post.id}`} class="group">
-            <p class="font-mono text-xs uppercase tracking-wider text-fb-black/40">
-              {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-            </p>
-            <h2 class="mt-2 text-[1.2rem] font-semibold leading-snug text-fb-black group-hover:text-fb-green-600">
-              {post.data.title}
-            </h2>
-            <p class="mt-2 text-[0.95rem] leading-relaxed text-fb-black/65">{post.data.description}</p>
-          </a>
-        </li>
-      ))}
-    </ul>
+      <ul class="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2">
+        {posts.map((post, i) => (
+          <li data-reveal class="reveal-item border-t border-ocean-700/15 pt-6" style={`transition-delay: ${(i % 4) * 70}ms`}>
+            <a href={`/blog/${post.id}`} class="group">
+              <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
+                {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+              </p>
+              <h2 class="mt-2 font-amulya text-[1.2rem] font-medium leading-snug text-ocean-950 group-hover:text-ocean-600">
+                {post.data.title}
+              </h2>
+              <p class="mt-2 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{post.data.description}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 </BaseLayout>
+
+<script>
+  import "../../../scripts/scrollReveal"
+</script>

@@ -1,34 +1,73 @@
 ---
-import FlowBackground from "./FlowBackground.astro"
+import HeroBackground from "./HeroBackground.astro"
 ---
 
-<section id="top" class="relative min-h-[640px] overflow-hidden bg-fb-black md:min-h-[760px]">
-  <FlowBackground />
-  <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
-  <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+<section id="top" class="relative min-h-screen-nav overflow-hidden bg-ocean-900">
+  <div class="hero-bg-fade absolute inset-0">
+    <HeroBackground />
+    <div class="absolute inset-0 bg-gradient-to-r from-ocean-900/90 from-0% via-ocean-900/55 via-55% to-ocean-900/10" />
+    <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
+  </div>
 
-  <div class="container-fb relative flex min-h-[640px] flex-col justify-center py-20 md:min-h-[760px]">
-    <p class="eyebrow mb-5 text-fb-green-300">Supply chain software for small business teams</p>
-    <h1 class="max-w-2xl text-[2.5rem] font-semibold leading-[1.08] tracking-tight text-fb-white md:text-[3.4rem]">
-      You don't need an <span class="text-fb-green-300">SAP consultant</span> to run a tight supply chain.
+  <div class="hero-text-zoom container-fb relative flex min-h-screen-nav flex-col justify-start pb-20 pt-28 font-amulya md:pt-36">
+    <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Supply chain software for small business teams</p>
+    <h1 class="max-w-xl font-amulya text-[2.3rem] font-bold leading-[1.1] tracking-tight text-fb-white md:text-[3rem]">
+      Run a tight supply chain without an <span class="font-medium italic text-ocean-100">SAP consultant</span>.
     </h1>
-    <p class="mt-6 max-w-lg text-[1.05rem] leading-relaxed text-fb-white/65">
-      Get AI-powered inventory decisions in minutes, not months. No SI required. No nine-month rollout. Just
-      connect your data and start asking questions.
+    <p class="mt-5 max-w-md text-[1rem] font-light leading-relaxed text-fb-white/65">
+      AI-powered inventory decisions in minutes, not months. No SI required, no nine-month rollout.
     </p>
-    <div class="mt-9 flex flex-wrap items-center gap-4">
+    <div class="mt-8 flex flex-wrap items-center gap-4">
       <a
         href="/#cta"
-        class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+        class="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
       >
-        Start free pilot
+        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-900 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+        <span class="relative z-10">Start free pilot</span>
+        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
       <a
         href="/#how-it-works"
-        class="inline-flex items-center border border-fb-white/25 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:border-fb-white/60"
+        class="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
       >
-        See how it works
+        <span aria-hidden="true" class="absolute inset-0 bg-fb-white/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
+        <span class="relative z-10">See how it works</span>
+        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
     </div>
   </div>
 </section>
+
+<style>
+  /* --hero-scroll (0 at rest, 1 once the hero has fully scrolled past the top of the viewport) is
+     set on the section by heroScroll.ts, recomputed live on every scroll tick in either direction,
+     so this replays every time the hero re-enters view, scrolling down or back up, no reload
+     needed. Falls back to 0 if the script hasn't run yet, so there's no flash of a shifted layout.
+
+     Two layers move independently rather than as one block: the background (wave + gradients)
+     just fades out in place, while the text grows toward the viewer (zoom in) as it fades, so the
+     copy feels like it's pushing forward out of the scene as the backdrop dissolves behind it. */
+  .hero-bg-fade {
+    opacity: calc(1 - var(--hero-scroll, 0) * 1.2);
+    will-change: opacity;
+  }
+
+  .hero-text-zoom {
+    transform: scale(calc(1 + var(--hero-scroll, 0) * 0.55));
+    opacity: calc(1 - var(--hero-scroll, 0) * 1.3);
+    transform-origin: left center;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg-fade,
+    .hero-text-zoom {
+      transform: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import "../scripts/heroScroll"
+</script>

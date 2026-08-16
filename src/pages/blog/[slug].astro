@@ -44,45 +44,72 @@ const schema = [
   ogImage={post.data.ogImage}
   schema={schema}
 >
-  <article class="container-fb max-w-2xl py-20 md:py-28">
-    <a href="/blog" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-fb-green-600 hover:underline">
-      <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5M11 6l-6 6 6 6" />
-      </svg>
-      Back to Blog
-    </a>
-    <div class="mt-6 flex flex-wrap items-center gap-3">
-      <span class="border border-fb-black/15 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-fb-green-600">
-        {post.data.category}
-      </span>
-      <p class="font-mono text-xs uppercase tracking-wider text-fb-black/40">
-        {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-      </p>
-    </div>
-    <h1 class="mt-4 text-[2rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.4rem]">
-      {post.data.title}
-    </h1>
-
-    <div class="prose prose-neutral mt-10 max-w-none prose-headings:font-display prose-headings:font-semibold prose-a:text-fb-green-600">
-      <Content />
-    </div>
-
-    <div class="mt-14 flex flex-wrap items-center justify-between gap-6 border-t border-fb-black/10 pt-6">
-      {post.data.tags.length > 0 && (
-        <div class="flex flex-wrap gap-3">
-          {post.data.tags.map((tag) => (
-            <a href={`/blog/tags/${slugifyTag(tag)}`} class="font-mono text-xs uppercase tracking-wider text-fb-green-600 hover:underline">
-              #{tag}
-            </a>
-          ))}
-        </div>
-      )}
-      <a href="/blog" class="inline-flex items-center gap-2 font-body text-sm font-medium text-fb-green-600 hover:underline">
-        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <section class="bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
+    <article class="container-fb max-w-2xl">
+      <a href="/blog" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-ocean-600 hover:underline">
+        <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5M11 6l-6 6 6 6" />
         </svg>
         Back to Blog
       </a>
-    </div>
-  </article>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <span class="border border-ocean-700/20 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-ocean-600">
+          {post.data.category}
+        </span>
+        <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
+          {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        </p>
+      </div>
+      <h1 class="mt-4 font-amulya text-[2rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.4rem]">
+        {post.data.title}
+      </h1>
+
+      <div class="ocean-prose prose prose-neutral mt-10 max-w-none prose-headings:font-amulya prose-headings:font-semibold">
+        <Content />
+      </div>
+
+      <div class="mt-14 flex flex-wrap items-center justify-between gap-6 border-t border-ocean-700/15 pt-6">
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-3">
+            {post.data.tags.map((tag) => (
+              <a href={`/blog/tags/${slugifyTag(tag)}`} class="font-mono text-xs uppercase tracking-wider text-ocean-600 hover:underline">
+                #{tag}
+              </a>
+            ))}
+          </div>
+        )}
+        <a href="/blog" class="inline-flex items-center gap-2 text-sm font-medium text-ocean-600 hover:underline">
+          <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M11 6l-6 6 6 6" />
+          </svg>
+          Back to Blog
+        </a>
+      </div>
+    </article>
+  </section>
 </BaseLayout>
+
+<style>
+  /* Repoint @tailwindcss/typography's CSS-variable color hooks at the ocean palette instead of its
+     default gray scale, so post body copy reads as part of this page's system rather than a leftover
+     neutral prose theme. ocean-950 for body/headings matches the verified-contrast text color used
+     everywhere else ocean-950 sits on ocean-100/200 (see CLAUDE.md's contrast note). */
+  .ocean-prose {
+    --tw-prose-body: #104866;
+    --tw-prose-headings: #104866;
+    --tw-prose-lead: #104866;
+    --tw-prose-links: #4c6e92;
+    --tw-prose-bold: #104866;
+    --tw-prose-counters: #4f6d7a;
+    --tw-prose-bullets: #c0d6df;
+    --tw-prose-hr: rgba(79, 109, 122, 0.2);
+    --tw-prose-quotes: #104866;
+    --tw-prose-quote-borders: #4f6d7a;
+    --tw-prose-captions: #104866;
+    --tw-prose-code: #104866;
+    --tw-prose-pre-code: #dbe9ee;
+    --tw-prose-pre-bg: #166088;
+    --tw-prose-th-borders: rgba(79, 109, 122, 0.2);
+    --tw-prose-td-borders: rgba(79, 109, 122, 0.12);
+  }
+</style>

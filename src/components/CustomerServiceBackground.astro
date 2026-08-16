@@ -1,134 +1,25 @@
 ---
-/**
- * Full-bleed ambient hero background for the Customer Service page. Same
- * dark, glowing, green-on-black "vibe" as the other hero backgrounds, but a
- * distinct composition: the chat icon sits fixed as the hub, customer
- * questions flow in from the left, most get answered directly (a return
- * pulse along the same path), and one routes out to a separate handoff
- * node instead, standing in for the cases that need a person.
- */
-const hubX = 1190
-const hubY = 460
-
-const questions = [
-  { x: 860, y: 290, delay: 0 },
-  { x: 830, y: 540, delay: 2.4 },
-]
-
-const escalated = { x: 1020, y: 680, delay: 1.2 }
-const handoffX = 1480
-const handoffY = 580
-
-const curveIn = (x: number, y: number) =>
-  `M${x},${y} Q${(x + hubX) / 2},${(y + hubY) / 2 - 40} ${hubX},${hubY}`
-const curveOut = (x: number, y: number) =>
-  `M${hubX},${hubY} Q${(x + hubX) / 2},${(y + hubY) / 2 + 40} ${x},${y}`
-
-// The "chat" icon path (SectionIcon), recentred on (0,0) so it can be used as the fixed hub.
-const chatRect = { x: -18, y: -16, width: 36, height: 24, rx: 6 }
-const chatTail = "M-10,8 L-14,16 L-4,8"
-const chatDots = [-6, 0, 6]
+// Customer Service hero background: "Inbox Flow", ocean-palette, canvas 2D (see
+// src/scripts/customerServiceHero.ts). A steady stream of message bubbles travels toward the
+// fixed chat hub; most bounce back answered with a checkmark flash, one in four reroutes to a
+// separate handoff node instead. The hub does not rotate.
 ---
 
-<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
-  <defs>
-    <radialGradient id="cs-hub-glow-outer" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#468B79" stop-opacity="0.36" />
-      <stop offset="55%" stop-color="#468B79" stop-opacity="0.16" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="cs-hub-glow-inner" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.45" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="cs-node-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#468B79" stop-opacity="0.4" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="cs-handoff-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.55" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-  </defs>
+<div class="hero-canvas-wrap absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class="hero-base-gradient absolute inset-0"></div>
+  <canvas id="customer-service-hero" class="absolute inset-0 h-full w-full"></canvas>
+  <div class="absolute inset-0 bg-grain opacity-20 mix-blend-overlay"></div>
+</div>
 
-  <circle cx={hubX} cy={hubY} r="620" fill="url(#cs-hub-glow-outer)" />
-  <circle cx={hubX} cy={hubY} r="280" fill="url(#cs-hub-glow-inner)" />
+<style>
+  .hero-base-gradient {
+    background:
+      radial-gradient(85% 70% at 74% 42%, rgba(74, 111, 165, 0.26), transparent 60%),
+      radial-gradient(70% 60% at 96% 78%, rgba(79, 109, 122, 0.22), transparent 60%),
+      #104866;
+  }
+</style>
 
-  {questions.map((q) => (
-    <g>
-      <path d={curveIn(q.x, q.y)} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.5" />
-
-      <circle r="3.5" fill="#66AE95">
-        <animateMotion dur="3.4s" repeatCount="indefinite" begin={`${q.delay}s`} path={curveIn(q.x, q.y)} />
-        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3.4s" repeatCount="indefinite" begin={`${q.delay}s`} />
-      </circle>
-      <circle r="4" fill="#C7E3DA">
-        <animateMotion dur="2.4s" repeatCount="indefinite" begin={`${q.delay + 2}s`} path={curveOut(q.x, q.y)} />
-        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.75;1" dur="2.4s" repeatCount="indefinite" begin={`${q.delay + 2}s`} />
-      </circle>
-
-      <circle cx={q.x} cy={q.y} r="24" fill="url(#cs-node-glow)" />
-      <g transform={`translate(${q.x} ${q.y})`}>
-        <g class="fb-float" style={`animation-delay: ${q.delay * 0.4}s`}>
-          <rect x="-11" y="-8" width="22" height="16" rx="4" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
-          <circle cx="-5" cy="0" r="1.2" fill="#8FD0B8" />
-          <circle cx="0" cy="0" r="1.2" fill="#8FD0B8" />
-          <circle cx="5" cy="0" r="1.2" fill="#8FD0B8" />
-        </g>
-      </g>
-    </g>
-  ))}
-
-  <path d={curveIn(escalated.x, escalated.y)} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.5" />
-  <circle r="3.5" fill="#66AE95">
-    <animateMotion dur="3.4s" repeatCount="indefinite" begin={`${escalated.delay}s`} path={curveIn(escalated.x, escalated.y)} />
-    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.8;1" dur="3.4s" repeatCount="indefinite" begin={`${escalated.delay}s`} />
-  </circle>
-  <circle cx={escalated.x} cy={escalated.y} r="24" fill="url(#cs-node-glow)" />
-  <g transform={`translate(${escalated.x} ${escalated.y})`}>
-    <g class="fb-float">
-      <rect x="-11" y="-8" width="22" height="16" rx="4" fill="#0C1F19" stroke="#66AE95" stroke-width="1.5" stroke-opacity="0.9" />
-      <circle cx="-5" cy="0" r="1.2" fill="#8FD0B8" />
-      <circle cx="0" cy="0" r="1.2" fill="#8FD0B8" />
-      <circle cx="5" cy="0" r="1.2" fill="#8FD0B8" />
-    </g>
-  </g>
-
-  <path d={`M${hubX},${hubY} L${handoffX},${handoffY}`} fill="none" stroke="#2C6E58" stroke-width="1.5" stroke-opacity="0.55" class="fb-dash-flow" />
-  <circle cx={handoffX} cy={handoffY} r="34" fill="url(#cs-handoff-glow)" />
-  <circle
-    cx={handoffX}
-    cy={handoffY}
-    r="18"
-    fill="none"
-    stroke="#8FD0B8"
-    stroke-opacity="0.55"
-    class="fb-core-pulse-ring"
-    style={`transform-origin: ${handoffX}px ${handoffY}px`}
-  />
-  <g transform={`translate(${handoffX} ${handoffY})`}>
-    <g class="fb-float">
-      <circle cx="0" cy="-6" r="5" fill="#003828" stroke="#8FD0B8" stroke-width="1.6" />
-      <path d="M-9,10 C-9,2 9,2 9,10" fill="#003828" stroke="#8FD0B8" stroke-width="1.6" stroke-linecap="round" />
-    </g>
-  </g>
-
-  <circle
-    cx={hubX}
-    cy={hubY}
-    r="92"
-    fill="none"
-    stroke="#8FD0B8"
-    stroke-opacity="0.5"
-    class="fb-core-pulse-ring"
-    style={`transform-origin: ${hubX}px ${hubY}px`}
-  />
-
-  <g transform={`translate(${hubX} ${hubY})`} class="fb-core-breathe">
-    <rect x={chatRect.x} y={chatRect.y} width={chatRect.width} height={chatRect.height} rx={chatRect.rx} transform="scale(3.1)" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" />
-    <path d={chatTail} transform="scale(3.1)" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" stroke-linejoin="round" />
-    {chatDots.map((cx) => (
-      <circle cx={cx} cy="-4" r="1.6" transform="scale(3.1)" fill="#8FD0B8" />
-    ))}
-  </g>
-</svg>
+<script>
+  import "../scripts/customerServiceHero"
+</script>

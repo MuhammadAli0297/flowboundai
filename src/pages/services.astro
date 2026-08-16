@@ -7,48 +7,80 @@ import { services } from "../data/services"
 
 const GLOW_SIZE = 420
 
+// Every section on this page picks one of three [data-reveal] treatments (see src/index.css) and
+// they're assigned in a fixed rotation, slide/scale/clip repeating, so no two consecutive sections
+// reveal the same way. This is deliberately different from the plain rise-and-fade `.reveal-item`
+// the homepage and /product both use everywhere, see CLAUDE.md's "Services page" note.
+const revealCycle = ["reveal-slide", "reveal-scale", "reveal-clip"] as const
+
+// Floating labels in the hero's empty right-hand side, one per section on this page, real links
+// down to that section. Each fades in, holds, and fades out on its own independent loop (own
+// duration + delay, see .hero-pill below) so they never all appear or disappear in sync.
+// top/left are percentages of the hero section itself; scattered down the right side only, never
+// above or left of the headline column, per the site's left-aligned-text convention.
+const heroPills = [
+  { label: "Ask Flowbound", href: "#agent", top: 10, left: 62, duration: 9, delay: 0 },
+  { label: "Inventory", href: "#inventory", top: 23, left: 84, duration: 10, delay: 1.6 },
+  { label: "Supplier Management", href: "#supplier-management", top: 39, left: 66, duration: 8.5, delay: 3.2 },
+  { label: "Autonomous", href: "#autonomous", top: 55, left: 85, duration: 11, delay: 4.6 },
+  { label: "Customer Service", href: "#customer-service", top: 70, left: 60, duration: 9.5, delay: 2.1 },
+  { label: "Quality Monitoring", href: "#quality-monitoring", top: 84, left: 80, duration: 10.5, delay: 5.4 },
+]
+
 const toneStyles = {
   paper: {
-    section: "bg-fb-paper bg-grain",
-    eyebrow: "eyebrow",
-    heading: "text-fb-black",
-    body: "text-fb-black/65",
-    card: "border-fb-black/10 bg-fb-white hover:border-fb-green-500/35 hover:bg-fb-green-50/50",
-    cardHeading: "text-fb-black",
-    cardBody: "text-fb-black/65",
-    index: "text-fb-green-500",
-    accentLine: "bg-fb-green-500",
+    section: "bg-ocean-100 bg-grain",
+    eyebrow: "text-ocean-950",
+    heading: "text-ocean-950",
+    body: "text-ocean-950",
+    card: "border-ocean-700/20 bg-ocean-200 hover:border-ocean-700/45",
+    cardHeading: "text-ocean-950",
+    cardBody: "text-ocean-950",
+    index: "text-ocean-950",
+    accentLine: "bg-ocean-500",
     glowBlend: "mix-blend-multiply",
-    glowStops: "rgba(0,88,64,0.16), transparent 70%",
-    icon: "text-fb-green-500/[14%]",
+    glowStops: "rgba(74,111,165,0.15), transparent 70%",
+    icon: "text-ocean-950/[14%]",
+    pill: "bg-ocean-700 text-fb-white",
+    pillSweep: "bg-ocean-600",
+    pillIcon: "text-fb-white",
+    pillShadow: "hover:shadow-[0_12px_30px_-10px_rgba(79,109,122,0.45)]",
   },
   white: {
-    section: "bg-fb-white bg-grain",
-    eyebrow: "eyebrow",
-    heading: "text-fb-black",
-    body: "text-fb-black/65",
-    card: "border-fb-black/10 bg-fb-white hover:border-fb-green-500/35 hover:bg-fb-green-50/50",
-    cardHeading: "text-fb-black",
-    cardBody: "text-fb-black/65",
-    index: "text-fb-green-500",
-    accentLine: "bg-fb-green-500",
+    section: "bg-ocean-200 bg-grain",
+    eyebrow: "text-ocean-950",
+    heading: "text-ocean-950",
+    body: "text-ocean-950",
+    card: "border-ocean-700/20 bg-ocean-100 hover:border-ocean-700/45",
+    cardHeading: "text-ocean-950",
+    cardBody: "text-ocean-950",
+    index: "text-ocean-950",
+    accentLine: "bg-ocean-500",
     glowBlend: "mix-blend-multiply",
-    glowStops: "rgba(0,88,64,0.16), transparent 70%",
-    icon: "text-fb-green-500/[14%]",
+    glowStops: "rgba(74,111,165,0.15), transparent 70%",
+    icon: "text-ocean-950/[14%]",
+    pill: "bg-ocean-700 text-fb-white",
+    pillSweep: "bg-ocean-600",
+    pillIcon: "text-fb-white",
+    pillShadow: "hover:shadow-[0_12px_30px_-10px_rgba(79,109,122,0.45)]",
   },
   dark: {
-    section: "bg-fb-black",
-    eyebrow: "eyebrow text-fb-green-300",
+    section: "bg-ocean-900",
+    eyebrow: "text-ocean-100",
     heading: "text-fb-white",
     body: "text-fb-white/65",
-    card: "border-fb-white/15 bg-fb-white/5 hover:border-fb-green-400/40 hover:bg-fb-white/10",
+    card: "border-fb-white/15 bg-fb-white/5 hover:border-ocean-100/40 hover:bg-fb-white/10",
     cardHeading: "text-fb-white",
     cardBody: "text-fb-white/60",
-    index: "text-fb-green-400",
-    accentLine: "bg-fb-green-400",
+    index: "text-ocean-100",
+    accentLine: "bg-ocean-100",
     glowBlend: "",
-    glowStops: "rgba(70,139,121,0.4) 0%, rgba(70,139,121,0.14) 45%, transparent 75%",
-    icon: "text-fb-green-400/[18%]",
+    glowStops: "rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%",
+    icon: "text-ocean-100/[18%]",
+    pill: "bg-ocean-100 text-ocean-950",
+    pillSweep: "bg-fb-white",
+    pillIcon: "text-ocean-950",
+    pillShadow: "hover:shadow-[0_12px_30px_-10px_rgba(219,233,238,0.35)]",
   },
 } as const
 
@@ -106,46 +138,81 @@ const schema = [
   path="/services"
   schema={schema}
 >
-  <section class="relative min-h-[420px] overflow-hidden bg-fb-black md:min-h-[520px]">
-    <ServicesOrbit />
-    <div class="absolute inset-0 bg-gradient-to-r from-fb-black/90 from-0% via-fb-black/55 via-55% to-fb-black/10" />
-    <div class="absolute inset-0 bg-gradient-to-t from-fb-black via-transparent to-transparent" />
+  <section id="top" class="relative min-h-screen-nav overflow-hidden bg-ocean-900">
+    <div class="hero-bg-fade absolute inset-0">
+      <ServicesOrbit />
+      <div class="absolute inset-0 bg-gradient-to-r from-ocean-900/90 from-0% via-ocean-900/55 via-55% to-ocean-900/10" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
+    </div>
 
-    <div class="container-fb relative flex min-h-[420px] flex-col justify-center py-20 md:min-h-[520px]">
-      <p class="eyebrow mb-4 text-fb-green-300">Services</p>
-      <h1 class="max-w-2xl text-[2rem] font-semibold leading-tight tracking-tight text-fb-white md:text-[2.4rem]">
-        Supply chain services built for teams without an SAP budget.
+    <div class="hero-text-zoom container-fb relative flex min-h-screen-nav flex-col justify-start pb-20 pt-28 font-amulya md:pt-36">
+      <div class="mb-4 flex items-center gap-3">
+        <SectionIcon name="network" class="h-6 w-6 text-ocean-100" />
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Services</p>
+      </div>
+      <h1 class="max-w-2xl font-amulya text-[2.3rem] font-bold leading-[1.1] tracking-tight text-fb-white md:text-[3rem]">
+        Supply chain services built for teams without an <span class="font-medium italic text-ocean-100">SAP budget</span>.
       </h1>
-      <p class="mt-5 max-w-xl text-[1.02rem] leading-relaxed text-fb-white/65">
+      <p class="mt-5 max-w-xl text-[1.02rem] font-light leading-relaxed text-fb-white/65">
         Every Flowbound service works the same way: watch the signal, make the call, and explain the reasoning
         in plain language. No dashboards to interpret yourself and no consultant required to make sense of it.
       </p>
       <div class="mt-9 flex flex-wrap items-center gap-4">
         <a
           href="#cta"
-          class="inline-flex items-center bg-fb-green-500 px-6 py-3.5 font-body font-normal text-fb-white transition-colors hover:bg-fb-green-400"
+          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
         >
-          Request a pilot
+          <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-900 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          <span class="relative z-10">Request a pilot</span>
+          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+        </a>
+        <a
+          href="#agent"
+          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
+        >
+          <span aria-hidden="true" class="absolute inset-0 bg-fb-white/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
+          <span class="relative z-10">See how it works</span>
+          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
         </a>
       </div>
     </div>
+
+    {/* Decorative shortcuts, not the only way to reach these sections (Nav's Services dropdown and
+       normal scrolling both do too), so they're pulled out of the tab order and hidden from
+       screen readers rather than leaving keyboard/AT users to hit six redundant, fade-in-and-out
+       stops before the page's real content. */}
+    <div class="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true">
+      {heroPills.map((pill) => (
+        <a
+          href={pill.href}
+          tabindex="-1"
+          class="hero-pill pointer-events-auto absolute inline-flex items-center whitespace-nowrap rounded-full border border-fb-white/20 bg-fb-white/5 px-4 py-2 font-amulya text-sm font-medium text-fb-white/80 backdrop-blur-sm transition-colors duration-300 hover:border-ocean-100/50 hover:text-fb-white"
+          style={`top: ${pill.top}%; left: ${pill.left}%; animation-duration: ${pill.duration}s; animation-delay: ${pill.delay}s;`}
+        >
+          {pill.label}
+        </a>
+      ))}
+    </div>
   </section>
 
-  <section id="agent" class={`border-b border-fb-black/10 py-20 md:py-28 ${toneStyles.paper.section}`}>
+  <section id="agent" class={`border-b border-ocean-700/15 py-20 font-amulya md:py-28 ${toneStyles.paper.section}`}>
     <div class="container-fb">
       <div class="flex items-start justify-between gap-8">
-        <div class="max-w-xl">
-          <p class={`${toneStyles.paper.eyebrow} mb-4`}>Ask Flowbound</p>
-          <h2 class={`text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${toneStyles.paper.heading}`}>
+        <div class={`${revealCycle[0]} max-w-xl`} data-reveal>
+          <p class={`mb-4 font-mono text-xs uppercase tracking-[0.2em] ${toneStyles.paper.eyebrow}`}>Ask Flowbound</p>
+          <h2 class={`font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${toneStyles.paper.heading}`}>
             A consultant on demand, built into your web app.
           </h2>
-          <p class={`mt-5 text-[0.98rem] leading-relaxed ${toneStyles.paper.body}`}>
+          <p class={`mt-5 text-[0.98rem] font-normal leading-relaxed ${toneStyles.paper.body}`}>
             Every service on this page runs through the same agent. It's not a separate tool you have to log
             into or a report you have to request: it's a consultant on demand, built right into your web app,
             that pulls whatever data you need the moment you ask for it.
           </p>
         </div>
-        <SectionIcon name="spark" class={`hidden h-[7.5rem] w-[7.5rem] shrink-0 md:block ${toneStyles.paper.icon}`} />
+        <div class="relative hidden shrink-0 md:block" data-icon-drift>
+          <span class="icon-pulse-ring absolute inset-0 rounded-full border border-ocean-950/10" aria-hidden="true"></span>
+          <SectionIcon name="spark" class={`icon-spin relative h-[7.5rem] w-[7.5rem] ${toneStyles.paper.icon}`} />
+        </div>
       </div>
 
       <div
@@ -154,11 +221,16 @@ const schema = [
         class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
       >
         {agentCapabilities.map((capability, i) => (
-          <div class={`group relative z-10 overflow-hidden border p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 ${toneStyles.paper.card}`}>
-            <span class={`font-mono text-sm ${toneStyles.paper.index}`}>{String(i + 1).padStart(2, "0")}</span>
-            <h3 class={`mt-3 text-[1.15rem] font-semibold leading-snug ${toneStyles.paper.cardHeading}`}>{capability.title}</h3>
-            <p class={`mt-3 text-[0.95rem] leading-relaxed ${toneStyles.paper.cardBody}`}>{capability.description}</p>
-            <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${toneStyles.paper.accentLine}`} />
+          <div data-reveal class={`${revealCycle[0]} h-full`} style={`transition-delay: ${i * 90}ms`}>
+            <div
+              data-tilt
+              class={`tilt-card group relative z-10 h-full overflow-hidden border p-8 ${toneStyles.paper.card}`}
+            >
+              <span class={`font-mono text-sm ${toneStyles.paper.index}`}>{String(i + 1).padStart(2, "0")}</span>
+              <h3 class={`mt-3 font-amulya text-[1.15rem] font-medium leading-snug ${toneStyles.paper.cardHeading}`}>{capability.title}</h3>
+              <p class={`mt-3 text-[0.95rem] font-normal leading-relaxed ${toneStyles.paper.cardBody}`}>{capability.description}</p>
+              <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${toneStyles.paper.accentLine}`} />
+            </div>
           </div>
         ))}
 
@@ -170,13 +242,13 @@ const schema = [
         />
       </div>
 
-      <div class="mt-12 flex justify-center">
+      <div class={`${revealCycle[0]} mt-12 flex justify-center`} data-reveal style="transition-delay: 300ms">
         <a
           href="/ask-flowbound"
-          class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-fb-green-200 px-10 py-4 font-body font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
+          class={`group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full px-10 py-4 font-amulya font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 ${toneStyles.paper.pill} ${toneStyles.paper.pillShadow}`}
         >
-          <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-          <SectionIcon name="spark" class="relative z-10 h-5 w-5 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:rotate-45" />
+          <span aria-hidden="true" class={`absolute inset-0 origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${toneStyles.paper.pillSweep}`} />
+          <SectionIcon name="spark" class={`relative z-10 h-5 w-5 shrink-0 transition-transform duration-500 ease-out group-hover:rotate-45 ${toneStyles.paper.pillIcon}`} />
           <span class="relative z-10">Explore Ask Flowbound</span>
           <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
         </a>
@@ -184,21 +256,32 @@ const schema = [
     </div>
   </section>
 
-  {services.map((service) => {
+  {services.map((service, si) => {
     const tone = toneStyles[service.tone]
     const gridCols = service.capabilities.length === 2 ? "md:grid-cols-2" : "md:grid-cols-3"
+    // offset by 1 since the Ask Flowbound section above already used revealCycle[0]; keeps the
+    // rotation continuous down the whole page instead of restarting per section
+    const variant = revealCycle[(si + 1) % revealCycle.length]
     return (
-      <section id={service.slug} class={`border-b border-fb-black/10 py-20 md:py-28 ${tone.section}`}>
+      <section id={service.slug} class={`border-b border-ocean-700/15 py-20 font-amulya md:py-28 ${tone.section}`}>
         <div class="container-fb">
           <div class="flex items-start justify-between gap-8">
-            <div class="max-w-xl">
-              <p class={`${tone.eyebrow} mb-4`}>{service.name}</p>
-              <h2 class={`text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${tone.heading}`}>
-                {service.headline}
-              </h2>
-              <p class={`mt-5 text-[0.98rem] leading-relaxed ${tone.body}`}>{service.description}</p>
+            <div class={`${variant} max-w-xl`} data-reveal>
+              {/* reveal-clip's actual clip-path animation lives one level in, on this wrapper,
+                 never on the [data-reveal] element itself, see src/index.css's .reveal-clip-mask
+                 comment for why (a real bug this codebase already shipped and fixed once). */}
+              <div class={variant === "reveal-clip" ? "reveal-clip-mask" : ""}>
+                <p class={`mb-4 font-mono text-xs uppercase tracking-[0.2em] ${tone.eyebrow}`}>{service.name}</p>
+                <h2 class={`font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${tone.heading}`}>
+                  {service.headline}
+                </h2>
+                <p class={`mt-5 text-[0.98rem] font-normal leading-relaxed ${tone.body}`}>{service.description}</p>
+              </div>
             </div>
-            <SectionIcon name={service.icon} class={`hidden h-[7.5rem] w-[7.5rem] shrink-0 md:block ${tone.icon}`} />
+            <div class="relative hidden shrink-0 md:block" data-icon-drift>
+              <span class={`icon-pulse-ring absolute inset-0 rounded-full border ${service.tone === "dark" ? "border-ocean-100/15" : "border-ocean-950/10"}`} aria-hidden="true"></span>
+              <SectionIcon name={service.icon} class={`icon-spin relative h-[7.5rem] w-[7.5rem] ${tone.icon}`} />
+            </div>
           </div>
 
           <div
@@ -207,26 +290,31 @@ const schema = [
             class={`relative mt-14 grid grid-cols-1 gap-6 overflow-hidden ${gridCols}`}
           >
             {service.capabilities.map((capability, i) => (
-              <div class="flex flex-col">
-                <div class={`group relative z-10 flex-1 overflow-hidden border p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 ${tone.card}`}>
-                  <span class={`font-mono text-sm ${tone.index}`}>{String(i + 1).padStart(2, "0")}</span>
-                  <h3 class={`mt-3 text-[1.15rem] font-semibold leading-snug ${tone.cardHeading}`}>{capability.title}</h3>
-                  <p class={`mt-3 text-[0.95rem] leading-relaxed ${tone.cardBody}`}>{capability.description}</p>
-                  <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.accentLine}`} />
-                </div>
-                {capability.href && (
-                  <div class="mt-6 flex justify-center">
-                    <a
-                      href={capability.href}
-                      class="group relative inline-flex w-full max-w-[15rem] items-center justify-center gap-2 overflow-hidden rounded-full bg-fb-green-200 px-6 py-3 font-body text-[0.9rem] font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
-                    >
-                      <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-                      <SectionIcon name={service.icon} class="relative z-10 h-4 w-4 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:-translate-x-0.5 group-hover:rotate-45" />
-                      <span class="relative z-10">{capability.ctaLabel ?? `Explore ${capability.title}`}</span>
-                      <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1.5">&rarr;</span>
-                    </a>
+              <div data-reveal class={`${variant} h-full`} style={`transition-delay: ${i * 90}ms`}>
+                <div class={`flex h-full flex-col ${variant === "reveal-clip" ? "reveal-clip-mask" : ""}`}>
+                  <div
+                    data-tilt
+                    class={`tilt-card group relative z-10 flex-1 overflow-hidden border p-8 ${tone.card}`}
+                  >
+                    <span class={`font-mono text-sm ${tone.index}`}>{String(i + 1).padStart(2, "0")}</span>
+                    <h3 class={`mt-3 font-amulya text-[1.15rem] font-medium leading-snug ${tone.cardHeading}`}>{capability.title}</h3>
+                    <p class={`mt-3 text-[0.95rem] font-normal leading-relaxed ${tone.cardBody}`}>{capability.description}</p>
+                    <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.accentLine}`} />
                   </div>
-                )}
+                  {capability.href && (
+                    <div class="mt-6 flex justify-center">
+                      <a
+                        href={capability.href}
+                        class={`group relative inline-flex min-h-[4.25rem] w-full max-w-[17rem] items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 font-amulya text-[0.9rem] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 ${tone.pill} ${tone.pillShadow}`}
+                      >
+                        <span aria-hidden="true" class={`absolute inset-0 origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.pillSweep}`} />
+                        <SectionIcon name={service.icon} class={`relative z-10 h-4 w-4 shrink-0 transition-transform duration-500 ease-out group-hover:-translate-x-0.5 group-hover:rotate-45 ${tone.pillIcon}`} />
+                        <span class="relative z-10">{capability.ctaLabel ?? `Explore ${capability.title}`}</span>
+                        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1.5">&rarr;</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
 
@@ -239,13 +327,13 @@ const schema = [
           </div>
 
           {service.href && (
-            <div class="mt-12 flex justify-center">
+            <div class={`${variant} mt-12 flex justify-center`} data-reveal style="transition-delay: 300ms">
               <a
                 href={service.href}
-                class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-fb-green-200 px-10 py-4 font-body font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
+                class={`group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full px-10 py-4 font-amulya font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 ${variant === "reveal-clip" ? "reveal-clip-mask " : ""}${tone.pill} ${tone.pillShadow}`}
               >
-                <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-                <SectionIcon name={service.icon} class="relative z-10 h-5 w-5 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:rotate-45" />
+                <span aria-hidden="true" class={`absolute inset-0 origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.pillSweep}`} />
+                <SectionIcon name={service.icon} class={`relative z-10 h-5 w-5 shrink-0 transition-transform duration-500 ease-out group-hover:rotate-45 ${tone.pillIcon}`} />
                 <span class="relative z-10">{service.ctaLabel ?? `Explore ${service.name}`}</span>
                 <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
               </a>
@@ -259,6 +347,69 @@ const schema = [
   <Cta />
 </BaseLayout>
 
+<style>
+  .hero-bg-fade {
+    opacity: calc(1 - var(--hero-scroll, 0) * 1.2);
+    will-change: opacity;
+  }
+
+  .hero-text-zoom {
+    transform: scale(calc(1 + var(--hero-scroll, 0) * 0.55));
+    opacity: calc(1 - var(--hero-scroll, 0) * 1.3);
+    transform-origin: left center;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg-fade,
+    .hero-text-zoom {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  /* Each pill fades in, settles, holds, then fades back out and waits, on its own
+     duration/delay (set inline per pill), so the six never rise or fall in sync. */
+  .hero-pill {
+    opacity: 0;
+    transform: translateY(8px) scale(0.94);
+    animation-name: hero-pill-float;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  @keyframes hero-pill-float {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.94);
+    }
+    18%, 58% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    78% {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.96);
+    }
+  }
+
+  .hero-pill:hover {
+    animation-play-state: paused;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-pill {
+      animation: none;
+      opacity: 0.75;
+      transform: none;
+    }
+  }
+</style>
+
 <script>
   import "../scripts/hoverGlow"
+  import "../scripts/cardTilt"
+  import "../scripts/scrollReveal"
+  import "../scripts/heroScroll"
+  import "../scripts/sectionIconDrift"
 </script>

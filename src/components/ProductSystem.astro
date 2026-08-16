@@ -31,11 +31,18 @@ const modules = [
 const GLOW_SIZE = 420
 ---
 
-<section id="product" class="border-b border-fb-black/10 bg-fb-white py-20 md:py-28">
-  <div class="container-fb">
-    <div class="max-w-xl">
-      <p class="eyebrow mb-4">What Flowbound does</p>
-      <h2 class="text-[1.9rem] font-semibold leading-tight tracking-tight text-fb-black md:text-[2.2rem]">
+<section id="product" class="relative overflow-hidden border-b border-ocean-700/15 bg-ocean-100 py-20 font-amulya md:py-28">
+  <!-- ambient drift, echoing the hero's wave without competing with it: two soft blurred washes,
+       slow enough to read as atmosphere rather than motion you consciously track -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <span class="product-ambient-blob product-ambient-blob-a"></span>
+    <span class="product-ambient-blob product-ambient-blob-b"></span>
+  </div>
+
+  <div class="container-fb relative">
+    <div class="reveal-item max-w-xl" data-reveal>
+      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">What Flowbound does</p>
+      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.2rem]">
         One supply chain decision engine. Four ways to use it.
       </h2>
     </div>
@@ -43,32 +50,37 @@ const GLOW_SIZE = 420
     <!-- mouse tracking is scoped to just this grid, so the glow can never
          wander off into the section's padding and look disconnected -->
     <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-2">
-      {modules.map((m) => (
-        <div class="group relative z-10 overflow-hidden border border-fb-black/10 bg-fb-white p-8 transition-all duration-500 ease-out hover:-translate-y-0.5 hover:border-fb-green-500/35 hover:bg-fb-green-50/50">
-          <span class="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-fb-green-500">{m.tag}</span>
-          <h3 class="mt-3 text-[1.2rem] font-semibold leading-snug text-fb-black">{m.title}</h3>
-          <p class="mt-3 text-[0.95rem] leading-relaxed text-fb-black/65">{m.body}</p>
-          <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-fb-green-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+      {modules.map((m, i) => (
+        <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 90}ms`}>
+          <div
+            data-tilt
+            class="tilt-card group relative z-10 h-full overflow-hidden border border-ocean-700/20 bg-ocean-200 p-8 hover:border-ocean-700/45"
+          >
+            <span class="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-ocean-950">{m.tag}</span>
+            <h3 class="mt-3 font-amulya text-[1.2rem] font-medium leading-snug text-ocean-950">{m.title}</h3>
+            <p class="mt-3 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{m.body}</p>
+            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-ocean-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </div>
         </div>
       ))}
 
-      <!-- rendered last so it paints on top of the cards; mix-blend-multiply lets it
-           tint straight through their opaque white background instead of hiding behind it -->
+      <!-- rendered last so it paints on top of the cards; multiply blend darkens
+           the light card surface toward blue under the cursor -->
       <div
         data-glow
         aria-hidden="true"
         class="glow-cursor z-20 rounded-full mix-blend-multiply"
-        style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(0,88,64,0.16), transparent 70%);`}
+        style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.15), transparent 70%);`}
       />
     </div>
 
-    <div class="mt-12 flex justify-center">
+    <div class="reveal-item mt-12 flex justify-center" data-reveal style="transition-delay: 380ms">
       <a
         href="/product"
-        class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-fb-green-200 px-10 py-4 font-body font-medium text-fb-black transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(0,88,64,0.45)]"
+        class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-ocean-700 px-10 py-4 font-amulya font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(79,109,122,0.45)]"
       >
-        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-fb-green-300 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-        <SectionIcon name="spark" class="relative z-10 h-5 w-5 shrink-0 text-fb-black transition-transform duration-500 ease-out group-hover:rotate-45" />
+        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+        <SectionIcon name="spark" class="relative z-10 h-5 w-5 shrink-0 text-fb-white transition-transform duration-500 ease-out group-hover:rotate-45" />
         <span class="relative z-10">See the full product</span>
         <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
@@ -76,6 +88,55 @@ const GLOW_SIZE = 420
   </div>
 </section>
 
+<style>
+  .product-ambient-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+  }
+
+  .product-ambient-blob-a {
+    top: -15%;
+    right: -8%;
+    width: 32vw;
+    height: 32vw;
+    max-width: 420px;
+    max-height: 420px;
+    background: radial-gradient(circle, rgba(74, 111, 165, 0.16) 0%, transparent 70%);
+    animation: product-ambient-drift-a 24s ease-in-out infinite;
+  }
+
+  .product-ambient-blob-b {
+    bottom: -20%;
+    left: 8%;
+    width: 26vw;
+    height: 26vw;
+    max-width: 340px;
+    max-height: 340px;
+    background: radial-gradient(circle, rgba(192, 214, 223, 0.4) 0%, transparent 70%);
+    animation: product-ambient-drift-b 20s ease-in-out infinite;
+  }
+
+  @keyframes product-ambient-drift-a {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-4vw, 3vh); }
+  }
+
+  @keyframes product-ambient-drift-b {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(3vw, -3vh); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-ambient-blob-a,
+    .product-ambient-blob-b {
+      animation: none;
+    }
+  }
+</style>
+
 <script>
   import "../scripts/hoverGlow"
+  import "../scripts/cardTilt"
+  import "../scripts/scrollReveal"
 </script>

@@ -18,8 +18,9 @@ interface Props {
 const { name, class: className = "" } = Astro.props
 
 // The "gear" icon is computed rather than hand-drawn: a proper flat-toothed cog silhouette (not just
-// spokes on a ring), plus small connector nodes radiating off it, echoing "the engine, wired into
-// everything else." Shared by the small icon here and the hero's rotating hub in HowItWorksBackground.astro.
+// spokes on a ring), orbited by eight small hollow nodes, echoing "the engine, wired into everything
+// else." Used as the /how-it-works watermark icon; the hero itself (HowItWorksBackground.astro) is
+// canvas-based now and draws its own glyphs rather than sharing this geometry.
 const polar = (cx: number, cy: number, r: number, deg: number): [number, number] => {
   const rad = (deg * Math.PI) / 180
   return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)]
@@ -42,7 +43,13 @@ const gearOutline = (cx: number, cy: number, teeth: number, outerR: number, inne
 }
 
 const gearNodeAngles = [0, 45, 90, 135, 180, 225, 270, 315]
-const gearPath = gearOutline(24, 24, 8, 17, 13, 7)
+// outerR pulled in from 17 to 15.5 (innerR proportionally, 13 to 11.5) so the connector nodes'
+// lines, starting at radius 19.5, clear the tooth tips with a real, visually obvious gap instead
+// of a sub-3px one: at 17 the tooth edge sat at ~17.62 after its own stroke width, leaving only
+// ~1.1 units of daylight before the line's own round-cap edge at ~18.75, thin enough to read as
+// touching at normal size/opacity even though it technically didn't overlap. See CLAUDE.md's
+// "SectionIcon overlap bugs" note.
+const gearPath = gearOutline(24, 24, 8, 15.5, 11.5, 7)
 ---
 
 <svg viewBox="0 0 48 48" fill="none" class={className} aria-hidden="true">
@@ -58,13 +65,20 @@ const gearPath = gearOutline(24, 24, 8, 17, 13, 7)
   {name === "crate" && (
     <g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
       <path d="M24,6 L40,15 L40,33 L24,42 L8,33 L8,15 Z" />
-      <path d="M24,24 L24,6 M24,24 L40,33 M24,24 L8,33" />
+      {/* spokes stop short of the outline's own vertices (0.85 of the way out) rather than
+         landing exactly on them: an exact-touching round-capped stroke overlaps the outline's
+         stroke there and reads as a dark dot at large watermark sizes, the same bug the
+         `compass` icon shipped once, see CLAUDE.md's "Services page" note. */}
+      <path d="M24,24 L24,8.7 M24,24 L37.6,31.7 M24,24 L10.4,31.7" />
     </g>
   )}
 
   {name === "network" && (
     <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-      <path d="M12,34 L36,34 M12,34 L24,10 M36,34 L24,10" />
+      {/* lines stop ~7 units short of each circle's center (well outside its r=4 edge, clearing
+         both the round-cap bulge and the circle's own stroke) instead of running straight into
+         the center: same overlap-avoidance rule as `crate`/`compass`. */}
+      <path d="M19,34 L29,34 M15.13,27.74 L20.87,16.26 M32.87,27.74 L27.13,16.26" />
       <circle cx="12" cy="34" r="4" />
       <circle cx="36" cy="34" r="4" />
       <circle cx="24" cy="10" r="4" />
@@ -83,7 +97,12 @@ const gearPath = gearOutline(24, 24, 8, 17, 13, 7)
   {name === "chat" && (
     <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <rect x="6" y="8" width="36" height="24" rx="6" />
-      <path d="M14,32 L10,40 L20,32" />
+      {/* Both tail points sit at y=33.5, below the rect's bottom edge (y=32) entirely, so neither
+         the endpoints nor the diagonal arms between them ever cross back above y=32 to touch the
+         rect's stroke. The previous fix only moved the endpoints inside the rect (y=30), which
+         still left the diagonal arms themselves crossing straight through the bottom edge
+         partway along their length, moving the overlap rather than removing it. */}
+      <path d="M14,33.5 L10,40 L20,33.5" />
       <circle cx="18" cy="20" r="1.6" fill="currentColor" stroke="none" />
       <circle cx="24" cy="20" r="1.6" fill="currentColor" stroke="none" />
       <circle cx="30" cy="20" r="1.6" fill="currentColor" stroke="none" />
@@ -99,8 +118,8 @@ const gearPath = gearOutline(24, 24, 8, 17, 13, 7)
 
   {name === "compass" && (
     <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-      <circle cx="24" cy="24" r="13" />
-      <path d="M24,4 L24,11 M24,37 L24,44 M4,24 L11,24 M37,24 L44,24" />
+      <circle cx="24" cy="24" r="12" />
+      <path d="M24,4 L24,9 M24,39 L24,44 M4,24 L9,24 M39,24 L44,24" />
     </g>
   )}
 
@@ -117,14 +136,13 @@ const gearPath = gearOutline(24, 24, 8, 17, 13, 7)
       <path d={gearPath} />
       <circle cx="24" cy="24" r="5.5" />
       {gearNodeAngles.map((angle) => {
-        const [ix, iy] = polar(24, 24, 18, angle)
-        const [ox, oy] = polar(24, 24, 21.5, angle)
-        return (
-          <g>
-            <line x1={ix} y1={iy} x2={ox} y2={oy} />
-            <circle cx={ox} cy={oy} r="1.6" />
-          </g>
-        )
+        // No connecting line to the gear: it used to run from radius 19.5 all the way to the
+        // node's own center at radius 22, which meant it always crossed the hollow circle's own
+        // stroke and dangled into its middle, a visible stray "tail" inside every node. There's no
+        // room to give a connector real gaps on both ends (gear side and node side) without either
+        // overlapping or clipping the viewBox, so the nodes are plain floating dots instead.
+        const [ox, oy] = polar(24, 24, 22, angle)
+        return <circle cx={ox} cy={oy} r="1.6" />
       })}
     </g>
   )}

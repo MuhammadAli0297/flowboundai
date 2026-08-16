@@ -1,114 +1,25 @@
 ---
-/**
- * Full-bleed ambient hero background for the Supplier Coordination page.
- * Same dark, glowing, green-on-black "vibe" as the other hero backgrounds,
- * but a distinct composition: the network icon slowly rotates as the hub,
- * three supplier nodes sit calm and idle, and one is actively flagged with
- * a brighter, pulsing ring, rather than a single signal or a fan of lanes.
- */
-const hubX = 1190
-const hubY = 455
-
-const suppliers = [
-  { x: 900, y: 300, flagged: false, delay: 0 },
-  { x: 1440, y: 260, flagged: false, delay: 1.6 },
-  { x: 1450, y: 660, flagged: true, delay: 0 },
-  { x: 930, y: 640, flagged: false, delay: 3.2 },
-]
-
-// The "network" icon path (SectionIcon), recentred on (0,0) so it can be scaled and rotated as the hub.
-const networkLines = "M-12,8 L12,8 M-12,8 L0,-16 M12,8 L0,-16"
-const networkNodes = [
-  { x: -12, y: 8 },
-  { x: 12, y: 8 },
-  { x: 0, y: -16 },
-]
+// Supplier Coordination hero background: "Supplier Pulse", ocean-palette, canvas 2D (see
+// src/scripts/supplierCoordinationHero.ts). A fixed network hub sits among several supplier
+// nodes that mostly just breathe calmly; one, a different one each cycle, escalates and sends a
+// comet-trail signal into the hub before settling back down. The hub does not rotate.
 ---
 
-<svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" class="absolute inset-0 h-full w-full" aria-hidden="true">
-  <defs>
-    <radialGradient id="sc-hub-glow-outer" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#468B79" stop-opacity="0.36" />
-      <stop offset="55%" stop-color="#468B79" stop-opacity="0.16" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="sc-hub-glow-inner" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.45" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="sc-node-glow-idle" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#468B79" stop-opacity="0.3" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-    <radialGradient id="sc-node-glow-flagged" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#8FD0B8" stop-opacity="0.6" />
-      <stop offset="100%" stop-color="#468B79" stop-opacity="0" />
-    </radialGradient>
-  </defs>
+<div class="hero-canvas-wrap absolute inset-0 overflow-hidden" aria-hidden="true">
+  <div class="hero-base-gradient absolute inset-0"></div>
+  <canvas id="supplier-coordination-hero" class="absolute inset-0 h-full w-full"></canvas>
+  <div class="absolute inset-0 bg-grain opacity-20 mix-blend-overlay"></div>
+</div>
 
-  <circle cx={hubX} cy={hubY} r="620" fill="url(#sc-hub-glow-outer)" />
-  <circle cx={hubX} cy={hubY} r="280" fill="url(#sc-hub-glow-inner)" />
+<style>
+  .hero-base-gradient {
+    background:
+      radial-gradient(85% 70% at 68% 50%, rgba(74, 111, 165, 0.26), transparent 60%),
+      radial-gradient(70% 60% at 98% 85%, rgba(79, 109, 122, 0.22), transparent 60%),
+      #104866;
+  }
+</style>
 
-  {suppliers.filter((s) => !s.flagged).map((s) => (
-    <g>
-      <path d={`M${s.x},${s.y} L${hubX},${hubY}`} fill="none" stroke="#1F4438" stroke-width="1.5" stroke-opacity="0.45" />
-      <circle cx={s.x} cy={s.y} r="22" fill="url(#sc-node-glow-idle)" />
-      <g transform={`translate(${s.x} ${s.y})`}>
-        <g class="fb-float" style={`animation-delay: ${s.delay * 0.4}s`}>
-          <circle r="8" fill="#0C1F19" stroke="#2C6E58" stroke-width="1.5" stroke-opacity="0.8" />
-          <circle r="2.5" fill="#468B79" />
-        </g>
-      </g>
-    </g>
-  ))}
-
-  {suppliers.filter((s) => s.flagged).map((s) => (
-    <g>
-      <path d={`M${s.x},${s.y} L${hubX},${hubY}`} fill="none" stroke="#66AE95" stroke-width="1.75" stroke-opacity="0.6" />
-
-      <circle r="4" fill="#C7E3DA">
-        <animateMotion dur="2.6s" repeatCount="indefinite" path={`M${s.x},${s.y} L${hubX},${hubY}`} />
-        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="2.6s" repeatCount="indefinite" />
-      </circle>
-
-      <circle cx={s.x} cy={s.y} r="34" fill="url(#sc-node-glow-flagged)" />
-      <circle
-        cx={s.x}
-        cy={s.y}
-        r="17"
-        fill="none"
-        stroke="#8FD0B8"
-        stroke-opacity="0.6"
-        class="fb-core-pulse-ring"
-        style={`transform-origin: ${s.x}px ${s.y}px`}
-      />
-      <g transform={`translate(${s.x} ${s.y})`}>
-        <circle r="9" fill="#003828" stroke="#8FD0B8" stroke-width="1.6" stroke-opacity="0.95" />
-        <path d="M0,-4 L0,1 M0,4 L0,4.3" stroke="#C7E3DA" stroke-width="1.6" stroke-linecap="round" />
-      </g>
-    </g>
-  ))}
-
-  <circle
-    cx={hubX}
-    cy={hubY}
-    r="92"
-    fill="none"
-    stroke="#8FD0B8"
-    stroke-opacity="0.5"
-    class="fb-core-pulse-ring"
-    style={`transform-origin: ${hubX}px ${hubY}px`}
-  />
-
-  <g transform={`translate(${hubX} ${hubY})`} class="fb-core-breathe">
-    <g>
-      <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="40s" repeatCount="indefinite" />
-      <g transform="scale(3.1)">
-        <path d={networkLines} fill="none" stroke="#8FD0B8" stroke-width="1.2" stroke-linecap="round" />
-        {networkNodes.map((n) => (
-          <circle cx={n.x} cy={n.y} r="4" fill="#003828" stroke="#8FD0B8" stroke-width="1.4" />
-        ))}
-      </g>
-    </g>
-  </g>
-</svg>
+<script>
+  import "../scripts/supplierCoordinationHero"
+</script>
