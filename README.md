@@ -75,8 +75,8 @@ push to `main` auto-deploys. No environment variables are required. Split commit
   just the current page.
 - Card thumbnails (`src/components/BlogThumbnail.astro`) are generated from the post's category icon
   rather than real images, so there's no photography to source or maintain as more posts get added.
-- `src/components/BlogBackground.astro` is the `/blog` hero's animated background, following the same
-  per-page hero convention as every other secondary page.
+- `src/components/BlogBackground.astro` is the `/blog` hero's animated background: a real JS canvas hero
+  ("Insight Stream"), following the same per-page hero convention as every other secondary page.
 
 ## Structure
 
@@ -85,10 +85,15 @@ push to `main` auto-deploys. No environment variables are required. Split commit
 - `src/components/Seo.astro`: per-page title/description/canonical/OG/JSON-LD, used by every page
 - `src/components/`: `LogoLockup`/`LogoMark` (logo), `Nav`/`Footer`, homepage sections (`Hero`,
   `ProductSystem`, `HowItWorks`, `WhyUs`, `SapComparison`, `Mission`, `Cta`), one animated hero background
-  component per secondary page (`FlowBackground` is the homepage's; every other `*Background.astro` is a
-  secondary page's own composition, see BRAND_GUIDELINES.md for the full catalog), `BlogThumbnail`
-  (generated card images), and `icons/SectionIcon.astro` (the small monoline icons used as hero hubs and
-  section decoration)
+  component per secondary page. The seven dedicated capability pages, three whole-service narrative pages,
+  `/how-it-works`, and `/blog` all pair their `*Background.astro` file with a same-named script in
+  `src/scripts/` for a real JS canvas hero; `HeroBackground` (homepage) and `ProductBackground` (`/product`)
+  are real WebGL three.js particle systems instead, the two deliberate exceptions to the zero-framework rule
+  above, see CLAUDE.md's "Homepage" section; `ServicesOrbit` is `/services`'s static, non-animated hero.
+  No secondary hero still uses the original SVG/SMIL pattern; `FlowBackground` still exists on disk (the
+  only surviving example of that pattern's shape) but isn't imported anywhere currently. `BlogThumbnail`
+  (generated card images) and `icons/SectionIcon.astro` (the small monoline icons used as hero hubs and
+  section decoration) round out the directory.
 - `src/data/nav.ts`: nav links and the Services dropdown's curated slug list
 - `src/data/services.ts`: single source of truth for `/services` content (see Pages above)
 - `src/data/blogCategories.ts`: fixed blog category list, each mapped to a `SectionIcon` name
@@ -96,8 +101,20 @@ push to `main` auto-deploys. No environment variables are required. Split commit
   `src/content.config.ts`
 - `src/lib/tags.ts`: slug helper shared by the tag pages and post pages
 - `src/scripts/`: vanilla JS/TS, no framework ships anywhere on this site. `hoverGlow.ts` is the shared
-  mouse-glow hover effect; `blogFilter.ts` is the `/blog` search-and-category-filter logic
-- `public/fonts/`: self-hosted Satoshi + IBM Plex Mono (not loaded from a third-party CDN)
+  mouse-glow hover effect; `cardTilt.ts` is the shared cursor-follow card tilt; `scrollReveal.ts` toggles a
+  reveal class on scroll (replays every re-entry, doesn't just play once); `sectionIconDrift.ts` drives the
+  small scroll-linked drift on watermark `SectionIcon`s; `blogFilter.ts` is the `/blog`
+  search-and-category-filter logic; `heroWave.ts`/`productHeroWave.ts` drive the homepage's and
+  `/product`'s WebGL particle heroes, `heroScroll.ts`/`scrollProgress.ts` drive their shared scroll-linked
+  fade/zoom; `askFlowboundHero.ts`, `demandForecastingHero.ts`, `inventoryTrackingHero.ts`,
+  `shippingOptimizationHero.ts`, `supplierCoordinationHero.ts`, `wholesaleAccountManagementHero.ts`,
+  `reorderHero.ts`, `pricingHero.ts`, `customerServiceHero.ts`, `qualityMonitoringHero.ts`,
+  `howItWorksHero.ts`, `blogHero.ts` each drive one capability/narrative/blog page's Canvas 2D hero (see
+  BRAND_GUIDELINES.md's "Secondary-page hero" section for what each one shows); `howItWorksHero.ts` is the
+  one exception whose main motion is scroll-linked (via `scrollProgress.ts`) rather than self-timed
+- `public/fonts/`: self-hosted Satoshi + IBM Plex Mono (sitewide) + Amulya (homepage/Nav/Footer/logo,
+  `/product`, `/services`, all ten capability/narrative pages, `/how-it-works`, and `/blog`, see
+  BRAND_GUIDELINES.md), none loaded from a third-party CDN
 - `tailwind.config.js`: brand color scale, fonts, radius scale
 - `public/favicon.svg`: favicon; `public/og-image.png`: default OG share image
 

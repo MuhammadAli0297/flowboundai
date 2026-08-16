@@ -29,22 +29,36 @@ Voice: direct, plainspoken, a little blunt about the SAP-consultant-cost pain po
 The mark is a circular badge split into a black "comma" and a green "comma" by a winding white river,
 representing flow through a decision process. The real logo file lives at `src/assets/logo.png` (cropped
 tight to the circle with a transparent background, so it drops cleanly onto both light and dark
-sections), imported through Astro's image pipeline in `src/components/LogoLockup.astro` (mark plus
-wordmark, used in the nav and footer) so it's automatically optimized and resized at build time.
-`public/logo-mark.svg` and `src/components/LogoMark.astro` are a hand-redrawn vector version, kept around
-for anywhere a crisp scalable version is useful (also the basis for the generated OG image), but the
-shipped `logo.png` is the source of truth for the real brand mark. The favicon is `public/favicon.svg`,
-a separate crisp vector version, not the PNG.
+sections). `public/logo-mark.svg` and `src/components/LogoMark.astro` are a hand-redrawn vector version,
+kept around for anywhere a crisp scalable version is useful (also the basis for the generated OG image).
+The favicon is `public/favicon.svg`, a separate crisp vector version, not the PNG.
 
-Clear space: keep at least the width of the mark itself as padding on all sides. Don't recolor the mark,
-and don't place it on busy photographic backgrounds.
+Clear space: keep at least the width of the mark itself as padding on all sides. Don't place it on busy
+photographic backgrounds.
+
+**Nav and Footer now render the recolored vector, not the PNG.** `src/components/LogoLockup.astro` (mark
+plus wordmark, used in the nav and footer) used to import `logo.png` through Astro's image pipeline, since
+that PNG was the source of truth for the real brand mark. At the user's explicit request extending the
+homepage's `ocean` palette to Nav/Footer/the logo, it now renders `LogoMark.astro` instead, with a new
+`palette="ocean"` prop that swaps the gradient stops (the raster PNG has no equivalent recolor path short
+of re-exporting the asset, which risks gradient-banding and edge artifacts the vector doesn't have to
+worry about). `logo.png` is still the source of truth for the original dark-green mark and is unused in
+code today, not deleted. `LogoMark.astro` also takes an `id` prop now (Nav and Footer each render their
+own instance on the same page load, so their `<defs>` gradient ids can't collide).
+
+**The river is no longer pure white in the ocean palette.** The white line dividing the mark's two "comma"
+shapes was white in both palettes originally. At the user's request, the `"ocean"` palette now uses
+`ocean-100` (Alice Blue, `#DBE9EE`) for it instead: still light enough to read as a clean divide against
+the dark comma (`ocean-950`) and the mid-blue gradient comma, but pulled from the same five-color family
+instead of sitting outside it. The `"fb"` palette (the untouched original mark, unused in code today but
+preserved) still uses true white, don't change that one.
 
 ## Color palette
 Sampled directly from the real logo file (`public/logo.png`), not estimated.
 
 | Token | Hex | Use |
 |---|---|---|
-| `fb-black` | `#0A0A0A` | Primary text, dark sections, footer |
+| `fb-black` | `#0A0A0A` | Primary text, dark sections (footer is now `ocean-900`, see below) |
 | `fb-green-500` | `#005840` | Primary brand green: CTAs, accents, links (matches the logo's flat green) |
 | `fb-green-600` | `#004838` | Hover states on green |
 | `fb-green-400` | `#468B79` | Lighter accent green, matches the logo's gloss highlight |
@@ -57,17 +71,73 @@ shades as needed. This is a deeper, more teal-leaning green than earlier drafts 
 you ever update the logo file again, re-sample the palette rather than eyeballing it (there's a quick
 Python and Pillow script for this, ask and it can be redone in a couple of minutes).
 
+**Homepage exception, now also sitewide chrome, and now most of the site.** `/` uses a second, additive
+`ocean` palette (Alice Blue `#DBE9EE`, Pale Sky `#C0D6DF`, Smart Blue `#4A6FA5`, Blue Slate `#4F6D7A`,
+Baltic Blue `#166088`, plus a darkened `ocean-950` derivative for text) instead of `fb-*`, at the user's
+explicit request, originally scoped only to `Hero.astro`, `ProductSystem.astro`, `HowItWorks.astro`,
+`WhyUs.astro`, `SapComparison.astro`, `Mission.astro`, and `Cta.astro` (that last one only nominally:
+`Cta.astro` is actually the shared closing CTA reused at the bottom of most secondary pages too, so
+`ocean-*` was already reaching most of the site before Nav/Footer/logo, just via that one shared section).
+The user then explicitly extended it, one request at a time, to: `Nav.astro`, `Footer.astro`, and the logo
+(nav background `ocean-100`/90 with a sticky blur, link text full-opacity `ocean-950`, not the `/70`
+fb-black used before, at nav's lighter `ocean-100` background `ocean-950` at 70% opacity works out to
+roughly 3.8:1 contrast, below the 4.5:1 AA text needs, checked with the actual blended-color math; hover
+`ocean-600`; footer background moved from `fb-black` to `ocean-900`, Baltic Blue, matching the same
+full-bleed dark already used by the hero and the SAP-comparison section); then `/product`; then
+`/services`; then, in a later session still, all ten dedicated capability and whole-service narrative pages
+(`/demand-forecasting`, `/inventory-tracking`, `/shipping-optimization`, `/supplier-coordination`,
+`/wholesale-account-management`, `/reorder`, `/pricing`, `/ask-flowbound`, `/customer-service`,
+`/quality-monitoring`); then `/how-it-works`; then `/blog`, in a later session still. Each extension was its
+own explicit ask, never assumed or offered proactively.
+**As of the `/blog` conversion, every page on the site uses `ocean-*` except `/404`**, which was never
+brought into scope and is still `fb-*`, an untouched page rather than drift. Don't spread `ocean-*` to `/404`
+without being asked, the pattern this whole project has followed is "ask first, every time," not "finish
+the job," and don't revert any of the pages already converted back to `fb-*` either, none of this is drift
+to be "fixed." See `CLAUDE.md`'s "Homepage" and "Capability, narrative, and blog pages" sections for
+the full detail, including a real contrast bug (illegible eyebrow text) that shipped once from composing
+the shared `.eyebrow` class with a color override, worth reading before touching text color on any of these
+pages again.
+
 ## Typography
 - **Display / headings and body:** Satoshi (one family across the whole site, differentiated by weight)
 - **Mono / labels / eyebrows / data callouts:** IBM Plex Mono
+- **Homepage / Nav / Footer / logo / `/product` / `/services` / all ten capability and narrative pages /
+  `/how-it-works` / `/blog`:** Amulya, a second display font, same scope as the ocean palette (see above,
+  every page except `/404`), applied via the `font-amulya` Tailwind token, not a replacement for
+  `font-display`/`font-body` anywhere else
 
-Both are self-hosted (not loaded from a third-party CDN) as `.woff2` files in `public/fonts/`, declared
-via `@font-face` in `src/index.css` and preloaded in `src/layouts/BaseLayout.astro`. That was a deliberate
-performance call: no third-party font origin sitting in the critical path. Satoshi is free for personal
-and commercial use and doesn't ship a monospace companion, so IBM Plex Mono stays in place for the small
-uppercase mono labels (eyebrows, data callouts) since there's no "Satoshi Mono" to swap in. Headings are
-semibold with tight tracking, no letter-spacing tricks beyond what's already set. Eyebrow labels use mono,
-uppercase, wide tracking, green.
+Satoshi and IBM Plex Mono are self-hosted (not loaded from a third-party CDN) as `.woff2` files in
+`public/fonts/`, declared via `@font-face` in `src/index.css` and preloaded in
+`src/layouts/BaseLayout.astro`. That was a deliberate performance call: no third-party font origin sitting
+in the critical path. Satoshi is free for personal and commercial use and doesn't ship a monospace
+companion, so IBM Plex Mono stays in place for the small uppercase mono labels (eyebrows, data callouts)
+since there's no "Satoshi Mono" to swap in. Headings are semibold with tight tracking, no letter-spacing
+tricks beyond what's already set. Eyebrow labels use mono, uppercase, wide tracking, and the section's
+accent color (green off the homepage, ocean on it).
+
+Amulya (from Fontshare, at the user's request) follows the same self-hosting rule but is a genuine
+variable font, one `.woff2` covers weight 300 to 700 continuously (plus a second file for italic), rather
+than a set of static per-weight files like Satoshi above. That range is used deliberately across the
+homepage/Nav/Footer for typographic depth, not left at one weight everywhere: `font-semibold` for section
+headings, `font-medium` one step down for card/step titles, `font-normal` for body copy, occasionally
+`font-light` for large pull-quote-style text (not small body text, thin weights get hard to read at small
+sizes), plus the occasional single-phrase `italic` accent (Hero's "SAP consultant", Mission's "period") as
+a one-off flourish, not a running style. See `CLAUDE.md`'s "Homepage" section for the full detail,
+including a real gotcha: `h1`-`h4` have their own direct font-family rule in `src/index.css`'s base layer,
+so `font-amulya` has to go on every heading tag itself, not just a wrapping section, inheritance alone
+doesn't reach headings the way it does for `p`/`span`/`a`.
+
+## Buttons
+Two shapes, used deliberately: pill (`rounded-full`) is reserved for the "featured hand-off to another
+page" CTA (see the pill exception under Layout principles below), everything else is `rounded-md`,
+square-ish per the default rule. As of the button redesign on the homepage and Nav, both shapes share one
+hover language so they read as the same system despite the shape difference: a `&rarr;` that translates
+right on `group-hover`, `hover:-translate-y-0.5` plus a soft shadow, and for filled (primary) buttons a
+left-to-right color-sweep fill (`absolute inset-0 scale-x-0 origin-left` → `group-hover:scale-x-100`,
+clipped by `overflow-hidden`). Outlined (secondary) buttons get a soft background wash fading in on hover
+instead of a hard instant color invert, that reads more deliberate at this weight of button. Primary
+buttons are `font-semibold`, secondary `font-medium`, one more place weight (not just color/fill) carries
+hierarchy.
 
 ## Layout principles
 - Left-aligned text blocks, not centered. This is an operator's tool, not a consumer app.
@@ -102,41 +172,96 @@ uppercase, wide tracking, green.
   Don't "fix" either of these back to square; they're intentional, not an inconsistency.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
 - Secondary-page hero: full-bleed dark section with an animated line-art graphic, same "vibe" as the
-  homepage hero, but each page gets its **own** graphic composition rather than reusing `FlowBackground`
-  verbatim. Thirteen exist so far: `ServicesOrbit.astro` for `/services` (a hub with capabilities orbiting
-  it, vs. the homepage's signals converging from fixed sources); `AskFlowboundBackground.astro` for
-  `/ask-flowbound` (the `spark` `SectionIcon` itself, enlarged and slowly rotating, as the hub, trading
-  bidirectional question/answer pulses with small chat-bubble nodes); `DemandForecastingBackground.astro`
-  for `/demand-forecasting` (a rotating `crate` hub with historical sales nodes flowing in and a forecast
-  trend line climbing out); `InventoryTrackingBackground.astro` for `/inventory-tracking` (a fixed `crate`
-  hub with a rotating radar-sweep wedge and three orbiting live-status nodes); `ShippingOptimizationBackground.astro`
-  for `/shipping-optimization` (a fixed `crate` hub with several candidate lanes fanned out, one clearly
-  brighter with a package actually moving along it, the rest dim and still being compared);
-  `SupplierCoordinationBackground.astro` for `/supplier-coordination` (a rotating `network` hub with calm,
-  idle supplier nodes and one actively flagged and pulsing); `WholesaleAccountManagementBackground.astro`
-  for `/wholesale-account-management` (a fixed `network` hub with steady, synced account nodes each
-  carrying a tier badge and a checkmark, no alert, no urgency); `ReorderBackground.astro` for `/reorder`
-  (a fixed `bolt` hub with a stock gauge draining toward a dashed reorder-point line that fires a pulse
-  into the hub the instant it crosses, which fires straight back out to purchase-order nodes flashing to
-  life); `PricingBackground.astro` for `/pricing` (a rotating `bolt` hub with a supplier-cost signal
-  and a demand signal flowing in, and a price-tag node whose needle sweeps back and forth but never passes
-  two fixed bound markers); `CustomerServiceBackground.astro` for `/customer-service` (a fixed `chat` hub
-  with customer questions flowing in, most answered directly with a return pulse along the same path, and
-  one routed out to a separate handoff node instead, standing in for the cases that need a person);
-  `QualityMonitoringBackground.astro` for `/quality-monitoring` (a rotating `shield-check` hub with three
-  calm, passing inspection batches and one actively flagged with a brighter, pulsing ring and an alert
-  mark); `ProductBackground.astro` for `/product` (four pillar nodes, one per corner, converging on a
-  fixed `compass` hub, standing in for "one system, reached four ways," the compass's four ticks echoing
-  the four pillars converging on it); and `HowItWorksBackground.astro` for `/how-it-works` (a single
-  `gear` hub, rotating clockwise, with the four step nodes, connect, signal, decision, ask, flowing into
-  it); and `BlogBackground.astro` for `/blog` (a fixed `document` hub sending pulses outward to three small
-  open-book "reader" nodes, the only hero where signals flow out from the hub rather than converging into
-  it, standing in for insight reaching readers instead of signal reaching a decision). Copy the pattern, not
-  the file: same
-  dark background, same green glow palette and pulse-ring motif, new composition each time, and vary
-  whether the hub itself rotates or stays fixed so consecutive pages don't feel identical. None of the
-  hubs use a small center "core dot" anymore; a few early ones shipped with one to fill the empty middle
-  of a hollow icon, but it read as a stray artifact once you looked for it, so it was dropped everywhere.
+  homepage hero used to be, but each page gets its **own** graphic composition rather than reusing
+  `FlowBackground` verbatim. The homepage itself no longer follows this pattern at all: its hero
+  (`HeroBackground.astro`) is now a real WebGL particle wave via three.js in the `ocean` palette, not an
+  SVG/SMIL line-art composition in the green/black palette, see `CLAUDE.md`'s "Homepage" section.
+  `/product` followed suit in a later session (see `CLAUDE.md`'s "Homepage" section, "Product page" note):
+  it has a WebGL hero (`productHeroWave.ts`, "Convergent Signals": four particle streams drifting in from
+  the corners to merge into one glowing hub), in the `ocean` palette, scoped to just that one script.
+  `/services` tried a WebGL hero too in the same session ("Modular Assembly": a particle field that
+  scatters, assembles into a hex lattice, holds, loosens, repeats), but it was explicitly removed again
+  at the user's request; `ServicesOrbit.astro` is back to a **static** `ocean`-palette gradient wash, no
+  canvas, no script, see `CLAUDE.md`'s "Services page" note for the full history before reintroducing
+  motion there. `/services` did keep one exception from that session: the full-screen `min-h-screen-nav`
+  hero treatment. `/product`'s hero picked up the same full-screen treatment in a still-later session, so
+  `/`, `/product`, and `/services` are now the three full-screen heroes on the site. `/services` itself is
+  now neither SVG/SMIL nor WebGL, just a static gradient, a category of its own.
+  `FlowBackground.astro` still exists but isn't imported anywhere currently; left on disk rather than
+  deleted, in case a future secondary page wants that exact composition.
+
+  In a later session still, ten more secondary heroes moved off the SVG/SMIL pattern too: every dedicated
+  capability page and every whole-service narrative page, each onto its own real JS canvas hero (Canvas 2D,
+  `requestAnimationFrame`, not WebGL) in the `ocean` palette instead of the green/black `fb-*` one. See
+  `CLAUDE.md`'s "Capability, narrative, and blog pages" section for the shared technical rules: drawing is
+  `ctx.clip()`-ed to roughly the right 40% of the section so it can never cross under the headline, the
+  composition fills that clipped strip's full height rather than clustering, and every hub stays fixed
+  rather than rotating (a deliberate reversal from the rotate-or-not variation the SVG/SMIL heroes used).
+  `/how-it-works` followed in a still later session, its own canvas hero too, described below. `/blog`
+  followed in a later session still, also its own canvas hero, described below: **no secondary hero on the
+  site still follows the original SVG/SMIL pattern** described at the top of this bullet; `FlowBackground.astro`
+  remains on disk, unused, as the only surviving example of that pattern's shape (see "Where things live"
+  below, don't delete it).
+
+  The twelve canvas heroes, each a genuinely different mechanism per an explicit "mix the elements" request
+  after the first page's hero was pitched as three separate pure concepts, not just a different color:
+  `AskFlowboundBackground.astro`/`src/scripts/askFlowboundHero.ts` for `/ask-flowbound`, **"Signal Field"**
+  (a fixed `spark` hub, ripple rings breathing outward, a drifting node field spread across the full strip,
+  comet-trail question/answer pulses on independent per-node cycles); `DemandForecastingBackground.astro`/
+  `demandForecastingHero.ts` for `/demand-forecasting`, **"Forecast Horizon"** (history bars settling into
+  a fixed `crate` hub at the pivot where history turns into a smoothly climbing projected curve, trailed by
+  a soft confidence cone and a traveling pulse; one bar flares bright for a bestseller, another dims and
+  flattens for dead stock); `InventoryTrackingBackground.astro`/`inventoryTrackingHero.ts` for
+  `/inventory-tracking`, **"Live Scan"** (a fixed `crate` hub anchoring two static radar rings and a
+  rotating sweep line; a scattered grid of status cells flares and reveals on-hand/incoming/committed as
+  the sweep passes each one); `ShippingOptimizationBackground.astro`/`shippingOptimizationHero.ts` for
+  `/shipping-optimization`, **"Lane Race"** (a fixed `crate` hub sending a comet-trail dot down each of
+  five fanned candidate lanes every race cycle; four slow, fade, and stop partway, one runs the full
+  distance and lights its destination, a different lane winning each cycle); `SupplierCoordinationBackground.astro`/
+  `supplierCoordinationHero.ts` for `/supplier-coordination`, **"Supplier Pulse"** (a fixed `network` hub
+  among several supplier nodes that mostly just breathe calmly; one, a different one each cycle, escalates
+  and sends a comet-trail signal into the hub before settling back down); `WholesaleAccountManagementBackground.astro`/
+  `wholesaleAccountManagementHero.ts` for `/wholesale-account-management`, **"Ledger Sync"** (a fixed
+  `network` hub among account nodes each carrying a tier ring and a checkmark, breathing in unison,
+  deliberately with *no* alert ever; a synchronization wave ripples outward from the hub every few seconds
+  and flashes each account as it passes); `ReorderBackground.astro`/`reorderHero.ts` for `/reorder`,
+  **"Threshold Drop"** (a vertical stock gauge drains toward a dashed reorder-point line; the instant it
+  crosses, a flash fires a bolt-shaped streak into the fixed `bolt` hub, which fires back out to three
+  purchase-order nodes lighting up in sequence, before the gauge resets); `PricingBackground.astro`/
+  `pricingHero.ts` for `/pricing`, **"Margin Band"** (a fixed `bolt` hub taking two continuous cost/demand
+  signal loops; a needle drifts smoothly on a bounded track below it, nudged by both but never crossing the
+  fixed floor/ceiling markers, deliberately with *no* discrete event, the explicit contrast to Reorder);
+  `CustomerServiceBackground.astro`/`customerServiceHero.ts` for `/customer-service`, **"Inbox Flow"** (a
+  steady stream of message bubbles travels toward a fixed `chat` hub; most bounce back answered with a
+  checkmark flash, one in four reroutes to a separate handoff node and settles there instead);
+  `QualityMonitoringBackground.astro`/`qualityMonitoringHero.ts` for `/quality-monitoring`, **"Inspection
+  Line"** (a horizontal conveyor runs through a fixed `shield-check` checkpoint; most batches cross straight
+  through with a checkmark flash, one in five stops, pulses an alert ring and a flag mark, then continues on
+  marked); `HowItWorksBackground.astro`/`howItWorksHero.ts` for `/how-it-works`, **"Scroll-Driven
+  Assembly"** (a winding path runs the full height of the strip through four checkpoint nodes, connect,
+  signal, decide, ask, the same four steps as the page's own step cards; a faint dash pattern flows along
+  it continuously as ambient motion, but a bright comet's *position* along the path is driven directly by
+  `watchScrollProgress` rather than its own clock, so it advances through the four steps in lockstep with
+  how far the visitor has scrolled the hero, reversible scrolling back up, each node lighting up as the
+  comet passes and dimming again if you scroll back past it); and, added in a later session still,
+  `BlogBackground.astro`/`blogHero.ts` for `/blog`, **"Insight Stream"** (a fixed `document` hub sends
+  ripple rings breathing outward and comet-trail pulses traveling *outward* along curved paths to a spread
+  of small open-book "reader" nodes across the full clipped strip, each node on its own independent pulse
+  cycle; the only hero in the batch where the flow direction is reversed from every other page's
+  converge-on-the-hub story, standing in for insight reaching readers instead of signal reaching a
+  decision). "Scroll-Driven Assembly" is the only one of the twelve canvas heroes whose main motion is
+  scroll-linked rather than self-timed, borrowing the mechanism the homepage and `/product` WebGL heroes use
+  for their fade/zoom, applied to a canvas hero's actual composition instead. It's also the second hero on
+  the site, after Quality Monitoring's conveyor, that isn't a hub-and-spokes shape: a sequential path
+  through four checkpoints instead of spokes converging on one hub. Insight Stream, by contrast, is
+  hub-and-spokes like the first ten, just with the spoke traffic reversed.
+
+  Copy the pattern, not the file, whichever category a new hero falls into: same dark background, same
+  glow palette and pulse-ring motif (SVG/SMIL pair, no longer used by any live page but still the shape
+  `FlowBackground.astro` preserves) or same clip/fill-the-strip/fixed-hub rules (canvas twelve), new
+  composition every time. None of the hubs, SVG/SMIL or canvas, use a small center "core dot": a few early
+  ones shipped with one to fill the empty middle of a hollow icon, but it read as a stray artifact once you
+  looked for it, so it was dropped everywhere and never brought back.
 - A "featured" CTA button that hands off to a deeper page (see the pill-button exception above) can use a
   left-to-right color-sweep hover instead of an instant color change: an absolute `inset-0` overlay in the
   darker shade, `scale-x-0 origin-left`, transitioning to `scale-x-100` on `group-hover`, clipped by the
@@ -152,49 +277,63 @@ uppercase, wide tracking, green.
   the empty space next to left-aligned copy without competing with it.
 
 ## Where things live
-- `src/assets/logo.png`: the real logo file, cropped and transparent, run through Astro's image pipeline
-  wherever it's used
-- `src/components/LogoLockup.astro`: logo lockup (mark plus wordmark), used in nav and footer
+- `src/assets/logo.png`: the real logo file, cropped and transparent, still the source of truth for the
+  brand mark, but not imported anywhere in code today, `LogoLockup.astro` renders `LogoMark.astro` instead
+  now (see the Logo section above)
+- `src/components/LogoLockup.astro`: logo lockup (mark plus wordmark), used in nav and footer, renders
+  `LogoMark.astro` with `palette="ocean"`
 - `src/components/LogoMark.astro`: hand-redrawn vector mark on its own, for anywhere the wordmark isn't
-  needed
+  needed, takes `palette` (`"fb"` or `"ocean"`) and `id` props
 - `public/logo-mark.svg`: source vector for the mark, also the basis for the generated OG image
 - `public/favicon.svg`: the favicon (a vector version, not the PNG logo)
-- `public/fonts/`: self-hosted Satoshi and IBM Plex Mono `.woff2` files
-- `src/components/FlowBackground.astro`: full-bleed animated hero background for the homepage (signals
-  flowing into the core)
-- `src/components/ServicesOrbit.astro`: full-bleed animated hero background for the Services page (hub
-  and orbiting capability nodes); the template to follow for other secondary-page heroes, not to reuse
-  directly
-- `src/components/AskFlowboundBackground.astro`: full-bleed animated hero background for `/ask-flowbound`
-  (the `spark` icon as a rotating hub, trading pulses with small chat nodes); a second reference example
-  of the "own composition per page" rule above
-- `src/components/DemandForecastingBackground.astro`, `InventoryTrackingBackground.astro`,
-  `ShippingOptimizationBackground.astro`, `SupplierCoordinationBackground.astro`,
-  `WholesaleAccountManagementBackground.astro`: full-bleed animated hero backgrounds for the five
-  dedicated capability pages under Inventory and Supplier Management, each its own composition per the
-  "Secondary-page hero" rule above
-- `src/components/ReorderBackground.astro`, `PricingBackground.astro`: full-bleed animated hero
-  backgrounds for the two dedicated capability pages under Autonomous, same rule, using the `bolt` icon
-  as their hub instead of `crate` or `network`
-- `src/components/CustomerServiceBackground.astro`, `QualityMonitoringBackground.astro`: full-bleed
-  animated hero backgrounds for the two whole-service narrative pages (`/customer-service`,
-  `/quality-monitoring`), same rule, using the `chat` and `shield-check` icons as their hub respectively,
-  the first hero use of either icon
-- `src/components/ProductBackground.astro`: full-bleed animated hero background for `/product`, same
-  rule, a fixed `compass` hub with four pillar nodes converging on it
-- `src/components/HowItWorksBackground.astro`: full-bleed animated hero background for `/how-it-works`,
-  same rule, a single rotating `gear` hub with the four step nodes flowing in
-- `src/components/BlogBackground.astro`: full-bleed animated hero background for `/blog`, same rule, a
-  fixed `document` hub sending pulses outward to three open-book reader nodes
+- `public/fonts/`: self-hosted Satoshi, IBM Plex Mono, and Amulya (homepage/Nav/Footer/logo, `/product`,
+  `/services`, all ten capability/narrative pages, `/how-it-works`, and `/blog`, see Typography above)
+  `.woff2` files
+- `src/components/HeroBackground.astro`: full-bleed WebGL hero background for the homepage only (three.js
+  particle wave, `ocean` palette, driven by `src/scripts/heroWave.ts`), not an SVG/SMIL composition like
+  every other secondary-page hero except `/product`'s. See `CLAUDE.md`'s "Homepage" section before
+  touching it.
+- `src/components/FlowBackground.astro`: full-bleed animated SVG/SMIL hero background (signals flowing
+  into the core), not imported anywhere currently, left on disk rather than deleted, now the only surviving
+  example of the SVG/SMIL secondary-hero pattern's shape since every live secondary hero (including
+  `/blog`, the last holdout) has moved to canvas or WebGL
+- `src/components/ServicesOrbit.astro`: static (non-animated) full-bleed `ocean`-palette gradient
+  background for `/services` only. Previously a WebGL particle system ("Modular Assembly"), explicitly
+  removed at the user's request; see `CLAUDE.md`'s "Homepage" section, "Services page" note, for the full
+  history before reintroducing any hero animation here. The twelve capability/narrative/blog-page heroes
+  below it, plus `HowItWorksBackground.astro`, are canvas-based, see `CLAUDE.md`'s "Capability, narrative,
+  and blog pages" section.
+- `src/components/AskFlowboundBackground.astro`, `DemandForecastingBackground.astro`,
+  `InventoryTrackingBackground.astro`, `ShippingOptimizationBackground.astro`,
+  `SupplierCoordinationBackground.astro`, `WholesaleAccountManagementBackground.astro`,
+  `ReorderBackground.astro`, `PricingBackground.astro`, `CustomerServiceBackground.astro`,
+  `QualityMonitoringBackground.astro`, `HowItWorksBackground.astro`, `BlogBackground.astro`: full-bleed hero
+  backgrounds for the seven dedicated capability pages, three whole-service narrative pages, `/how-it-works`,
+  and `/blog`. Each is just a `<canvas>` wrapper (plus a static CSS base-gradient and grain overlay)
+  importing its own same-named script from `src/scripts/` (e.g. `askFlowboundHero.ts`, `howItWorksHero.ts`,
+  `blogHero.ts`), not an SVG/SMIL composition, that's a change from how `AskFlowboundBackground.astro`/
+  `HowItWorksBackground.astro`/`BlogBackground.astro` used to work. See the "Secondary-page hero" bullet
+  above for what each one shows and `CLAUDE.md`'s "Capability, narrative, and blog pages" section for the
+  shared technical rules (clipped drawing, fixed hubs, the `export {}` module-scope gotcha, though
+  `howItWorksHero.ts` is exempt from that last one since it has a real import) before adding a thirteenth.
+- `src/components/ProductBackground.astro`: full-bleed WebGL hero background for `/product` only (three.js
+  particle streams, `ocean` palette, driven by `src/scripts/productHeroWave.ts`), not an SVG/SMIL or canvas
+  composition like every other secondary-page hero. See `CLAUDE.md`'s "Homepage" section, "Product page"
+  note, before touching it.
 - `src/components/icons/SectionIcon.astro`: small monoline section icons (crate, network, bolt, chat,
   shield-check, spark, compass, gear, document), used top-right of a section's text block on content pages.
   `gear`
   is computed rather than hand-drawn: a proper flat-toothed cog outline (an 8-point polygon alternating
-  outer/inner radius per tooth, not spokes on a ring) plus eight small connector nodes radiating off it,
-  each a short line ending in a hollow dot, echoing "the engine, wired into everything else." The same
-  `gearOutline`/`polar` helpers are duplicated (not imported) in `HowItWorksBackground.astro` for the
-  hero's rotating hub, matching this codebase's convention of small per-component duplication over a
-  shared utils file.
+  outer/inner radius per tooth, not spokes on a ring) orbited by eight small hollow nodes, echoing "the
+  engine, wired into everything else." The nodes used to each carry a connecting line back to the gear, but
+  the line's endpoint sat at the node circle's own center, so it always crossed the ring's stroke and
+  dangled into its hollow middle, a stray "tail" inside every node with no room to fix cleanly (no gap
+  fits on both the gear side and the node side without clipping the viewBox); removed rather than patched,
+  the nodes are plain floating dots now. `gear` is
+  also the watermark icon on `/how-it-works`'s "what it is" section (spin/pulse-ring/drift treatment, same
+  as every other capability page's watermark); the hero itself no longer duplicates the gear geometry now
+  that `HowItWorksBackground.astro` is canvas-based, it draws the four step glyphs instead (see
+  "Secondary-page hero" above).
 - `src/components/Seo.astro`: per-page title, description, canonical, OG/Twitter tags, and JSON-LD schema
 - `src/layouts/BaseLayout.astro`: the shared page shell (nav, footer, font preloads, `<Seo>`), used by
   every page
