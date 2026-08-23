@@ -63,6 +63,32 @@ Be cautious about publishing volume: a plan to add many posts a day for months r
 content abuse" policy if quality drops to hit a quota. Favor fewer, genuinely useful posts over hitting a
 cadence target.
 
+**All 21 posts SEO-rewritten (2026-08-23).** Every existing post was rewritten through a real content
+pipeline, not a stylistic pass: real competitor-article research (WebSearch/WebFetch against actual
+top-ranking articles for the post's target keyword, never vendor homepages, which don't have the H2/H3
+article structure needed for gap analysis), a content-gap analysis, a ~1,500-word outline with a tight
+featured-snippet-targeted definition up front, a draft in the site's existing voice (no em dashes, concrete
+numbers over generic advice), an EEAT self-review, 5+ internal links woven into sentences (not bare lists),
+and 3 title-tag/meta-description options each, capped so the rendered `{title} | Flowbound` tag stays under
+60 characters and the description under 155. The first 9 posts map to the site's core keyword list (Supply
+Chain, SAP, Demand Forecasting, Inventory Tracking, Shipping Optimization, Supplier Coordination, Wholesale
+Account Management, Reorder, Pricing); the other 12 were each assigned a realistic informational keyword
+based on their existing angle (e.g. "dead stock," "PO approval workflow," "incoming inspection"). This
+process is now the standing default for blog work, not a one-off, and a new post should follow the same
+pipeline rather than being written ad hoc.
+
+One real accuracy bug surfaced and was fixed during this pass, worth knowing before writing another post's
+closing product tie-in: a draft for `what-a-wholesale-account-actually-needs.md` described credit-limit and
+credit-hold enforcement as something the product handles, but the actual Wholesale Account Management
+capability (`src/data/services.ts`) only covers pricing tiers, order minimums, and standing agreements, not
+AR/credit. **Before writing any paragraph that ties a post back to a specific Flowbound capability, read
+that capability's actual description in `services.ts` and match it exactly**, don't extrapolate what the
+product "probably" also does. A related dev-server gotcha found in the same session: a long-running
+`astro dev` process's content-layer cache can go stale and keep serving an old post body even after the file
+changed on disk and `astro check`/`astro build` both reflect the new content correctly; this isn't a browser
+cache issue (confirmed with `curl` directly against the dev server) and the fix is restarting the dev server,
+not investigating the browser.
+
 ### Data-driven pages vs. narrative pages
 
 `src/data/services.ts` is the single source of truth for `/services` content. The nav dropdown
@@ -644,8 +670,56 @@ unused in code today, not deleted. The river dividing the mark's two "comma" sha
 palette (was, and still is in the original `"fb"` palette, pure white), a deliberate palette-matching tweak
 at the user's request, see `BRAND_GUIDELINES.md`'s Logo section.
 
+### SEO and canonical URLs
+
+`astro.config.mjs` sets `site: "https://www.flowbound.ai"` (with `www`) and `trailingSlash: "always"`.
+Neither is arbitrary: production on Vercel actually serves from `www.flowbound.ai` (200), with the bare
+apex `flowbound.ai` 308-redirecting to it on every path, confirmed with `curl -I` against both hosts
+directly rather than assumed from config. Every built page is a directory (`page/index.html`), so the real,
+final URL for every route always carries a trailing slash to match.
+
+This wasn't always right. `site` used to be the apex (no `www`), and `src/components/Seo.astro`'s canonical
+was built straight off `Astro.url.pathname`/a `path` prop that never carried a trailing slash. That created
+two independent mismatches between the sitemap/real URLs and what each page's own canonical tag claimed was
+"official": wrong host (canonical pointed at the domain that redirects away from itself, not the one that
+actually serves) and a missing trailing slash. Search Console surfaced this as "Alternate page with proper
+canonical tag" across the blog, Google correctly deferring to a canonical that pointed at the wrong place,
+so the real crawled URL never got indexed. Fixed in commit `08b4841` (2026-08-23): `site` now points at
+`www`, and `Seo.astro`'s canonical always normalizes to a trailing slash regardless of what `path` is passed
+in, so a future page can't reintroduce the slash half of this bug even by accident. `public/robots.txt`'s
+`Sitemap:` line and `[slug].astro`'s breadcrumb JSON-LD (the one other spot that builds an absolute URL
+straight from `Astro.site`, found via `grep -rl "Astro.site"`) needed matching fixes.
+
+**Every internal link in the codebase has to carry a trailing slash.** `trailingSlash: "always"` makes
+Astro's own dev server and `astro preview` enforce this strictly now: an internal `<a href>` missing the
+slash 404s locally, which is the intended guardrail going forward, not a bug to route around. Fixing the
+config surfaced about 15 stale non-slash `href`s across `src/data/nav.ts`, every capability/service `href`
+in `src/data/services.ts`, `Nav.astro`'s services flyout, a few components (`ProductSystem.astro`,
+`HowItWorks.astro`), the blog pagination/tag-page post cards, and, easy to miss, plain Markdown links inside
+20 blog post bodies (`](/demand-forecasting)` style) that have nothing to do with any Astro component.
+Before trusting a build that touches routing or links, don't rely on `astro check` alone: build, start
+`npm run preview`, `grep` every `href="/..."` out of `dist/**/*.html`, and `curl` each one against the
+preview server to confirm 200. Also worth scripting whenever `Seo.astro` or the sitemap changes: every
+canonical tag in `dist/**/index.html` should have an exact string match in `dist/sitemap-0.xml`; if one
+doesn't, something is generating a URL that disagrees with itself.
+
+**Search Console takes time to catch up after this kind of fix; new-looking report buckets right after
+deploy don't mean it failed.** Two more buckets appeared post-deploy, both artifacts of Google re-crawling
+the same ~44 old apex-domain URLs it had already discovered under the pre-fix sitemap: "Discovered -
+currently not indexed" (queued, not yet crawled) draining into "Page with redirect" (crawled, found the
+clean 308 to `www`, correctly excluded since redirecting is the URL's whole job) as Google works through its
+backlog. Confirmed the redirects are clean before concluding that (single-hop for path URLs, two-hop only
+for the plain `http://` variant's protocol-then-domain upgrade, no loops, nothing longer) and that the `www`
+targets are healthy (200, self-referencing canonical, no `noindex`, allowed by `robots.txt`). If picking
+this back up, check Search Console's actual "Indexed" count/trend rather than the exclusion-reason buckets,
+that's the real signal for whether the fix is paying off. A `site:www.flowbound.ai` search run directly on
+Google.com (not through a general-purpose web-search API, which doesn't reliably reflect Google's actual
+index for a smaller site, confirmed it returns unrelated results for this domain) or the URL Inspection tool
+are the trustworthy ways to check a specific page's status.
+
 ## Deployment
 
-Live at flowbound.ai on Vercel, connected to `MuhammadAli0297/flowboundai` on GitHub. Every push to `main`
-auto-deploys; no environment variables required. Split commits by concern (feature/bugfix/docs) rather than
-bundling unrelated changes.
+Served from `https://www.flowbound.ai` on Vercel (the bare apex `flowbound.ai` 308-redirects to it on every
+path, see "SEO and canonical URLs" above), connected to `MuhammadAli0297/flowboundai` on GitHub. Every push
+to `main` auto-deploys; no environment variables required. Split commits by concern (feature/bugfix/docs)
+rather than bundling unrelated changes.

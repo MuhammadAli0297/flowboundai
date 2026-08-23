@@ -26,7 +26,8 @@ verify it visually with a real headless-browser screenshot against `npm run prev
 
 ## Deployment
 
-Live at flowbound.ai, hosted on Vercel, connected to the `MuhammadAli0297/flowboundai` GitHub repo. Every
+Live at www.flowbound.ai (the bare apex redirects to `www`), hosted on Vercel, connected to the
+`MuhammadAli0297/flowboundai` GitHub repo. Every
 push to `main` auto-deploys. No environment variables are required. Split commits by concern
 (feature/bugfix/docs/content) rather than bundling unrelated changes.
 
