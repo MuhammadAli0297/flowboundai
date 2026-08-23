@@ -33,6 +33,6 @@ support experience means fixing the visibility gap underneath it, not writing a 
 
 ## Answering it before your team has to
 
-The best version of this doesn't involve your team at all. [Customer Service](/customer-service) puts your
+The best version of this doesn't involve your team at all. [Customer Service](/customer-service/) puts your
 live order, shipment, and inventory data behind an agent that answers "where's my order" directly, pulled
 from the actual shipment record, so it's answered before it ever needs a person to go looking.

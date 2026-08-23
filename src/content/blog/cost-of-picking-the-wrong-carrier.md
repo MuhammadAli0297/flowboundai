@@ -36,5 +36,5 @@ cost isn't a single bad decision. It's dozens of slightly-suboptimal ones a mont
 
 The fix isn't picking a better carrier once. It's comparing lanes against current rates continuously, so the
 right option doesn't depend on someone remembering to re-shop it.
-[Shipping Optimization](/shipping-optimization) compares carriers, lanes, and lead times automatically and
+[Shipping Optimization](/shipping-optimization/) compares carriers, lanes, and lead times automatically and
 recommends the option that gets the order there on time for the least cost, lane by lane, not once and done.

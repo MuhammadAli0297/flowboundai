@@ -35,6 +35,6 @@ being tracked the whole time, not assembled after the fact.
 
 ## Bringing the numbers to the conversation
 
-[Quality Monitoring](/quality-monitoring) gives every supplier a running scorecard of defect rates and
+[Quality Monitoring](/quality-monitoring/) gives every supplier a running scorecard of defect rates and
 on-time-in-full performance, built automatically from your returns and inspection data, so the next quality
 conversation with a vendor comes with the numbers already attached.

@@ -39,6 +39,6 @@ actual demand compares.
 
 The math above works, but recalculating it by hand for every SKU every week is exactly the kind of task
 that quietly stops happening once things get busy. That's the gap
-[Demand Forecasting](/demand-forecasting) is built to close: it watches sales history, seasonality, and
+[Demand Forecasting](/demand-forecasting/) is built to close: it watches sales history, seasonality, and
 supplier lead times continuously, and tells you what to reorder and when, so the forecast stays current
 without anyone having to rebuild the spreadsheet.

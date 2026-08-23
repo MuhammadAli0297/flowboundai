@@ -36,6 +36,6 @@ real-time, whatever the marketing page says.
 
 The fix isn't a faster refresh button. It's a system built to watch continuously in the first place, so
 there's no gap between what happened and what the number shows.
-[Inventory Tracking](/inventory-tracking) is built around exactly that distinction: real-time visibility
+[Inventory Tracking](/inventory-tracking/) is built around exactly that distinction: real-time visibility
 into what's on hand, what's incoming, and what's already spoken for, not a dashboard that just looks
 current.

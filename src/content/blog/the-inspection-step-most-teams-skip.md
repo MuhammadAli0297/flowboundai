@@ -36,6 +36,6 @@ problem.
 ## Logging every inspection without adding a step
 
 The goal isn't more manual checking, it's making sure the checking that happens actually gets recorded and
-compared over time. [Quality Monitoring](/quality-monitoring) logs incoming inspection results automatically
+compared over time. [Quality Monitoring](/quality-monitoring/) logs incoming inspection results automatically
 and flags anything that fails before it ever reaches your shelf, so the step that's easiest to skip doesn't
 have to depend on nobody being busy that week.

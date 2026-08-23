@@ -38,6 +38,6 @@ as one category instead of two very different ones.
 
 Telling the two apart by memory works until you're tracking more than a handful of SKUs, at which point it
 becomes a spreadsheet exercise nobody has time to run every month.
-[Inventory Tracking](/inventory-tracking) keeps real-time visibility into what's on hand and how it's
+[Inventory Tracking](/inventory-tracking/) keeps real-time visibility into what's on hand and how it's
 actually trending, so the distinction between dead and slow shows up in the data instead of depending on
 someone remembering which is which.

@@ -32,4 +32,4 @@ where the mistake happened. The business isn't badly run. It's running on tools 
 The fix isn't a smaller, cheaper version of an enterprise ERP; most of what makes those platforms heavy is
 exactly what a smaller team doesn't need. It's a system built from the start for this size of business: one
 that reads the data already sitting in your existing tools and turns it into a decision, with the reasoning
-attached, instead of another dashboard to check. That's the gap [Flowbound](/product) is built to close.
+attached, instead of another dashboard to check. That's the gap [Flowbound](/product/) is built to close.

@@ -43,21 +43,21 @@ export const services: Service[] = [
         title: "Demand Forecasting",
         description:
           "Flowbound looks at your sales history, seasonality, and supplier lead times to tell you what you'll actually need to reorder and when, so you're not caught flat-footed on a bestseller or sitting on dead stock.",
-        href: "/demand-forecasting",
+        href: "/demand-forecasting/",
         ctaLabel: "Explore Demand Forecasting",
       },
       {
         title: "Inventory Tracking",
         description:
           "Real-time visibility into what's on hand, what's incoming, and what's already spoken for. No more reordering something you already have or promising stock you don't.",
-        href: "/inventory-tracking",
+        href: "/inventory-tracking/",
         ctaLabel: "Explore Inventory Tracking",
       },
       {
         title: "Shipping Optimization",
         description:
           "Flowbound compares carriers, lanes, and lead times automatically and recommends the option that gets your order there on time for the least cost. No manual rate shopping required.",
-        href: "/shipping-optimization",
+        href: "/shipping-optimization/",
         ctaLabel: "Explore Shipping Optimization",
       },
     ],
@@ -75,14 +75,14 @@ export const services: Service[] = [
         title: "Supplier Coordination",
         description:
           "Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, and flags the ones that need your attention before a delay turns into a stockout.",
-        href: "/supplier-coordination",
+        href: "/supplier-coordination/",
         ctaLabel: "Explore Supplier Coordination",
       },
       {
         title: "Wholesale Account Management",
         description:
           "Track pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder goes out at the right terms without you having to double check the contract each time.",
-        href: "/wholesale-account-management",
+        href: "/wholesale-account-management/",
         ctaLabel: "Explore Wholesale Account Management",
       },
     ],
@@ -100,14 +100,14 @@ export const services: Service[] = [
         title: "Reorder",
         description:
           "Flowbound places the purchase order the moment your reorder point is hit, at the quantity and supplier it already recommended, so restocking doesn't wait on someone opening their laptop.",
-        href: "/reorder",
+        href: "/reorder/",
         ctaLabel: "Explore Reorder",
       },
       {
         title: "Pricing",
         description:
           "When supplier costs shift or demand moves, Flowbound adjusts your sell price within the bounds you set, so your margin holds without you re-running the math every time something changes.",
-        href: "/pricing",
+        href: "/pricing/",
         ctaLabel: "Explore Pricing",
       },
     ],
@@ -137,7 +137,7 @@ export const services: Service[] = [
           "The same agent that runs your supply chain answers customer questions in plain language, using your real data, so your team only steps in for the calls that actually need a person.",
       },
     ],
-    href: "/customer-service",
+    href: "/customer-service/",
     ctaLabel: "Explore Customer Service",
   },
   {
@@ -165,7 +165,7 @@ export const services: Service[] = [
           "Incoming inspection results get logged and checked automatically, and anything that fails gets flagged before it ever reaches your shelf.",
       },
     ],
-    href: "/quality-monitoring",
+    href: "/quality-monitoring/",
     ctaLabel: "Explore Quality Monitoring",
   },
 ]

@@ -53,26 +53,26 @@ const panelLinkClass = "font-amulya block px-4 py-3 text-[0.88rem] font-normal t
             </a>
             <div class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/services:visible group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:opacity-100">
               <div class={outerPanelClass}>
-                <a href="/ask-flowbound" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
+                <a href="/ask-flowbound/" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
                 {menuServices.map(({ service, expand }, i) => {
                   const isLast = i === menuServices.length - 1
                   const roundedLast = isLast ? "rounded-b-2xl" : ""
                   return expand ? (
                     <div class="group/item relative">
-                      <a href={`/services#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
+                      <a href={`/services/#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
                         {service.name}
                         <span class="font-mono text-xs text-ocean-950/30">&rsaquo;</span>
                       </a>
                       <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all duration-150 group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
                         <div class={panelClass}>
                           {service.capabilities.map((capability) => (
-                            <a href={capability.href ?? `/services#${service.slug}`} class={panelLinkClass}>{capability.title}</a>
+                            <a href={capability.href ?? `/services/#${service.slug}`} class={panelLinkClass}>{capability.title}</a>
                           ))}
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <a href={service.href ?? `/services#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
+                    <a href={service.href ?? `/services/#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
                   )
                 })}
               </div>

@@ -33,6 +33,6 @@ drifting lead time, never gets fixed and shows up again next month.
 ## Catching the reorder before it needs rescuing
 
 The real fix isn't a faster shipping option. It's not needing rush shipping in the first place, because the
-reorder went out when it was supposed to. [Reorder](/reorder) places the purchase order the moment your
+reorder went out when it was supposed to. [Reorder](/reorder/) places the purchase order the moment your
 reorder point is actually hit, so the shipment that would have needed rescuing goes out on a normal timeline
 instead.

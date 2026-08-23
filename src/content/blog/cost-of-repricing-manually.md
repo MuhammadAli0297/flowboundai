@@ -35,6 +35,6 @@ been.
 ## Adjusting price the moment the input changes
 
 The fix isn't reviewing prices more often. It's not needing a review at all for the routine cases.
-[Pricing](/pricing) adjusts your sell price within the bounds you set the moment a supplier cost or demand
+[Pricing](/pricing/) adjusts your sell price within the bounds you set the moment a supplier cost or demand
 signal actually changes, so margin holds without anyone having to re-run the math every time something
 shifts.

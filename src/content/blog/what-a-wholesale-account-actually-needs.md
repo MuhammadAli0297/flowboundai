@@ -35,6 +35,6 @@ finally reconciles the account.
 ## Keeping every account's terms current automatically
 
 The fix isn't a better spreadsheet template. It's not needing to double-check the contract every time a
-reorder goes out. [Wholesale Account Management](/wholesale-account-management) tracks pricing tiers, order
+reorder goes out. [Wholesale Account Management](/wholesale-account-management/) tracks pricing tiers, order
 minimums, and standing agreements per account, so every reorder goes out at the right terms without anyone
 having to remember what was negotiated six months ago.

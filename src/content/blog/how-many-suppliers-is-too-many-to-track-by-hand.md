@@ -36,6 +36,6 @@ happened.
 ## Watching every supplier the same way, at any count
 
 The fix isn't managing fewer suppliers. It's not relying on memory and manual review to catch the one that
-needs attention. [Supplier Coordination](/supplier-coordination) keeps every supplier conversation, purchase
+needs attention. [Supplier Coordination](/supplier-coordination/) keeps every supplier conversation, purchase
 order, and lead time change in one place and flags the ones that need you, so the count of suppliers you're
 managing stops being the thing that determines whether something gets missed.

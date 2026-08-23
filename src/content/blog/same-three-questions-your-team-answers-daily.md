@@ -39,6 +39,6 @@ it's someone having to manually go find it and repeat it back, ticket after tick
 
 ## Freeing your team for the questions that need a person
 
-[Customer Service](/customer-service) answers the repeat questions directly from your live data, order
+[Customer Service](/customer-service/) answers the repeat questions directly from your live data, order
 status, returns, pricing, so your team's time goes to the calls that actually need a person, instead of the
 same three questions on a loop.

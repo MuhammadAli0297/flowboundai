@@ -38,6 +38,6 @@ enough, consider whether this order needs to go out today instead of waiting for
 
 The harder part isn't the math, it's noticing the slip in the first place, especially across a dozen
 suppliers when nobody has time to review every purchase order by hand. That's what
-[Supplier Coordination](/supplier-coordination) is for: it keeps every supplier conversation, purchase
+[Supplier Coordination](/supplier-coordination/) is for: it keeps every supplier conversation, purchase
 order, and lead time change in one place, and flags the ones that need your attention before a slow
 supplier turns into a stockout.

@@ -38,5 +38,5 @@ smaller version.
 
 None of this means small teams are doing it wrong. It means the category has a gap where a real system
 should be, sized for a team that doesn't have six months and a consultant to spend standing one up.
-[How It Works](/how-it-works) walks through what that actually looks like: connecting to what you already
+[How It Works](/how-it-works/) walks through what that actually looks like: connecting to what you already
 use, and turning it into a decision instead of another spreadsheet to maintain.

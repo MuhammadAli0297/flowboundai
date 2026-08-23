@@ -1,8 +1,8 @@
 export const navLinks = [
-  { label: "Product", href: "/product" },
-  { label: "Services", href: "/services" },
-  { label: "How it works", href: "/how-it-works" },
-  { label: "Blog", href: "/blog" },
+  { label: "Product", href: "/product/" },
+  { label: "Services", href: "/services/" },
+  { label: "How it works", href: "/how-it-works/" },
+  { label: "Blog", href: "/blog/" },
 ]
 
 // Curated Services nav dropdown. `expand: true` gives that service a nested
@@ -18,13 +18,13 @@ export const servicesMenu: { slug: string; expand: boolean }[] = [
 
 export const footerLinks = {
   product: [
-    { label: "What it is", href: "/product" },
-    { label: "Services", href: "/services" },
-    { label: "How it works", href: "/how-it-works" },
+    { label: "What it is", href: "/product/" },
+    { label: "Services", href: "/services/" },
+    { label: "How it works", href: "/how-it-works/" },
     { label: "vs. SAP", href: "/#sap" },
   ],
   company: [
-    { label: "Blog", href: "/blog" },
+    { label: "Blog", href: "/blog/" },
     { label: "Who we serve", href: "/#smb" },
     { label: "Request a pilot", href: "/#cta" },
   ],

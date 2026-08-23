@@ -36,6 +36,6 @@ usually pays for itself the same day you do it.
 ## Comparing lanes automatically
 
 A quarterly manual check is better than nothing, but it's still a snapshot, and rates move faster than
-quarters do. [Shipping Optimization](/shipping-optimization) compares carriers, lanes, and lead times
+quarters do. [Shipping Optimization](/shipping-optimization/) compares carriers, lanes, and lead times
 automatically and recommends the cheapest option that still gets the order there on time, so the comparison
 runs continuously instead of once every few months.

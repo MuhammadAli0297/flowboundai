@@ -35,6 +35,6 @@ understaffed and it's still the source of most return disputes and most quietly-
 ## Checking the record instead of guessing
 
 The fix isn't asking your team to move faster through the same manual process. It's checking the actual
-order and shipment record automatically, every time. [Customer Service](/customer-service) checks a return
+order and shipment record automatically, every time. [Customer Service](/customer-service/) checks a return
 or damage claim against the real order and shipment data and routes it correctly, so your team isn't
 chasing down details before they can even start helping.

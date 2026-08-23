@@ -34,6 +34,6 @@ numbers instead of having to remember them across months of individual tickets.
 
 ## Watching every supplier the same way, all the time
 
-[Quality Monitoring](/quality-monitoring) watches returns, inspections, and supplier performance together,
+[Quality Monitoring](/quality-monitoring/) watches returns, inspections, and supplier performance together,
 so a defect rate that's drifting shows up as a pattern while it's still one incident, not after it's already
 cost you a repeat customer.

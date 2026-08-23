@@ -36,6 +36,6 @@ them.
 ## Setting the guardrails once, instead of approving forever
 
 The fix isn't removing oversight, it's moving it earlier, into the guardrails, so most orders don't need to
-wait on you at all. [Reorder](/reorder) places the purchase order the moment your reorder point is hit, at
+wait on you at all. [Reorder](/reorder/) places the purchase order the moment your reorder point is hit, at
 the quantity and supplier you've already approved of in principle, so restocking doesn't wait on someone
 opening their laptop.

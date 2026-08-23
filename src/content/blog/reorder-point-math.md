@@ -35,6 +35,6 @@ formula's clothes, and it drifts out of date the same way a stale lead time does
 ## Letting the number update itself
 
 The math isn't hard. Keeping it current for every SKU, every week, as sales pace and lead times shift, is
-the part that stops happening once things get busy. [Reorder](/reorder) exists for exactly this: it watches
+the part that stops happening once things get busy. [Reorder](/reorder/) exists for exactly this: it watches
 the reorder point per SKU continuously and places the purchase order the moment it's hit, at the quantity
 and supplier already worked out, so restocking doesn't wait on someone remembering to check.
