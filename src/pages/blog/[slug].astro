@@ -1,20 +1,38 @@
 ---
 import { getCollection, render } from "astro:content"
 import BaseLayout from "../../layouts/BaseLayout.astro"
+import BlogThumbnail from "../../components/BlogThumbnail.astro"
 import { slugifyTag } from "../../lib/tags"
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft)
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post },
+    props: { post, allPosts: posts },
   }))
 }
 
-const { post } = Astro.props
+const { post, allPosts } = Astro.props
 const { Content } = await render(post)
 
 const siteUrl = Astro.site!.toString().replace(/\/$/, "")
+
+const formatDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+
+// Cross-linking for the "Related posts" strip: same category outranks a shared tag, ties broken by
+// most recent, so every post ends up with real click-through paths into the rest of the blog rather
+// than a dead end at the bottom of the article.
+const relatedPosts = allPosts
+  .filter((p) => p.id !== post.id)
+  .map((p) => {
+    let score = 0
+    if (p.data.category === post.data.category) score += 10
+    score += p.data.tags.filter((tag) => post.data.tags.includes(tag)).length * 3
+    return { post: p, score }
+  })
+  .sort((a, b) => b.score - a.score || b.post.data.publishDate.valueOf() - a.post.data.publishDate.valueOf())
+  .slice(0, 3)
+  .map(({ post }) => post)
 
 const schema = [
   {
@@ -87,7 +105,43 @@ const schema = [
       </div>
     </article>
   </section>
+
+  {relatedPosts.length > 0 && (
+    <section class="border-t border-ocean-700/15 bg-ocean-200 bg-grain py-16 font-amulya md:py-20">
+      <div class="container-fb max-w-2xl">
+        <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">Related reading</p>
+        <div class="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {relatedPosts.map((related, i) => (
+            <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 90}ms`}>
+              <a
+                href={`/blog/${related.id}/`}
+                data-tilt
+                class="tilt-card group relative z-10 flex h-full flex-col overflow-hidden border border-ocean-700/20 bg-ocean-100 transition-colors duration-500 ease-out hover:border-ocean-700/45"
+              >
+                <BlogThumbnail category={related.data.category} class="aspect-[16/10] w-full" />
+                <div class="flex flex-1 flex-col p-4">
+                  <span class="font-mono text-[0.65rem] uppercase tracking-wider text-ocean-950/35">
+                    {formatDate(related.data.publishDate)}
+                  </span>
+                  <h3 class="mt-2 font-amulya text-[0.95rem] font-medium leading-snug text-ocean-950 group-hover:text-ocean-600">
+                    {related.data.title}
+                  </h3>
+                </div>
+                <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-ocean-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>
+
+<script>
+  import "../../scripts/hoverGlow"
+  import "../../scripts/cardTilt"
+  import "../../scripts/scrollReveal"
+</script>
 
 <style>
   /* Repoint @tailwindcss/typography's CSS-variable color hooks at the ocean palette instead of its
