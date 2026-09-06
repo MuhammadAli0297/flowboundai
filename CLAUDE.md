@@ -68,7 +68,7 @@ pipeline, not a stylistic pass: real competitor-article research (WebSearch/WebF
 top-ranking articles for the post's target keyword, never vendor homepages, which don't have the H2/H3
 article structure needed for gap analysis), a content-gap analysis, a ~1,500-word outline with a tight
 featured-snippet-targeted definition up front, a draft in the site's existing voice (no em dashes, concrete
-numbers over generic advice), an EEAT self-review, 5+ internal links woven into sentences (not bare lists),
+numbers over generic advice), an EEAT self-review, internal links woven into sentences (not bare lists),
 and 3 title-tag/meta-description options each, capped so the rendered `{title} | Flowbound` tag stays under
 60 characters and the description under 155. The first 9 posts map to the site's core keyword list (Supply
 Chain, SAP, Demand Forecasting, Inventory Tracking, Shipping Optimization, Supplier Coordination, Wholesale
@@ -76,6 +76,26 @@ Account Management, Reorder, Pricing); the other 12 were each assigned a realist
 based on their existing angle (e.g. "dead stock," "PO approval workflow," "incoming inspection"). This
 process is now the standing default for blog work, not a one-off, and a new post should follow the same
 pipeline rather than being written ad hoc.
+
+**Internal linking minimums, standing rule as of 2026-09-06.** Every post's body needs a minimum of 5
+in-text links woven into sentences (not a bare "further reading" list), and the FAQ section needs its own
+separate minimum of 3 in-text links across its answers, on top of the body's 5, not counted toward it. Link
+targets are the usual pool: the seven dedicated capability pages, `/pricing/`, `/ask-flowbound/`,
+`/customer-service/`, `/quality-monitoring/`, `/how-it-works/`, other blog posts, etc. This was retrofitted
+into all 21 existing posts on 2026-09-06 (the FAQ sections had zero internal links before that pass; the
+body minimum was already being hit). When linking a FAQ answer to a specific Flowbound capability page,
+the same accuracy rule below applies: check `services.ts` before implying the capability does something it
+doesn't (a capability page and its own product marketing page, like `/pricing/`, are two different things:
+`/pricing/` is the autonomous **repricing** capability, not a page about what Flowbound itself costs, don't
+conflate the two when picking a FAQ link target). A new post should hit both minimums as part of the
+pipeline's linking step, not as an afterthought pass at the end.
+
+**Cross-linking is structural, not a per-post content task.** `src/pages/blog/[slug].astro` renders a
+"Related reading" section under every post automatically: it scores every other published post (same
+`category` +10, each shared `tags` entry +3), takes the top 3, and renders them as clickable cards
+(thumbnail, date, title) using the same reveal/tilt conventions as the rest of the site. A new post needs no
+manual related-links work, correct `category` and `tags` in its frontmatter are what drive good matches, so
+get those right rather than trying to hand-pick related posts in the body.
 
 One real accuracy bug surfaced and was fixed during this pass, worth knowing before writing another post's
 closing product tie-in: a draft for `what-a-wholesale-account-actually-needs.md` described credit-limit and
