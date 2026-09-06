@@ -131,14 +131,17 @@ right now.
 Compare recent sales (the last three months) against the trailing twelve. A flat, ongoing trickle is
 slow-moving. A trickle that's stopped entirely, with no seasonal or account-specific explanation, is dead.
 For wholesale catalogs, check the trend per account as well as in aggregate, since a SKU can look dead
-overall while one standing account keeps it alive on its own.
+overall while one standing account keeps it alive on its own, the kind of per-account pattern [Wholesale
+Account Management](/wholesale-account-management/) has to track separately from the catalog-wide trend.
 
 **Should I write off dead stock immediately?**
 Only once you've confirmed it's actually dead, not just slow. Writing down inventory that still has a real
 shot at selling means reversing or explaining that deduction later if it turns out to move. Confirm the
-trend first, then talk to your accountant about the timing.
+trend first, then talk to your accountant about the timing, and weigh whether [a price
+adjustment](/blog/cost-of-repricing-manually/) can move it before a full write-off is necessary.
 
 **Can slow-moving inventory become dead stock?**
 Yes, and it's the most common path dead stock takes. A SKU that keeps getting reordered at the same
 quantity despite a shrinking trend eventually stops selling altogether. Catching the slowdown early, and
-adjusting the reorder point instead of leaving it on autopilot, is what prevents that slide.
+adjusting the reorder point instead of leaving it on autopilot, is what [Reorder](/reorder/) is built to
+catch before the slide finishes.

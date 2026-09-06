@@ -126,17 +126,20 @@ negotiated six months ago.
 
 **What is wholesale account management?**
 Keeping a B2B buyer's negotiated terms, pricing tier, order minimums, authorized buyers, and payment terms
-current and enforced on every order, not just recorded once when the deal was signed.
+current and enforced on every order, not just recorded once when the deal was signed, exactly what
+[Wholesale Account Management](/wholesale-account-management/) is built to keep current per account.
 
 **How is wholesale account management different from a CRM?**
 A CRM tracks contacts, communication history, and a sales pipeline. Wholesale account management tracks the
 operational terms of the deal itself: what price applies, what minimum an order has to meet, and who's
-allowed to place it. Some CRMs can hold this data, but few enforce it automatically against a live order.
+allowed to place it. Some CRMs can hold this data, but few enforce it automatically against a live order,
+the same live enforcement [Reorder](/reorder/) applies on the purchasing side of the same account.
 
 **How often should you review a wholesale account's pricing tier?**
 Whenever the account's order volume crosses a tier threshold, not on a fixed calendar. A quarterly check
 catches most drift, but a volume swing can cross a threshold faster than that if nobody's watching for it
-directly.
+directly, often surfacing first as a [Customer Service](/customer-service/) question about why a price
+looks wrong.
 
 **What happens if an authorized buyer list goes stale?**
 An order can get placed, and later disputed, by someone the account no longer wants purchasing on its

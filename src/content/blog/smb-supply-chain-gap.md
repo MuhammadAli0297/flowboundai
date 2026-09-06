@@ -134,7 +134,8 @@ full set of [services](/services/) to see which piece fits where you're feeling 
 
 **What is supply chain management in simple terms?**
 It's the set of decisions that get a product from a supplier to a customer: forecasting demand, tracking
-inventory, coordinating with suppliers, shipping orders, and pricing along the way.
+inventory, coordinating with suppliers, shipping orders, pricing, and answering [customer
+service](/customer-service/) questions along the way.
 
 **Do small businesses need formal supply chain management?**
 Yes, though it doesn't need a department to do it. A five-person distribution business is making all six
@@ -143,8 +144,11 @@ core supply chain decisions every week whether or not anyone calls it "supply ch
 **What's the biggest supply chain mistake small businesses make?**
 Treating each decision (forecasting, inventory, reordering, shipping, pricing) as separate, rather than
 connected. A reorder point that ignores a slipping supplier lead time, or a forecast that never reaches the
-reorder decision, is where most stockouts and overstocks actually come from.
+reorder decision, is where most stockouts and overstocks actually come from, the same disconnected-decision
+problem [Quality Monitoring](/quality-monitoring/) solves for defects specifically.
 
 **When should a small business automate supply chain management instead of using spreadsheets?**
 When you can no longer say with confidence what's low, what's coming, and what's overdue without checking
-multiple files or making a phone call. That's a workflow problem, not a specific SKU count.
+multiple files or making a phone call. That's a workflow problem, not a specific SKU count, and often the
+moment teams start asking [Ask Flowbound](/ask-flowbound/) those questions directly instead of hunting
+through files.

@@ -124,12 +124,14 @@ helping.
 
 **What is an RMA?**
 A Return Merchandise Authorization: the approval a seller issues before accepting an item back, confirming
-it's eligible and assigning a number that tracks the return from request to resolution.
+it's eligible and assigning a number that tracks the return from request to resolution, the reverse side of
+the same [shipping optimization](/shipping-optimization/) tracking used on the way out.
 
 **What does a return request need to be processed correctly?**
 Four things: the order it's tied to, confirmation from the actual shipment record, that account's specific
 return terms, and a condition or quantity that matches the claim. Skip any one and you're guessing instead
-of verifying.
+of verifying, all of it checked against the same [Inventory Tracking](/inventory-tracking/) record rather
+than a separate returns log.
 
 **How is a wholesale RMA different from a retail one?**
 The buyer is an account with negotiated terms instead of a fixed policy, the return is often partial, a few
@@ -139,4 +141,5 @@ accounting to close the loop, not just a warehouse bin.
 **When should a small distributor automate its RMA process?**
 Once the volume of returns, or the number of accounts with different terms, outgrows what one person can
 verify against the real order and shipment record before approving. Below that, a well-organized manual
-process works fine.
+process works fine, though a rising return rate on one SKU is often the same early signal [Quality
+Monitoring](/quality-monitoring/) would catch on the supplier side first.

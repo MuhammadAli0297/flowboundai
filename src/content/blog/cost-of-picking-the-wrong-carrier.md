@@ -138,7 +138,8 @@ product](/product/) for how that fits alongside the rest of a distributor's oper
 Total delivered cost including accessorial fees, on-time performance on your specific lane rather than a
 published average, how easy the carrier is to work with without a dedicated logistics team, whether their
 equipment and network actually fit your freight, and whether your volume is significant enough for them to
-prioritize your account.
+prioritize your account, the same lane-by-lane comparison [shipping optimization](/shipping-optimization/)
+keeps current automatically instead of re-checked once a year.
 
 **How do you compare freight carriers without a logistics team?**
 Ask for a sample invoice on a shipment like yours instead of trusting the quote alone, run a short
@@ -148,12 +149,15 @@ considering, and track invoiced cost against quote, on-time delivery, and how pi
 **Is the cheapest freight carrier usually the best choice?**
 Rarely, once accessorial fees and reliability are counted. A lower base rate that comes with unquoted fees,
 inconsistent pickups, or slow claims handling can end up costing more than a slightly higher rate from a
-carrier that's easy to work with and delivers as promised.
+carrier that's easy to work with and delivers as promised, the same hidden-cost pattern behind [why shipping
+costs creep up over time](/blog/shipping-costs-creeping-up/) even when no single decision looks wrong.
 
 **How often should you re-evaluate a carrier for a lane?**
 Not on a fixed schedule. Specific signals matter more: a rate increase notice, two or more late deliveries in
 a row, a claim that took longer than a week to resolve, or a meaningful change in the lane's volume. Outside
-those triggers, a carrier that's working doesn't need to be re-shopped just because time has passed.
+those triggers, a carrier that's working doesn't need to be re-shopped just because time has passed, the same
+event-driven logic that governs when a [reorder point](/reorder/) itself needs revisiting rather than a fixed
+calendar.
 
 **What's different about carrier selection for LTL freight versus parcel shipping?**
 LTL pricing runs on freight class, density, and accessorials rather than the zone-based tables parcel

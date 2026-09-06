@@ -111,7 +111,8 @@ different problem, covered in [why shipping costs creep up](/blog/shipping-costs
 **Why do rush shipping costs keep adding up?**
 Because they're usually not isolated emergencies. Most expedited shipments trace back to the same root
 cause, a reorder that went out later than it should have, so the cost keeps recurring until the timing
-issue behind it gets fixed rather than the individual shipment.
+issue behind it gets fixed rather than the individual shipment, which is a [shipping
+optimization](/shipping-optimization/) problem as much as an inventory one.
 
 **How do I know if my rush shipping is a real problem or just bad luck?**
 Tag your last 90 days of expedited shipments by cause. If a quarter or more come from a reorder that went
@@ -120,9 +121,11 @@ out late rather than a genuine surprise, it's a pattern worth fixing at the sour
 **Is rush shipping ever the right decision?**
 Yes. A customer paying specifically for faster delivery, or a true one-off supply disruption with no
 warning, are both legitimate uses. The problem is when the same SKU needs rescuing repeatedly, which points
-to a reorder point or lead time that was never corrected.
+to a reorder point or lead time that was never corrected, not [the carrier itself being the wrong
+choice](/blog/cost-of-picking-the-wrong-carrier/).
 
 **What's the fastest way to stop repeat rush shipments?**
 Check whether the SKUs showing up most often on your rush list have an accurate reorder point and a current
 supplier lead time on file. In most cases, one of those two numbers is stale, and updating it removes the
-need for the rush order entirely.
+need for the rush order entirely, which starts with [Inventory Tracking](/inventory-tracking/) accurate
+enough to trust that the stale number is actually stale.

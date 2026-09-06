@@ -127,11 +127,13 @@ determines whether something gets missed.
 **What is supplier coordination?**
 The ongoing work of tracking every supplier relationship, lead times, open orders, pricing, and performance
 history, in one consistent place, so you know where every order stands without reconstructing it from
-memory each time.
+memory each time, the same standing-record approach [Inventory Tracking](/inventory-tracking/) takes for
+stock instead of suppliers.
 
 **How many suppliers can one person manage by hand?**
 Roughly under ten with a disciplined weekly review process. Past that, gaps start forming between check-ins,
-especially on quieter suppliers you don't talk to every week.
+especially on quieter suppliers you don't talk to every week, the same blind spot [Quality
+Monitoring](/quality-monitoring/) is built to catch before a defect pattern goes unnoticed.
 
 **What's the difference between supplier coordination and supplier management?**
 Supplier management is the broader discipline, selection, negotiation, and relationship strategy included.
@@ -140,4 +142,5 @@ communication day to day, after selection and negotiation are already done.
 
 **How does supplier coordination affect inventory planning?**
 A supplier's current lead time is a direct input into your reorder point. If that lead time drifts and
-nobody updates it, your reorder timing is quietly wrong even when your demand forecast is correct.
+nobody updates it, your reorder timing is quietly wrong even when your demand forecast is correct, see
+[the reorder point math](/blog/reorder-point-math/) for how that number is actually built.

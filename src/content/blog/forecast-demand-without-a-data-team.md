@@ -123,7 +123,9 @@ without anyone having to rebuild the spreadsheet every week.
 
 **How do you forecast demand without a data team?**
 Track average sales over a real time window, adjust for trend and seasonality, and recalculate on a set
-schedule. The three-number method above covers most small business SKUs without any statistical software.
+schedule. The three-number method above covers most small business SKUs without any statistical software,
+the same inputs [real-time inventory tracking](/blog/what-real-time-inventory-actually-means/) needs to stay
+accurate as sales happen.
 
 **What's a good forecast accuracy target for a small business?**
 Within 10 to 15% of actual sales is a reasonable target for most SKUs. Consistent misses beyond 30% usually
@@ -131,8 +133,10 @@ mean one input, most often the seasonality assumption, needs to be corrected.
 
 **How often should I update my demand forecast?**
 Monthly for most SKUs, weekly for fast movers or items in a seasonal peak, and immediately after any event
-that shifts demand, like a new account or a competitor stockout.
+that shifts demand, like a new account or a competitor stockout, the same kind of shift [Inventory
+Tracking](/inventory-tracking/) surfaces in real time rather than at the next scheduled count.
 
 **What's the difference between demand forecasting and inventory forecasting?**
 Demand forecasting estimates how much will sell. Inventory forecasting uses that estimate, plus supplier
-lead time, to determine how much stock to hold and when to reorder it.
+lead time, to determine how much stock to hold and when to reorder it, the calculation [Reorder](/reorder/)
+runs continuously per SKU.

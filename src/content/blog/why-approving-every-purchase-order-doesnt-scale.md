@@ -109,17 +109,21 @@ actual attention for the ones that don't.
 **What is a purchase order approval workflow?**
 The steps a purchase request goes through before it's sent to a supplier: identifying the need, reviewing
 it against agreed terms, and approving or rejecting it before money is committed. For a single approver,
-that review is really a check against rules you already set, not a hand-off to someone else.
+that review is really a check against rules you already set, not a hand-off to someone else, rules that only
+hold up if the [Inventory Tracking](/inventory-tracking/) behind the reorder trigger is accurate.
 
 **When should you automate PO approval?**
 Automate a reorder when the supplier is already approved, the quantity is within the SKU's normal range,
 and the price matches the agreed rate. Keep a person involved when any of those three isn't true, a new
-supplier, an unusual quantity, or a price that's moved outside your agreed band.
+supplier, an unusual quantity, or a price that's moved outside your agreed band, the same kind of
+guardrail-bound band Flowbound's [Pricing](/pricing/) adjustments run within on the selling side too.
 
 **What's the difference between a purchase requisition and a purchase order?**
 A requisition is the internal request to buy something, before it's approved. A purchase order is the
 approved, binding document sent to the supplier. In a one-person business, both steps often happen inside
-your own head at once, which is exactly why they're easy to bottleneck on your own availability.
+your own head at once, which is exactly why they're easy to bottleneck on your own availability, the same
+single-person bottleneck that lets [a supplier's lead time quietly slip](/blog/supplier-lead-time-slips/)
+unnoticed too.
 
 **Do small businesses actually need a formal PO approval process?**
 Not the multi-tier, department-routed version most guides describe, that's built for a company with people

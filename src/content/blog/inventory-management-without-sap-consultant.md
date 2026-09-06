@@ -17,7 +17,8 @@ most of the advice written about it assumes that's still the customer being talk
 Probably not, unless you're running multi-entity finance, complex manufacturing, or regulatory reporting
 across dozens of locations. Most small and mid-sized distributors don't need SAP's full platform: they need
 the same continuous visibility into inventory, reorder timing, supplier reliability, and pricing that SAP
-promises, without its price tag or timeline.
+promises, without its price tag or timeline, the same continuous view [Demand
+Forecasting](/demand-forecasting/) feeds into rather than a quarterly report.
 
 ## What SAP actually does
 
@@ -126,7 +127,8 @@ whole business, not just how many SKUs you carry.
 **Do small businesses need SAP?**
 Most don't. SAP earns its cost for companies with multi-entity finance, complex manufacturing, or regulatory
 reporting needs. A small or mid-sized distributor usually needs continuous visibility into inventory,
-reorder timing, supplier reliability, and pricing, which doesn't require a full ERP to get.
+reorder timing, supplier reliability, and pricing, which doesn't require a full ERP to get, the same
+continuous view [Demand Forecasting](/demand-forecasting/) feeds into rather than a quarterly report.
 
 **How much does SAP cost for a small business?**
 SAP Business One licensing commonly runs in the low thousands of dollars per user, plus an annual
@@ -137,12 +139,14 @@ and timeline vary a lot by how much data and process customization your business
 It depends on what's actually missing. If your accounting and financial reporting have genuinely outgrown
 spreadsheets, another cloud ERP like Business Central or Sage Intacct is worth evaluating. If the real gap is
 inventory, reorder, supplier, and pricing decisions specifically, a lighter system that connects to what you
-already run can close that gap without a full ERP migration.
+already run can close that gap without a full ERP migration, which is the specific gap
+[Reorder](/reorder/) is built to close on the ordering side.
 
 **Can I get SAP-level inventory visibility without an ERP?**
 Yes, for the inventory, reorder, supplier, and pricing decisions most distributors actually need daily.
 What matters is continuous monitoring and a clear, explainable recommendation, not which platform happens to
-generate it.
+generate it, see [what real-time inventory actually means](/blog/what-real-time-inventory-actually-means/)
+for what that continuous monitoring has to include.
 
 The decision quality SAP promises is real. It just doesn't require an SAP-sized project to get it. If your
 business is spending more time maintaining the spreadsheet than trusting what it says, that's the sign it's

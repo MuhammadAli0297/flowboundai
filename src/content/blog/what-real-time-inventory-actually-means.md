@@ -133,14 +133,17 @@ count.
 **How does real-time inventory tracking actually work?**
 It updates the count the instant a sale, shipment, receipt, or transfer happens, rather than on a scheduled
 batch sync. The test isn't how current the dashboard looks, it's whether the number was accurate at the
-exact moment someone needed to act on it.
+exact moment someone needed to act on it, which is also the exact moment a correct [reorder
+point](/reorder/) depends on that number being right.
 
 **What's the difference between inventory tracking and inventory management?**
 Inventory tracking is the record-keeping layer: knowing what you have, where, and what's committed.
 Inventory management is the broader set of decisions built on top of that record, like when to reorder,
-what to write off, and how much safety stock to carry.
+what to write off, and how much safety stock to carry, decisions that also lean on [Demand
+Forecasting](/demand-forecasting/) alongside the inventory record itself.
 
 **How often should a wholesale business audit its inventory count?**
 A monthly cycle count against the recorded total catches most drift before it compounds. Fast-moving SKUs
 or anything feeding a standing wholesale account deserves a tighter check, since an error there gets
-noticed by a customer before it gets noticed internally.
+noticed by a customer before it gets noticed internally, especially for stock committed to a standing
+[Wholesale Account](/wholesale-account-management/).

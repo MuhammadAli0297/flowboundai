@@ -138,11 +138,13 @@ reconstruct first.
 
 **What is a supplier scorecard?**
 A running record of how a vendor performs over time, built from defect rate, on-time-in-full delivery, and
-the trend on both, instead of a gut-feel impression pieced together from memory.
+the trend on both, instead of a gut-feel impression pieced together from memory, the same discipline that
+separates [a one-off defect from a growing problem](/blog/one-off-defect-or-growing-problem/).
 
 **What metrics should a small business track on a supplier scorecard?**
 Defect rate and on-time-in-full delivery cover most of what matters. Add a third metric only once a
-specific recurring problem shows those two aren't capturing something you actually need to see.
+specific recurring problem shows those two aren't capturing something you actually need to see, [lead time
+variability](/blog/supplier-lead-time-slips/) is usually the next one worth adding.
 
 **How many orders do I need before a defect rate means anything?**
 Below roughly eight to ten orders from a given supplier, treat the raw count of incidents as more reliable
@@ -152,4 +154,5 @@ actually signaling a trend.
 **How often should I update a supplier scorecard?**
 Update each supplier's numbers as orders and returns close out, and do a full read-through on a fixed
 schedule, monthly for a larger supplier list, quarterly for a smaller one, since that's when a slow drift
-actually becomes visible.
+actually becomes visible, the same continuous read [Quality Monitoring](/quality-monitoring/) is built to
+give you automatically instead of waiting for the scheduled pass.

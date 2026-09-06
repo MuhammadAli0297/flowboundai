@@ -126,15 +126,17 @@ whether it can answer what's low, what's coming, and what's overdue on its own.
 A spreadsheet works fine for a small, stable SKU count with one person reliably keeping it current. The
 honest sign you've outgrown it isn't a specific SKU count, it's whether more than one person edits it,
 whether reorder timing depends on someone's memory instead of a formula, or whether a wholesale account's
-committed stock gets confused with what's actually free to sell.
+committed stock gets confused with what's actually free to sell, exactly the gap real-time [Inventory
+Tracking](/inventory-tracking/) closes.
 
 **How much does supply chain software cost for a small business?**
 It varies widely by category. Enterprise ERP platforms commonly run into the low thousands of dollars per
 user plus an implementation project measured in months. Lighter systems built to connect to what a small
 team already uses, rather than replace it, are priced and implemented on a much smaller scale, days rather
-than quarters.
+than quarters, see [how it works](/how-it-works/) for what that onboarding actually looks like.
 
 **What's the biggest mistake small businesses make when choosing supply chain software?**
 Comparing tools by feature checklist instead of by whether the system actually makes a decision. A
 dashboard that shows a low-stock number hasn't solved the problem. A system that turns that number into a
-reorder decision, tied to real lead time and real demand, has.
+reorder decision, tied to real lead time and real demand, has, the same decision [Supplier
+Coordination](/supplier-coordination/) has to feed accurate lead times into.

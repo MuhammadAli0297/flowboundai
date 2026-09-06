@@ -121,7 +121,8 @@ threshold is hit is a separate, later step, not something catching the slip does
 **What is supplier lead time variability?**
 It's how much a supplier's actual delivery time swings around the lead time they quote you. A supplier
 that's usually on time but occasionally very late has high variability even if their average looks fine,
-and that swing is what actually drives stockout risk.
+and that swing is what actually drives stockout risk, the same lead-time input [Demand
+Forecasting](/demand-forecasting/) needs to stay accurate to get reorder timing right in the first place.
 
 **How do I calculate a lead time buffer without a statistics background?**
 Track promised versus actual delivery dates for a supplier's last five orders in two spreadsheet columns.
@@ -131,9 +132,11 @@ come in.
 **How often should I recheck a supplier's lead time?**
 Recheck after any order that misses its promised date by more than a few days, and do a full review of your
 five most recent orders per supplier at least quarterly. A supplier's timeline can drift for months before
-it shows up as a stockout if nobody's watching in between.
+it shows up as a stockout if nobody's watching in between, the same blind-spot pattern [Quality
+Monitoring](/quality-monitoring/) watches for on the defect side.
 
 **What's the difference between supplier lead time and total lead time?**
 Supplier lead time covers the supplier's side only: order processing through shipping to you. Total lead
 time can include your own receiving and putaway time on top of that, which matters if your warehouse has a
-backlog too, not just your supplier.
+backlog too, not just your supplier, a distinction worth the same scrutiny as telling apart [a one-off
+defect from a growing problem](/blog/one-off-defect-or-growing-problem/).

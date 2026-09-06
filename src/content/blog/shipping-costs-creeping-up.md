@@ -130,19 +130,22 @@ attention.
 **What is shipping optimization?**
 Shipping optimization is the practice of matching each shipment to the carrier, mode, and lane that
 delivers it on time for the lowest total cost, and continuously re-checking that match as rates, volumes,
-and order patterns change, rather than setting it once and leaving it.
+and order patterns change, rather than setting it once and leaving it, a continuous-matching problem similar
+to how [Inventory Tracking](/inventory-tracking/) has to stay current rather than a periodic count.
 
 **How do you reduce shipping costs for a wholesale or distribution business?**
 Start by checking whether shipments near the LTL breakpoint are on the right mode, re-shop your
 highest-volume lanes against current carrier rates quarterly, look for small orders to the same
 destination that could consolidate, and treat rush shipping as an inventory problem to fix upstream rather
-than a carrier problem to negotiate down.
+than a carrier problem to negotiate down, the same upstream fix [Demand
+Forecasting](/demand-forecasting/) and an accurate reorder point provide.
 
 **What's the difference between shipping optimization for ecommerce and for wholesale distribution?**
 Ecommerce shipping optimization is mostly about parcel packaging, checkout thresholds, and a single
 outbound carrier relationship. Wholesale and distribution shipping involves choosing between freight modes,
 managing inbound supplier freight alongside outbound customer freight, and tracking rates across many more
-lanes than a typical parcel seller ever has to.
+lanes than a typical parcel seller ever has to, which is also why [where's my order is a supply chain
+question](/blog/wheres-my-order-is-a-supply-chain-question/) hits harder at wholesale volume.
 
 **When should a shipment move from parcel to LTL freight?**
 Roughly once a shipment crosses about 150 pounds or fills several boxes, LTL freight is usually cheaper per

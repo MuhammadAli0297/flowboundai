@@ -127,12 +127,17 @@ you run out. It's average daily sales multiplied by lead time in days, plus a sa
 **How do you calculate a reorder point?**
 Multiply average daily sales by supplier lead time in days to get demand during lead time, then add a
 safety stock buffer sized to cover demand spikes and lead time variability. Selling 10 units a day with a
-14-day lead time gives 140 units of demand during lead time, plus buffer.
+14-day lead time gives 140 units of demand during lead time, plus buffer, the same daily-sales-pace number
+[Demand Forecasting](/demand-forecasting/) keeps current as trend and seasonality shift.
 
 **What's the difference between a reorder point and safety stock?**
 Safety stock is the buffer portion. The reorder point is the full trigger number, demand during lead time
-plus that buffer, the actual level that tells you to place an order.
+plus that buffer, the actual level that tells you to place an order, a number that only stays right if
+[Inventory Tracking](/inventory-tracking/) is accurate enough to trust it.
 
 **How do I set a reorder point for a new product with no sales history?**
 Borrow the early sales pace of a comparable SKU you already sell, or start with a conservative order sized
-to sell through in a few weeks, then replace the borrowed number with real data after 30 to 60 days.
+to sell through in a few weeks, then replace the borrowed number with real data after 30 to 60 days, the
+same borrowed-number approach that keeps [a purchase order approval
+workflow](/blog/why-approving-every-purchase-order-doesnt-scale/) from stalling on a SKU with no track
+record yet.

@@ -132,7 +132,8 @@ answered before it ever needs a person to go find the log.
 
 **What is order status visibility?**
 Order status visibility is the ability to answer, without checking more than one place, whether an order
-has been processed, what's already shipped, and when the rest will arrive.
+has been processed, what's already shipped, and when the rest will arrive, pulling from the same live
+[Inventory Tracking](/inventory-tracking/) record rather than three separate systems.
 
 **Why do customers ask "where's my order" so often?**
 Because the information gap is real: the order, the shipment tracking, and the inventory status usually live
@@ -142,9 +143,10 @@ they have.
 **How can a small business improve order tracking without buying new software?**
 Keep one shared log with order number, carrier, tracking number, and last-checked date, check it in the same
 order every time (order system, then carrier, then remaining inventory), and make sure more than one person
-can run that lookup.
+can run that lookup, or let a system like [Ask Flowbound](/ask-flowbound/) run it on demand instead.
 
 **What's the difference between order status and shipment tracking?**
 Order status covers whether an order has been processed and packed inside your own system. Shipment tracking
 covers where it physically is once a carrier has it. A complete answer to "where's my order" needs both,
-plus confirmation that nothing on the order is still backordered.
+plus confirmation that nothing on the order is still backordered, the same three-way check [a return
+request](/blog/what-a-return-request-actually-needs/) needs before it can be approved.

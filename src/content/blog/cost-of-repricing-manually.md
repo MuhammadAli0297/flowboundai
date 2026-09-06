@@ -123,11 +123,13 @@ keeps every customer's terms honoring the same underlying rules instead of drift
 
 **What is a wholesale pricing strategy?**
 A wholesale pricing strategy is the set of rules a distributor uses to turn supplier cost into a sell price
-across every customer tier and SKU, kept current enough to protect margin as costs and demand shift.
+across every customer tier and SKU, kept current enough to protect margin as costs and demand shift, the
+exact continuous-repricing behavior Flowbound's [Pricing](/pricing/) capability automates.
 
 **How often should you reprice products?**
 Reprice whenever the underlying cost or demand actually changes rather than on a fixed calendar. Fast-moving
-or high-volume SKUs deserve a tighter check since a stale price there costs the most.
+or high-volume SKUs deserve a tighter check since a stale price there costs the most, the same reason fast
+movers get a tighter [demand forecasting](/demand-forecasting/) review cycle too.
 
 **What's the difference between wholesale markup and margin?**
 Markup is the percentage added on top of cost to reach the sell price. Margin is the percentage of the sell
@@ -137,4 +139,5 @@ one of the most common wholesale pricing errors.
 **Should every customer get the same wholesale price?**
 Usually not. Tiered or customer-specific pricing, based on volume, contract terms, or account relationship,
 is standard in wholesale. The operational challenge isn't deciding on tiers, it's keeping every tier
-correct as the underlying cost changes.
+correct as the underlying cost changes, the same enforcement problem [Wholesale Account
+Management](/wholesale-account-management/) is built to close per account.

@@ -111,17 +111,19 @@ the judgment calls that actually need a person, instead of the same three questi
 **How do I reduce repetitive customer service questions?**
 Identify which repeat questions have one fixed answer (return policy, hours) versus which ones depend on
 live data (order status, stock, account pricing). A FAQ page handles the first kind. The second kind needs
-a system connected to your actual order, inventory, and account records.
+a system connected to your actual order, inventory, and account records, the same live [Inventory
+Tracking](/inventory-tracking/) feed those answers depend on.
 
 **What's the difference between a chatbot and real customer service automation?**
 A chatbot trained on static content, like a knowledge base or FAQ page, can only repeat what's written down.
-Customer service automation that's connected to live order, shipment, and inventory data can answer
-questions whose correct answer changes by the hour or by the account asking.
+Customer service automation that's connected to live order, [shipment](/shipping-optimization/), and
+inventory data can answer questions whose correct answer changes by the hour or by the account asking.
 
 **Can customer service automation answer wholesale pricing questions?**
 Only if it's connected to each account's actual tier and terms, not your published list price. Two accounts
 can have two different correct prices on the same SKU, so the system needs the real account record behind
-the answer, not a static price sheet.
+the answer, not a static price sheet, the exact record [Wholesale Account
+Management](/wholesale-account-management/) keeps current per account.
 
 **What customer service questions still need a human?**
 Anything requiring judgment: a damaged-goods claim, a terms exception, a genuinely upset customer. Automate

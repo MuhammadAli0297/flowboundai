@@ -125,14 +125,18 @@ separate purchase orders, is a trend. A single spike that returns to baseline th
 **How do you track supplier defects without dedicated quality software?**
 Log three things consistently for every incident: the purchase order it came from, what was wrong in plain
 language, and how many units were affected. Those three fields, tracked the same way every time, are enough
-to calculate a real defect rate and spot a trend without a formal nonconformance process.
+to calculate a real defect rate and spot a trend without a formal nonconformance process, the exact tracking
+[Quality Monitoring](/quality-monitoring/) automates across every supplier at once.
 
 **What's a normal defect rate for a small distributor?**
 There isn't one universal number, it depends on the product and the supplier's own history. What matters more
 than the absolute rate is the trend: a supplier holding steady at 1% isn't a concern, but a supplier climbing
-from 0.5% to 1.5% over two or three months is, even though 1.5% might sound low in isolation.
+from 0.5% to 1.5% over two or three months is, even though 1.5% might sound low in isolation, which gets
+harder to catch by hand once [supplier count grows past what one person can
+track](/blog/how-many-suppliers-is-too-many-to-track-by-hand/).
 
 **When should I stop giving a supplier another chance?**
 When the same defect repeats after they've said they fixed it. A supplier who corrects course after one
 conversation is worth keeping. One where the same failure shows up again next cycle, especially alongside
-slipping lead times, is telling you this is how they operate, not what happened this one time.
+slipping lead times, is telling you this is how they operate, not what happened this one time, the pattern
+ongoing [Supplier Coordination](/supplier-coordination/) is meant to surface before it repeats a third time.

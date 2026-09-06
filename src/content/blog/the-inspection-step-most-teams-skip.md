@@ -125,7 +125,7 @@ the check.
 **What is incoming inspection?**
 Checking a shipment against what was ordered, quantity, item match, and visible condition, before it goes
 into stock. It's the cheapest point in the supply chain to catch a problem, before a defect reaches a shelf
-or a customer.
+or a customer, and before it's recorded as good stock in [Inventory Tracking](/inventory-tracking/).
 
 **Do I need an AQL sampling plan to do incoming inspection properly?**
 No. AQL tables exist for manufacturers running formal sampling programs against engineering specs. A small
@@ -135,9 +135,11 @@ spot-checks for suppliers with a clean track record.
 **How long does incoming inspection actually take?**
 Five to ten minutes for a normal shipment from an established supplier: count, scan the cartons, check the
 packing slip. New suppliers take longer at first, closer to twenty minutes, until there's a track record
-that supports easing into spot-checks.
+that supports easing into spot-checks, the same track record [a slipping supplier lead
+time](/blog/supplier-lead-time-slips/) needs before it's trusted either.
 
 **What should I do when an incoming inspection fails?**
 Stop that item from going onto the shelf, document what's wrong and how much of the shipment it affects, and
 raise it with the supplier before the next order goes out. The documentation and the supplier conversation
-matter more than any formal disposition process.
+matter more than any formal disposition process, especially once a [Customer Service](/customer-service/)
+question about the same defect starts coming in from the other direction.
