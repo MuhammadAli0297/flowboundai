@@ -47,14 +47,47 @@ something heavier, don't add a framework or a heavy library site-wide.
 ### Blog
 
 Every post needs a `category` (one fixed value from `src/data/blogCategories.ts`, each mapped to a
-`SectionIcon` name) plus any number of freeform `tags` (used only by `/blog/tags/[tag]`, unrelated to
-category). `/blog` (`src/pages/blog/[...page].astro`) shows 9 posts per page, newest first, with a search
-box and category checkboxes in a sidebar. Search and category filters match across **every** post on the
-site, not just the current page: every post is rendered into every page's HTML (hidden via a class if it
-isn't on that particular page), and `src/scripts/blogFilter.ts` shows/hides across all of them once a
-filter is active, hiding the pagination controls while it does. Sidebar category counts are computed from
-the full collection, not the current page. Card thumbnails (`src/components/BlogThumbnail.astro`) are
-generated from the category icon, not real photos, so there's no imagery to source as posts get added.
+`SectionIcon` name and, as of 2026-09-13, an `accent` hex color) plus any number of freeform `tags` (used
+only by `/blog/tags/[tag]`, unrelated to category). `/blog` (`src/pages/blog/[...page].astro`) shows 9 posts
+per page, newest first, with a search box and category checkboxes in a sidebar. Search and category filters
+match across **every** post on the site, not just the current page: every post is rendered into every page's
+HTML (hidden via a class if it isn't on that particular page), and `src/scripts/blogFilter.ts` shows/hides
+across all of them once a filter is active, hiding the pagination controls while it does. Sidebar category
+counts are computed from the full collection, not the current page.
+
+**Card design, redone 2026-09-13** at the user's request to mesh a reference design's compact card size with
+this site's own sidebar-filter organization (which the user preferred over the reference's pill-row filter).
+Each post card dropped the old full-width `BlogThumbnail` banner (`src/components/BlogThumbnail.astro`,
+still used for the smaller "Related reading" cards on `[slug].astro`, just not the main grid) for a small
+`h-10 w-10` icon token, added a 2-line-clamped excerpt (`post.data.description`, not shown at all before
+this), and a footer with the date plus a real computed read time (`post.body` word count ÷ 200, not a
+placeholder). Every category also got an `accent` hex color (`categoryAccent()` in `blogCategories.ts`),
+used as a 3px top border on the card, a small dot in the category pill and the sidebar checkbox list, and a
+light tint behind the icon token. These are deliberately **not** new `ocean-*`/`fb-*` Tailwind tokens: they're
+a small fixed set of muted, desaturated "editorial" colors (no purple, nothing saturated/neon, picked to sit
+next to `ocean-100`/`ocean-200` without clashing) applied via inline `style`, since they're one component's
+decoration, not a sitewide design token. **When picking or adjusting an accent color, check it at the card's
+actual size against `ocean-200`, not just in isolation**: the first Shipping & Logistics color
+(`#CC9A3D`, a brighter gold) read as "too light, clashes" once actually on the page and was darkened to
+`#96742E`, a muted bronze, keeping the same warm identity.
+
+**Scroll and filter state now survive a trip into a post and back, standing rule as of 2026-09-13.** Before
+this, "Back to Blog" was a hardcoded `href="/blog/"` and the browser's own back button landed on a fresh,
+unfiltered reload, so a reader who filtered, scrolled, or was on page 2 of pagination lost all of that the
+moment they opened a post and came back. Two pieces fixed this together:
+- `src/scripts/blogBackLink.ts`: both "Back to Blog" links in `[slug].astro` (marked `data-back-to-blog`)
+  call real `window.history.back()` instead of following their `href`, but only when `document.referrer` is
+  actually a `/blog` page (a tag page or `/blog/2/` counts, so "back" lands on the right pagination page too,
+  not always page 1); a direct visit (search result, shared link) has no real "back" to return to, so it
+  falls through to the plain href.
+- `blogFilter.ts` saves `{ path, search, categories, scrollY }` to `sessionStorage` on every filter/search
+  change, a throttled scroll listener, and `pagehide` (not `beforeunload`, which can block the bfcache), then
+  restores it on load, but **only** when `performance.getEntriesByType("navigation")[0].type ===
+  "back_forward"**, so a fresh visit from Nav's Blog link still starts clean rather than replaying a stale
+  filter from an earlier session. Verified with Playwright driving real navigation (`page.goBack()`, real
+  link clicks, not `page.evaluate`): filter state, search text, and exact scroll position all survive a
+  round trip through a post, on both the in-page link and the browser's own back button, on both `/blog/`
+  and `/blog/2/`; a fresh nav-link visit was confirmed to ignore any leftover saved state.
 
 **Tag pages (`/blog/tags/[tag]`) noindex below `MIN_POSTS_TO_INDEX` (3).** Freeform `tags` with no shared
 taxonomy meant 47 tag pages existed for 21 posts, most carrying ~32 words (a heading plus one post card),
