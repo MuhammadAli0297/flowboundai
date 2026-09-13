@@ -81,6 +81,17 @@ Be cautious about publishing volume: a plan to add many posts a day for months r
 content abuse" policy if quality drops to hit a quota. Favor fewer, genuinely useful posts over hitting a
 cadence target.
 
+**`blogCategories.ts` no longer has a "Company News" category, removed 2026-09-13.** It existed from the
+original taxonomy design but no post was ever assigned it, so it sat in the `/blog` sidebar filter as a
+permanent zero-result checkbox (flagged in the SEO audit's P2 list, see `seo_audit_2026_09.md`). It wasn't
+replaced with a fabricated announcement post: this project's accuracy rule (check `services.ts` before a
+capability claim, the content pipeline's EEAT self-review step) applies just as much to "is there real news
+to report" as it does to product claims, don't invent a launch/funding/milestone post just to fill a
+taxonomy slot. **If there's ever real company news** (a launch, funding, partnership, a real milestone),
+re-add `{ name: "Company News", icon: "document" }` to `blogCategories.ts` at that point and write the post
+from the actual facts, same pipeline as everything else. Until then, a new post's category should be one of
+the seven remaining real ones.
+
 **All 21 posts SEO-rewritten (2026-08-23).** Every existing post was rewritten through a real content
 pipeline, not a stylistic pass: real competitor-article research (WebSearch/WebFetch against actual
 top-ranking articles for the post's target keyword, never vendor homepages, which don't have the H2/H3
@@ -186,11 +197,42 @@ optionally set `href`/`ctaLabel`:
 
 Dedicated capability pages (`/demand-forecasting`, `/inventory-tracking`, `/shipping-optimization`,
 `/supplier-coordination`, `/wholesale-account-management`, `/reorder`, `/pricing`) all follow the same
-five-section template: hero, what it is, what it does, what it watches, how it works, CTA. Whole-service
+six-section template: hero, what it is, what it does, what it watches, how it works, FAQ, CTA. Whole-service
 narrative pages (`/ask-flowbound`, `/customer-service`, `/quality-monitoring`) and one-off pages
 (`/product`, `/how-it-works`) have inline content in the page file rather than being data-driven, since
 they're one-off pages rather than a repeating list of similar items. Don't try to generalize them into
 `services.ts`.
+
+**FAQ section added 2026-09-13** (was a five-section template with no FAQ before this; see
+`seo_audit_2026_09.md` in memory, P2). Each page's frontmatter has its own `faqs` array (4 question/answer
+pairs, plain text, no inline links, written from that page's own `capabilities`/`signals`/`steps` content
+and `services.ts`'s actual capability description, never invented or extrapolated) rendered as a
+`<section id="faq">` between "how it works" and `<Cta />`: stacked bordered blocks
+(`border-ocean-700/20 bg-ocean-100`), each `data-reveal`/`reveal-item` only, no tilt, on an `ocean-200`
+background matching the "capabilities" section's tone to keep the page's light/dark alternation going. The
+same `faqs` array also builds an `FAQPage` JSON-LD block (`mainEntity`, same shape as the blog's), appended
+to the page's existing `Service` schema via `schema={[schema, faqSchema]}` (`Seo.astro`'s `schema` prop
+already accepts an array). Unlike the blog's FAQ schema, this isn't parsed from Markdown, there's no content
+collection here, the array is just written directly in the page frontmatter like `capabilities`/`steps`
+already are. `/pricing`'s FAQ opens with a direct disambiguation question ("Is this page about what
+Flowbound costs?"), same reasoning as its keyword-rewritten title: this page is the autonomous repricing
+capability, not what Flowbound itself costs to use. **A new capability page should ship its FAQ section from
+day one, following this same pattern**: 4 real Q&A pairs grounded in that page's own content, no invented
+capabilities, no inline links in the answer text (keeps the visible copy and the schema text identical,
+no separate plain-text stripping step needed the way the blog's `parseFaqFromMarkdown` requires).
+
+**Breadcrumbs added 2026-09-13** to all 10 capability/narrative pages (the 7 dedicated capability pages plus
+`/ask-flowbound`, `/customer-service`, `/quality-monitoring`), fixing a gap the SEO audit found: only blog
+posts had `BreadcrumbList` schema before this, and even there it was schema-only, no visible trail existed
+anywhere on the site. `src/lib/breadcrumbs.ts`'s `buildBreadcrumbSchema(items, siteUrl)` and
+`src/components/Breadcrumbs.astro` both take the same `items: {name, path}[]` array, one source of truth for
+a page's trail feeding both the visible UI and the schema so they can't drift apart. Each page defines its
+own `breadcrumbItems` (`Home > Services > <page>`, a real 3-level trail, unlike the blog's existing
+2-level `Blog > post title` one, which wasn't touched, out of scope here) and renders `<Breadcrumbs
+items={breadcrumbItems} />` at the top of the hero, above the existing icon+label eyebrow row, plus appends
+`breadcrumbSchema` to the page's `schema` array. **A new capability or narrative page should do the same
+from day one**: define `breadcrumbItems` for its place under `/services`, render `<Breadcrumbs>` in the
+hero, and add `buildBreadcrumbSchema(...)` to its schema array.
 
 ### Hero backgrounds
 
