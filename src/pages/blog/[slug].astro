@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content"
 import BaseLayout from "../../layouts/BaseLayout.astro"
 import BlogThumbnail from "../../components/BlogThumbnail.astro"
 import { slugifyTag } from "../../lib/tags"
+import { parseFaqFromMarkdown } from "../../lib/faq"
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft)
@@ -34,6 +35,8 @@ const relatedPosts = allPosts
   .slice(0, 3)
   .map(({ post }) => post)
 
+const faqs = parseFaqFromMarkdown(post.body ?? "")
+
 const schema = [
   {
     "@context": "https://schema.org",
@@ -52,6 +55,23 @@ const schema = [
       { "@type": "ListItem", position: 2, name: post.data.title, item: `${siteUrl}/blog/${post.id}/` },
     ],
   },
+  // Every post's "## FAQ" Markdown section already has real Q&A content (see CLAUDE.md's internal-
+  // linking note); this just wraps it in FAQPage schema, parsed straight from post.body rather than
+  // duplicated into frontmatter. Omitted entirely if a post has no FAQ section, rather than shipping
+  // an empty/invalid FAQPage block.
+  ...(faqs.length > 0
+    ? [
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          })),
+        },
+      ]
+    : []),
 ]
 ---
 
