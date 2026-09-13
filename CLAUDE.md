@@ -89,6 +89,33 @@ moment they opened a post and came back. Two pieces fixed this together:
   round trip through a post, on both the in-page link and the browser's own back button, on both `/blog/`
   and `/blog/2/`; a fresh nav-link visit was confirmed to ignore any leftover saved state.
 
+**Every displayed post date needs `timeZone: "UTC"` on `toLocaleDateString`, real bug found 2026-09-13.**
+A post's `publishDate: 2026-09-03` frontmatter value gets parsed as UTC midnight
+(`2026-09-03T00:00:00.000Z`). `toLocaleDateString()` with no `timeZone` renders in whatever timezone the
+*executing machine* is in, not UTC, so on a machine west of UTC (essentially all of North America) that
+same instant is still September 2nd locally, and the date silently displays one calendar day early. This
+had been present sitewide since the original blog build, on all four call sites
+(`src/pages/blog/[...page].astro`, `[slug].astro` x2, `tags/[tag].astro`), just never surfaced because
+nobody had checked a specific post's rendered date against its exact frontmatter value closely enough to
+notice a one-day shift. **It only showed up in `npm run dev`, not on the deployed site**: Astro's dev server
+renders on every request using the local machine's timezone, while a production build's HTML is rendered
+once at build time on Vercel's build container (UTC), where midnight-UTC and the authored calendar day are
+the same instant, so the bug happened to be invisible in production. Fixed by adding `timeZone: "UTC"` to
+every `toLocaleDateString` call so the rendered date matches the frontmatter value regardless of what
+timezone the rendering machine is in. **Any new date-formatting code must include `timeZone: "UTC"`
+explicitly**, don't rely on the default locale/timezone.
+
+**Numbered pagination, added 2026-09-13.** `/blog`'s pagination used to be prev/next links plus a plain
+"Page X of Y" label, no way to jump more than one page at a time, meaning a jump from page 4 back to page 1
+took three clicks. `[...page].astro`'s `paginationRange(current, last)` now renders real page-number links
+(`/blog/`, `/blog/2/`, `/blog/3/`, ...), the current page highlighted, alongside the existing Newer/Older
+links (still hidden together with the rest of `[data-blog-pagination]` while a filter is active, unchanged).
+At <=7 total pages it shows every number; beyond that it switches to first/last plus a window around the
+current page with an ellipsis for the gap, the standard scalable pattern, since this blog's stated growth
+plan (project_scaling_plan memory: 2-3 posts/day for 6 months) would otherwise turn this into a wall of page
+links. Verified with a real Playwright click (not `page.evaluate`) from page 3's "1" link landing on
+`/blog/`.
+
 **Tag pages (`/blog/tags/[tag]`) noindex below `MIN_POSTS_TO_INDEX` (3).** Freeform `tags` with no shared
 taxonomy meant 47 tag pages existed for 21 posts, most carrying ~32 words (a heading plus one post card),
 55% of the entire sitemap. Fixed 2026-09-13: `Seo.astro`/`BaseLayout.astro` both take an optional `noindex`
