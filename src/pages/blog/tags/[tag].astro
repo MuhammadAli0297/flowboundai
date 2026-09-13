@@ -3,6 +3,13 @@ import { getCollection } from "astro:content"
 import BaseLayout from "../../../layouts/BaseLayout.astro"
 import { slugifyTag } from "../../../lib/tags"
 
+// A tag page with only a handful of posts is functionally a filtered list with no content of its
+// own, e.g. 32 words for a 1-post tag. Rather than let 40 of the site's 47 tag pages sit thin in
+// Google's index (diluting crawl budget and topical authority), only tags with a real amount of
+// content stay indexable; the rest keep working for on-site navigation/cross-linking (still built,
+// still linked, still crawlable) but ask search engines not to index them via `noindex, follow`.
+const MIN_POSTS_TO_INDEX = 3
+
 export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => !data.draft)
   const tags = [...new Set(posts.flatMap((post) => post.data.tags))]
@@ -19,12 +26,14 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts } = Astro.props
+const noindex = posts.length < MIN_POSTS_TO_INDEX
 ---
 
 <BaseLayout
   title={`${tag} | Flowbound Blog`}
   description={`Posts tagged "${tag}" on the Flowbound blog.`}
   path={`/blog/tags/${slugifyTag(tag)}`}
+  noindex={noindex}
 >
   <section class="bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
     <div class="container-fb">

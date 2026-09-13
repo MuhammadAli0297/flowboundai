@@ -10,9 +10,10 @@ interface Props {
   path?: string
   ogImage?: string
   schema?: Record<string, unknown> | Record<string, unknown>[]
+  noindex?: boolean
 }
 
-const { title, description, path, ogImage, schema } = Astro.props
+const { title, description, path, ogImage, schema, noindex } = Astro.props
 ---
 
 <!doctype html>
@@ -22,7 +23,7 @@ const { title, description, path, ogImage, schema } = Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title="Flowbound Blog" href="/rss.xml" />
-    <Seo title={title} description={description} path={path} ogImage={ogImage} schema={schema} />
+    <Seo title={title} description={description} path={path} ogImage={ogImage} schema={schema} noindex={noindex} />
 
     <link rel="preload" href="/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
