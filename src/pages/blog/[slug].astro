@@ -18,7 +18,8 @@ const { Content } = await render(post)
 
 const siteUrl = Astro.site!.toString().replace(/\/$/, "")
 
-const formatDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
 
 // Cross-linking for the "Related posts" strip: same category outranks a shared tag, ties broken by
 // most recent, so every post ends up with real click-through paths into the rest of the blog rather
@@ -95,7 +96,7 @@ const schema = [
           {post.data.category}
         </span>
         <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
-          {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
         </p>
       </div>
       <h1 class="mt-4 font-amulya text-[2rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.4rem]">

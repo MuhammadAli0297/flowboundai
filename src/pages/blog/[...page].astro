@@ -26,13 +26,33 @@ const { page, categoriesWithCounts, allPosts } = Astro.props
 
 const currentPageIds = new Set(page.data.map((p) => p.id))
 
-const formatDate = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
 
 const searchIndex = (post: (typeof allPosts)[number]) =>
   [post.data.title, post.data.description, post.data.category, ...post.data.tags].join(" ").toLowerCase()
 
 const readTime = (post: (typeof allPosts)[number]) =>
   Math.max(1, Math.round((post.body ?? "").trim().split(/\s+/).length / 200))
+
+// Numbered page links, not just prev/next, so jumping from page 4 back to page 1 (or
+// anywhere else) is a single click instead of paging back one at a time. Small page
+// counts (<=7, comfortably true at this post volume) show every number; beyond that,
+// only the first, last, and a window around the current page show, with an ellipsis
+// for the gap, the standard pattern for when the blog scales into many more pages.
+function paginationRange(current: number, last: number): (number | "…")[] {
+  if (last <= 7) return Array.from({ length: last }, (_, i) => i + 1)
+  const delta = 1
+  const middle: number[] = []
+  for (let i = Math.max(2, current - delta); i <= Math.min(last - 1, current + delta); i++) middle.push(i)
+  const range: (number | "…")[] = [1]
+  if (middle[0] > 2) range.push("…")
+  range.push(...middle)
+  if (middle[middle.length - 1] < last - 1) range.push("…")
+  range.push(last)
+  return range
+}
+const pageHref = (n: number) => (n === 1 ? "/blog/" : `/blog/${n}/`)
 ---
 
 <BaseLayout
@@ -206,16 +226,38 @@ const readTime = (post: (typeof allPosts)[number]) =>
         </p>
 
         {page.lastPage > 1 && (
-          <div data-blog-pagination class="mt-14 flex items-center justify-between border-t border-ocean-700/15 pt-6">
+          <div data-blog-pagination class="mt-14 flex flex-col items-center gap-5 border-t border-ocean-700/15 pt-6 sm:flex-row sm:justify-between">
             {page.url.prev ? (
-              <a href={page.url.prev} class="text-sm text-ocean-600 hover:underline">&larr; Newer posts</a>
-            ) : <span />}
-            <span class="font-mono text-xs uppercase tracking-wider text-ocean-950/35">
-              Page {page.currentPage} of {page.lastPage}
-            </span>
+              <a href={page.url.prev} class="text-sm text-ocean-600 hover:underline">&larr; Newer</a>
+            ) : (
+              <span class="text-sm text-ocean-950/25">&larr; Newer</span>
+            )}
+
+            <div class="flex items-center gap-1.5">
+              {paginationRange(page.currentPage, page.lastPage).map((p) =>
+                p === "…" ? (
+                  <span class="px-1 font-mono text-xs text-ocean-950/35">&hellip;</span>
+                ) : (
+                  <a
+                    href={pageHref(p)}
+                    aria-current={p === page.currentPage ? "page" : undefined}
+                    class={`flex h-7 w-7 items-center justify-center border font-mono text-xs transition-colors ${
+                      p === page.currentPage
+                        ? "border-ocean-500 bg-ocean-500 text-fb-white"
+                        : "border-ocean-700/20 text-ocean-600 hover:border-ocean-700/45"
+                    }`}
+                  >
+                    {p}
+                  </a>
+                ),
+              )}
+            </div>
+
             {page.url.next ? (
-              <a href={page.url.next} class="text-sm text-ocean-600 hover:underline">Older posts &rarr;</a>
-            ) : <span />}
+              <a href={page.url.next} class="text-sm text-ocean-600 hover:underline">Older &rarr;</a>
+            ) : (
+              <span class="text-sm text-ocean-950/25">Older &rarr;</span>
+            )}
           </div>
         )}
       </div>

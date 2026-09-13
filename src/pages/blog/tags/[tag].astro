@@ -45,7 +45,7 @@ const noindex = posts.length < MIN_POSTS_TO_INDEX
           <li data-reveal class="reveal-item border-t border-ocean-700/15 pt-6" style={`transition-delay: ${(i % 4) * 70}ms`}>
             <a href={`/blog/${post.id}/`} class="group">
               <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
-                {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
               </p>
               <h2 class="mt-2 font-amulya text-[1.2rem] font-medium leading-snug text-ocean-950 group-hover:text-ocean-600">
                 {post.data.title}
