@@ -55,6 +55,24 @@ isn't on that particular page), and `src/scripts/blogFilter.ts` shows/hides acro
 filter is active, hiding the pagination controls while it does. Sidebar category counts are computed from
 the full collection, not the current page. Card thumbnails (`src/components/BlogThumbnail.astro`) are
 generated from the category icon, not real photos, so there's no imagery to source as posts get added.
+
+**Tag pages (`/blog/tags/[tag]`) noindex below `MIN_POSTS_TO_INDEX` (3).** Freeform `tags` with no shared
+taxonomy meant 47 tag pages existed for 21 posts, most carrying ~32 words (a heading plus one post card),
+55% of the entire sitemap. Fixed 2026-09-13: `Seo.astro`/`BaseLayout.astro` both take an optional `noindex`
+prop (renders `<meta name="robots" content="noindex, follow">` when true, nothing otherwise); `[tag].astro`
+sets it whenever that tag's post count is under `MIN_POSTS_TO_INDEX`. `follow` is deliberate, the page stays
+crawlable and passes link equity, it just stops asking Google to index a near-empty archive page. At the
+current 21-post catalog this noindexes 40 of 47 tags, leaving 7 indexable (small business, inventory
+management, supplier management, wholesale, customer service, quality monitoring, reorder points). **A new
+post's `tags` should still be chosen for genuine cross-linking value, not to keep a specific tag page over
+the threshold**, the noindex is a consequence of real post count, not something to game.
+
+Tag pages are also excluded from the sitemap entirely (`astro.config.mjs`'s `sitemap({ filter })`, matching
+on `/blog/tags/`), on top of the per-tag noindex above: it dropped the sitemap from 85 to 38 URLs. This
+applies to every tag page, not just the noindexed ones, since even an indexable tag page is already
+reachable by crawl from the posts linking to it and doesn't need sitemap-driven discovery priority. If a
+future page type is similarly secondary (reachable by crawl, not meant to compete for discovery priority),
+extend this same `filter` rather than adding a second mechanism.
 `BlogBackground.astro` is the page's hero: a real JS canvas hero ("Insight Stream," see "Capability,
 narrative, and blog pages" below for the shared canvas-hero conventions), the one hero on the site where
 signal flows outward from the hub rather than converging into it (see BRAND_GUIDELINES.md).
@@ -736,6 +754,42 @@ that's the real signal for whether the fix is paying off. A `site:www.flowbound.
 Google.com (not through a general-purpose web-search API, which doesn't reliably reflect Google's actual
 index for a smaller site, confirmed it returns unrelated results for this domain) or the URL Inspection tool
 are the trustworthy ways to check a specific page's status.
+
+### SEO metadata length limits
+
+**Every page's `description` prop (`Seo.astro`) must stay at or under 155 characters, no exceptions.**
+Google reliably renders roughly 155-160 characters of a meta description before truncating it mid-sentence
+or discarding it entirely for its own auto-generated snippet, so anything longer than that is dead weight:
+copy nobody actually sees in search results. This was already the rule for blog posts (see "Blog" above,
+the SEO content pipeline caps descriptions under 155 as part of the standard process), but the 14 static
+pages in `src/pages/*.astro` (every one except `/404`) were written before that rule existed and all
+exceeded it, some badly (`/product` ran 257 characters, `/services` 250). Fixed 2026-09-06 as part of an
+SEO audit; see `seo_audit_2026_09.md` in memory for the full before/after. **When writing or editing any
+page's `description`, count the characters before committing to it**, don't eyeball it: a description that
+reads fine in the source can still be 40+ characters over budget once you actually count.
+
+Title tags have the 60-character equivalent limit already enforced by the blog pipeline; that rule now
+applies to every page's `title` prop too, not just blog posts.
+
+### Structured data: one `SoftwareApplication`, everything else is `Service`
+
+**Only `index.astro` should ever emit `SoftwareApplication` JSON-LD.** Before 2026-09-13, 14 separate
+schema blocks across the site (13 full pages plus one `agentSchema` constant embedded inside
+`services.astro`) each declared their own `SoftwareApplication` with a different `name` ("Demand
+Forecasting", "Reorder", "Ask Flowbound"...), none carrying the properties Google expects on that type
+(`operatingSystem`, `offers`). To a search engine that read as 14 distinct, incompletely-described software
+products; Flowbound is one product with capabilities, not fourteen products. Fixed 2026-09-13 (see
+`seo_audit_2026_09.md` in memory):
+- `index.astro` keeps `SoftwareApplication`, unchanged, it's the one authoritative entity for the whole
+  product.
+- `product.astro` dropped its schema block entirely rather than duplicating the homepage's entity with no
+  shared identifier. `Seo.astro`'s `schema` prop is optional, a page doesn't need one.
+- Every other page that used to claim `SoftwareApplication` (the 7 dedicated capability pages,
+  `/how-it-works`, `/ask-flowbound`, `/customer-service`, `/quality-monitoring`, plus `services.astro`'s
+  embedded `agentSchema`) now emits `Service` instead: `serviceType`, `name`, `description`, `provider:
+  { "@type": "Organization", name: "Flowbound" }`, `audience`, the exact shape `services.astro`'s own
+  `services.map(...)` array already used correctly. **A new capability or narrative page should copy this
+  `Service` shape from day one**, never `SoftwareApplication`, that type is reserved for the homepage only.
 
 ## Deployment
 
