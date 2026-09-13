@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Pricing",
   name: "Pricing",
-  applicationCategory: "BusinessApplication",
   description:
     "When supplier costs shift or demand moves, Flowbound adjusts your sell price within the bounds you set, so your margin holds without you re-running the math every time something changes.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Pricing | Flowbound"
-  description="When supplier costs shift or demand moves, Flowbound adjusts your sell price within the bounds you set, so your margin holds without you re-running the math every time something changes."
+  description="When supplier costs or demand shift, Flowbound adjusts your sell price within limits you set, so margin holds without re-running the math yourself."
   path="/pricing"
   schema={schema}
 >

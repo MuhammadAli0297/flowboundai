@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Quality Monitoring",
   name: "Quality Monitoring",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound watches inspection results, returns, and supplier performance together, so a quality issue gets flagged while it's still one incident, not after it's cost you a repeat customer.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Quality Monitoring | Flowbound"
-  description="Flowbound watches inspection results, returns, and supplier performance together, so a quality issue gets flagged while it's still one incident, not after it's cost you a repeat customer."
+  description="Flowbound watches inspection results, returns, and supplier performance together, flagging a quality issue as one incident, not after it costs a customer."
   path="/quality-monitoring"
   schema={schema}
 >

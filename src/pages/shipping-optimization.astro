@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Shipping Optimization",
   name: "Shipping Optimization",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound's shipping optimization service compares carriers, lanes, and lead times automatically and recommends the option that gets an order there on time for the least cost.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Shipping Optimization | Flowbound"
-  description="Flowbound compares carriers, lanes, and lead times automatically and recommends the option that gets your order there on time for the least cost, no manual rate shopping required."
+  description="Flowbound compares carriers, lanes, and lead times automatically and recommends the option that gets your order there on time for the least cost."
   path="/shipping-optimization"
   schema={schema}
 >

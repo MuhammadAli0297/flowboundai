@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Reorder",
   name: "Reorder",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound places the purchase order the moment your reorder point is hit, at the quantity and supplier it already recommended, so restocking doesn't wait on someone opening their laptop.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Reorder | Flowbound"
-  description="Flowbound places the purchase order the moment your reorder point is hit, at the quantity and supplier it already recommended, so restocking doesn't wait on someone opening their laptop."
+  description="Flowbound places the purchase order the moment your reorder point is hit, at the quantity and supplier already recommended. Restocking doesn't wait on you."
   path="/reorder"
   schema={schema}
 >

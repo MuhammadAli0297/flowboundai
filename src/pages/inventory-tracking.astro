@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Inventory Tracking",
   name: "Inventory Tracking",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound's inventory tracking service gives small and mid-sized businesses real-time visibility into what's on hand, what's incoming, and what's already spoken for, across every channel.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Inventory Tracking | Flowbound"
-  description="Flowbound's inventory tracking gives you real-time visibility into what's on hand, what's incoming, and what's already spoken for, so you never reorder something you already have or promise stock you don't."
+  description="Flowbound's inventory tracking gives real-time visibility into what's on hand, incoming, and already spoken for, so you never reorder or oversell stock."
   path="/inventory-tracking"
   schema={schema}
 >

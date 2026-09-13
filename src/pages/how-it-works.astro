@@ -45,11 +45,12 @@ const offYourPlate = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "How Flowbound Works",
   name: "How Flowbound Works",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound connects to the systems you already use, reads inventory, lead time, and demand signals continuously, and turns them into a decision with the reasoning attached, answerable in plain language whenever your team has a question.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -59,7 +60,7 @@ const schema = {
 
 <BaseLayout
   title="How It Works | Flowbound"
-  description="Four steps between your data and a decision you can act on: connect your systems, the engine reads the signal, you get a decision with the reasoning attached, and you can ask it anything."
+  description="Four steps between your data and a decision you can act on: connect your systems, the engine reads the signal, you get the reasoning, then ask anything."
   path="/how-it-works"
   schema={schema}
 >

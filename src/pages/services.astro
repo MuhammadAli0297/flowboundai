@@ -104,11 +104,12 @@ const agentCapabilities = [
 
 const agentSchema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Ask Flowbound",
   name: "Ask Flowbound",
-  applicationCategory: "BusinessApplication",
   description:
     "An on-demand supply chain consultant embedded in the Flowbound web app, answering questions and pulling live data the moment a team asks for it.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -134,7 +135,7 @@ const schema = [
 
 <BaseLayout
   title="Services | Flowbound"
-  description="Flowbound's supply chain services for small and mid-sized businesses: inventory, supplier management, autonomous reordering and pricing, customer service, and quality monitoring, explained in plain language and priced for teams without an SAP budget."
+  description="Flowbound's supply chain services for small businesses: inventory, suppliers, autonomous reordering and pricing, customer service, quality monitoring."
   path="/services"
   schema={schema}
 >

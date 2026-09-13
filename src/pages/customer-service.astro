@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Customer Service",
   name: "Customer Service",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound puts your live order, shipment, and inventory data behind a chat agent that answers customers directly, and hands off to your team only when a real judgment call is needed.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Customer Service | Flowbound"
-  description="Flowbound puts your live order, shipment, and inventory data behind a chat agent that answers customers directly, and hands off to your team only when a real judgment call is needed."
+  description="Flowbound puts your live order, shipment, and inventory data behind a chat agent that answers customers directly, handing off only real judgment calls."
   path="/customer-service"
   schema={schema}
 >

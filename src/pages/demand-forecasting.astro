@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Demand Forecasting",
   name: "Demand Forecasting",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound's demand forecasting service predicts what a small or mid-sized business will need to reorder and when, using sales history, seasonality, and supplier lead times.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Demand Forecasting | Flowbound"
-  description="Flowbound's demand forecasting looks at your sales history, seasonality, and supplier lead times to tell you what you'll actually need to reorder and when, no spreadsheet or consultant required."
+  description="Flowbound's demand forecasting uses your sales history, seasonality, and supplier lead times to tell you what to reorder and when, no spreadsheet required."
   path="/demand-forecasting"
   schema={schema}
 >

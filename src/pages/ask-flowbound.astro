@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Ask Flowbound",
   name: "Ask Flowbound",
-  applicationCategory: "BusinessApplication",
   description:
     "An on-demand supply chain consultant embedded in the Flowbound web app, answering questions and pulling live data the moment a team asks for it.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Ask Flowbound | Flowbound"
-  description="Ask Flowbound is the agent behind every Flowbound service: a supply chain consultant built into your web app that answers questions from your live data, no dashboard and no consultant required."
+  description="Ask Flowbound is a supply chain consultant built into your web app, answering questions from your live data. No dashboard, no consultant required."
   path="/ask-flowbound"
   schema={schema}
 >

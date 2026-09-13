@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Supplier Coordination",
   name: "Supplier Coordination",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound's supplier coordination service keeps every supplier conversation, purchase order, and lead time change in one place, and flags the ones that need attention before a delay turns into a stockout.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Supplier Coordination | Flowbound"
-  description="Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, and flags the ones that need your attention before a delay turns into a stockout."
+  description="Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, flagging what needs attention before it becomes a stockout."
   path="/supplier-coordination"
   schema={schema}
 >

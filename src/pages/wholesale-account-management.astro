@@ -70,11 +70,12 @@ const steps = [
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
+  "@type": "Service",
+  serviceType: "Wholesale Account Management",
   name: "Wholesale Account Management",
-  applicationCategory: "BusinessApplication",
   description:
     "Flowbound's wholesale account management service tracks pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder goes out at the right terms.",
+  provider: { "@type": "Organization", name: "Flowbound" },
   audience: {
     "@type": "Audience",
     audienceType: "Small and mid-sized businesses",
@@ -84,7 +85,7 @@ const schema = {
 
 <BaseLayout
   title="Wholesale Account Management | Flowbound"
-  description="Flowbound tracks pricing tiers, order minimums, and standing wholesale agreements per account, so every reorder goes out at the right terms without you having to double check the contract each time."
+  description="Flowbound tracks pricing tiers, order minimums, and standing agreements per wholesale account, so every reorder goes out at the right terms automatically."
   path="/wholesale-account-management"
   schema={schema}
 >
