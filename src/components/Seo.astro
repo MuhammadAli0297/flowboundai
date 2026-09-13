@@ -20,7 +20,28 @@ const {
 const canonicalPath = path.endsWith("/") ? path : `${path}/`
 const canonical = new URL(canonicalPath, Astro.site).toString()
 const ogImageUrl = new URL(ogImage, Astro.site).toString()
-const schemaList = schema ? (Array.isArray(schema) ? schema : [schema]) : []
+
+// Rendered on every page unconditionally so the whole site shares one Organization/WebSite entity
+// instead of leaving Google to infer "Flowbound the company" from scattered per-page fragments. No
+// `sameAs` until real social profiles exist, don't add placeholder links. No `SearchAction` either:
+// the blog's search box (blogFilter.ts) is client-side only and never reflects its query in the
+// URL, so a sitelinks searchbox claim would describe a capability that doesn't actually work.
+const baseSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Flowbound",
+    url: Astro.site,
+    logo: new URL("/logo-mark-ocean.svg", Astro.site).toString(),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Flowbound",
+    url: Astro.site,
+  },
+]
+const schemaList = [...baseSchema, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])]
 ---
 
 <title>{title}</title>

@@ -1,19 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <!-- Same mark/palette as logo-mark-ocean.svg (kept in sync by hand, see that file's comment).
-       Replaces a prior favicon that was an unrelated purple abstract shape, not the actual brand
-       mark, found during the 2026-09 SEO audit. -->
+  <!-- Static export of LogoMark.astro's palette="ocean" rendering (same shape, same hex values),
+       for use anywhere a standalone file is needed instead of the live Astro component: the
+       Organization schema logo, and this file's own favicon.svg counterpart. If LogoMark.astro's
+       ocean colors ever change, update this file to match, they're kept in sync by hand. -->
   <defs>
-    <linearGradient id="favicon-ocean-grad" x1="60" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+    <linearGradient id="ocean-grad" x1="60" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#4A6FA5"/>
       <stop offset="1" stop-color="#166088"/>
     </linearGradient>
-    <clipPath id="favicon-ocean-clip">
+    <clipPath id="ocean-clip">
       <circle cx="100" cy="100" r="100"/>
     </clipPath>
   </defs>
-  <g clip-path="url(#favicon-ocean-clip)">
+  <g clip-path="url(#ocean-clip)">
     <path d="M100,0 A100,100 0 0,0 100,200 A50,50 0 0,0 100,100 A50,50 0 0,1 100,0 Z" fill="#104866"/>
-    <path d="M100,0 A100,100 0 0,1 100,200 A50,50 0 0,1 100,100 A50,50 0 0,0 100,0 Z" fill="url(#favicon-ocean-grad)"/>
+    <path d="M100,0 A100,100 0 0,1 100,200 A50,50 0 0,1 100,100 A50,50 0 0,0 100,0 Z" fill="url(#ocean-grad)"/>
     <path d="M100,-4 A52,52 0 0,1 100,100 A52,52 0 0,0 100,204" fill="none" stroke="#DBE9EE" stroke-width="30" stroke-linecap="round"/>
     <path d="M118,36 A20,20 0 0,1 128,54" fill="none" stroke="#104866" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
     <path d="M82,146 A20,20 0 0,1 72,164" fill="none" stroke="#104866" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round"/>
