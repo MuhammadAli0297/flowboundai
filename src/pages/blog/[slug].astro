@@ -79,7 +79,7 @@ const schema = [
   title={`${post.data.title} | Flowbound`}
   description={post.data.description}
   path={`/blog/${post.id}`}
-  ogImage={post.data.ogImage}
+  ogImage={post.data.ogImage ?? `/og/${post.id}.png`}
   schema={schema}
 >
   <section class="bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
