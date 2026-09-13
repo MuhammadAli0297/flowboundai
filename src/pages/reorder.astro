@@ -3,6 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import Cta from "../components/Cta.astro"
 import ReorderBackground from "../components/ReorderBackground.astro"
 import SectionIcon from "../components/icons/SectionIcon.astro"
+import Breadcrumbs from "../components/Breadcrumbs.astro"
+import { buildBreadcrumbSchema } from "../lib/breadcrumbs"
+
+const breadcrumbItems = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+  { name: "Reorder", path: "/reorder" },
+]
+const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, Astro.site!)
 
 const GLOW_SIZE = 420
 
@@ -68,6 +77,39 @@ const steps = [
   },
 ]
 
+const faqs = [
+  {
+    question: "What actually triggers a reorder?",
+    answer:
+      "The reorder point itself, calculated from your demand forecast and each supplier's lead time. The instant your stock crosses it, Flowbound places the order, it doesn't wait for someone to check a dashboard first.",
+  },
+  {
+    question: "Can I limit what Flowbound is allowed to order on its own?",
+    answer:
+      "Yes. You set the budget caps, approval thresholds, and preferred suppliers, and every autonomous reorder stays inside those guardrails. It's not a free-for-all.",
+  },
+  {
+    question: "Does it always reorder from the same supplier?",
+    answer:
+      "It reorders from the supplier it already recommended for that SKU, so an order never accidentally goes out to the wrong vendor or at the wrong price.",
+  },
+  {
+    question: "What happens after Flowbound places an order automatically?",
+    answer:
+      "Once you trust the call, Flowbound tells you what it ordered and why afterward, instead of holding a purchase order in a queue waiting on your approval.",
+  },
+]
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })),
+}
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -87,7 +129,7 @@ const schema = {
   title="Automated Reorder Point Software | Flowbound"
   description="Flowbound places the purchase order the moment your reorder point is hit, at the quantity and supplier already recommended. Restocking doesn't wait on you."
   path="/reorder"
-  schema={schema}
+  schema={[schema, faqSchema, breadcrumbSchema]}
 >
   <section id="top" class="relative min-h-[560px] overflow-hidden bg-ocean-900 md:min-h-[680px]">
     <ReorderBackground />
@@ -95,6 +137,7 @@ const schema = {
     <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
 
     <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 font-amulya md:min-h-[680px]">
+      <Breadcrumbs items={breadcrumbItems} />
       <div class="mb-5 flex items-center gap-3">
         <SectionIcon name="bolt" class="h-6 w-6 text-ocean-100" />
         <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Reorder</p>
@@ -246,6 +289,30 @@ const schema = {
           class="glow-cursor z-20 rounded-full"
           style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%);`}
         />
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="border-b border-ocean-700/15 bg-ocean-200 bg-grain py-20 font-amulya md:py-28">
+    <div class="container-fb">
+      <div class="reveal-item max-w-xl" data-reveal>
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">FAQ</p>
+        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.2rem]">
+          Straight answers about how the automatic reorder actually behaves.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4">
+        {faqs.map((faq, i) => (
+          <div
+            data-reveal
+            class="reveal-item border border-ocean-700/20 bg-ocean-100 px-6 py-6"
+            style={`transition-delay: ${(i % 4) * 70}ms`}
+          >
+            <h3 class="font-amulya text-[1.05rem] font-medium leading-snug text-ocean-950">{faq.question}</h3>
+            <p class="mt-2 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{faq.answer}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>

@@ -3,6 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import Cta from "../components/Cta.astro"
 import SupplierCoordinationBackground from "../components/SupplierCoordinationBackground.astro"
 import SectionIcon from "../components/icons/SectionIcon.astro"
+import Breadcrumbs from "../components/Breadcrumbs.astro"
+import { buildBreadcrumbSchema } from "../lib/breadcrumbs"
+
+const breadcrumbItems = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+  { name: "Supplier Coordination", path: "/supplier-coordination" },
+]
+const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, Astro.site!)
 
 const GLOW_SIZE = 420
 
@@ -68,6 +77,39 @@ const steps = [
   },
 ]
 
+const faqs = [
+  {
+    question: "Where do supplier conversations and purchase orders actually live?",
+    answer:
+      "In one record per vendor, calls, emails, and PO updates all land there, instead of getting buried in someone's personal inbox.",
+  },
+  {
+    question: "What happens when a supplier pushes back a delivery date?",
+    answer:
+      "Flowbound logs it against the affected purchase orders immediately, not whenever someone happens to notice the email.",
+  },
+  {
+    question: "How does Flowbound decide what needs my attention?",
+    answer:
+      "A slipping lead time or a purchase order gone quiet gets flagged before it turns into a stockout, so you're not scanning every vendor yourself to find the one problem.",
+  },
+  {
+    question: "Does this work the same with three suppliers or thirty?",
+    answer:
+      "Yes, the same coordination applies either way, so a growing vendor list doesn't mean growing busywork.",
+  },
+]
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })),
+}
+
 const schema = {
   "@context": "https://schema.org",
   "@type": "Service",
@@ -87,7 +129,7 @@ const schema = {
   title="Supplier Coordination Software | Flowbound"
   description="Flowbound keeps every supplier conversation, purchase order, and lead time change in one place, flagging what needs attention before it becomes a stockout."
   path="/supplier-coordination"
-  schema={schema}
+  schema={[schema, faqSchema, breadcrumbSchema]}
 >
   <section id="top" class="relative min-h-[560px] overflow-hidden bg-ocean-900 md:min-h-[680px]">
     <SupplierCoordinationBackground />
@@ -95,6 +137,7 @@ const schema = {
     <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
 
     <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 font-amulya md:min-h-[680px]">
+      <Breadcrumbs items={breadcrumbItems} />
       <div class="mb-5 flex items-center gap-3">
         <SectionIcon name="network" class="h-6 w-6 text-ocean-100" />
         <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Supplier Coordination</p>
@@ -246,6 +289,30 @@ const schema = {
           class="glow-cursor z-20 rounded-full"
           style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%);`}
         />
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="border-b border-ocean-700/15 bg-ocean-200 bg-grain py-20 font-amulya md:py-28">
+    <div class="container-fb">
+      <div class="reveal-item max-w-xl" data-reveal>
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">FAQ</p>
+        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.2rem]">
+          Straight answers about how supplier coordination actually works.
+        </h2>
+      </div>
+
+      <div class="mt-12 grid grid-cols-1 gap-4">
+        {faqs.map((faq, i) => (
+          <div
+            data-reveal
+            class="reveal-item border border-ocean-700/20 bg-ocean-100 px-6 py-6"
+            style={`transition-delay: ${(i % 4) * 70}ms`}
+          >
+            <h3 class="font-amulya text-[1.05rem] font-medium leading-snug text-ocean-950">{faq.question}</h3>
+            <p class="mt-2 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{faq.answer}</p>
+          </div>
+        ))}
       </div>
     </div>
   </section>

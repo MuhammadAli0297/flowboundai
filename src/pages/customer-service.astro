@@ -3,6 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import Cta from "../components/Cta.astro"
 import CustomerServiceBackground from "../components/CustomerServiceBackground.astro"
 import SectionIcon from "../components/icons/SectionIcon.astro"
+import Breadcrumbs from "../components/Breadcrumbs.astro"
+import { buildBreadcrumbSchema } from "../lib/breadcrumbs"
+
+const breadcrumbItems = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+  { name: "Customer Service", path: "/customer-service" },
+]
+const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, Astro.site!)
 
 const GLOW_SIZE = 420
 
@@ -87,7 +96,7 @@ const schema = {
   title="Customer Service Automation | Flowbound"
   description="Flowbound puts your live order, shipment, and inventory data behind a chat agent that answers customers directly, handing off only real judgment calls."
   path="/customer-service"
-  schema={schema}
+  schema={[schema, breadcrumbSchema]}
 >
   <section id="top" class="relative min-h-[560px] overflow-hidden bg-ocean-900 md:min-h-[680px]">
     <CustomerServiceBackground />
@@ -95,6 +104,7 @@ const schema = {
     <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
 
     <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 font-amulya md:min-h-[680px]">
+      <Breadcrumbs items={breadcrumbItems} />
       <div class="mb-5 flex items-center gap-3">
         <SectionIcon name="chat" class="h-6 w-6 text-ocean-100" />
         <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Customer Service</p>

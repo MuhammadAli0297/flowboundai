@@ -10,7 +10,6 @@ export const blogCategories = [
   { name: "Quality Monitoring", icon: "shield-check" },
   { name: "Autonomous Decisions", icon: "compass" },
   { name: "Industry Insights", icon: "spark" },
-  { name: "Company News", icon: "document" },
 ] as const
 
 export type BlogCategoryName = (typeof blogCategories)[number]["name"]

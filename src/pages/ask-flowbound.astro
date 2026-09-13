@@ -3,6 +3,15 @@ import BaseLayout from "../layouts/BaseLayout.astro"
 import Cta from "../components/Cta.astro"
 import AskFlowboundBackground from "../components/AskFlowboundBackground.astro"
 import SectionIcon from "../components/icons/SectionIcon.astro"
+import Breadcrumbs from "../components/Breadcrumbs.astro"
+import { buildBreadcrumbSchema } from "../lib/breadcrumbs"
+
+const breadcrumbItems = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+  { name: "Ask Flowbound", path: "/ask-flowbound" },
+]
+const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, Astro.site!)
 
 const GLOW_SIZE = 420
 
@@ -87,7 +96,7 @@ const schema = {
   title="Ask Flowbound | On-Demand Supply Chain Consultant"
   description="Ask Flowbound is a supply chain consultant built into your web app, answering questions from your live data. No dashboard, no consultant required."
   path="/ask-flowbound"
-  schema={schema}
+  schema={[schema, breadcrumbSchema]}
 >
   <section id="top" class="relative min-h-[560px] overflow-hidden bg-ocean-900 md:min-h-[680px]">
     <AskFlowboundBackground />
@@ -95,6 +104,7 @@ const schema = {
     <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
 
     <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 font-amulya md:min-h-[680px]">
+      <Breadcrumbs items={breadcrumbItems} />
       <div class="mb-5 flex items-center gap-3">
         <SectionIcon name="spark" class="h-6 w-6 text-ocean-100" />
         <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Ask Flowbound</p>
