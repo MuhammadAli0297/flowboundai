@@ -108,6 +108,50 @@ doesn't (a capability page and its own product marketing page, like `/pricing/`,
 conflate the two when picking a FAQ link target). A new post should hit both minimums as part of the
 pipeline's linking step, not as an afterthought pass at the end.
 
+**FAQPage schema is parsed from the existing Markdown, not duplicated into frontmatter.** Every post's
+"## FAQ" section (see above) already has real, visible Q&A content; `src/lib/faq.ts`'s
+`parseFaqFromMarkdown()` pulls it straight out of `post.body` (Astro's glob loader keeps the raw,
+unrendered Markdown around for exactly this) at build time in `[slug].astro`, strips Markdown link/bold/code
+syntax down to plain text, and emits `FAQPage` schema alongside the existing `BlogPosting`/`BreadcrumbList`
+blocks. Added 2026-09-13, zero content files touched. If a post has no `## FAQ` section, the block is
+omitted entirely rather than shipping empty/invalid schema, `faqs.length > 0` gates it. Verified at scale,
+not just spot-checked: built and asserted all 21 posts (excluding the `/blog/2/`, `/blog/3/` pagination
+pages, which correctly get none) produce a `FAQPage` block with the same 4-5 question count already known
+from each post's visible FAQ section. **A new post's FAQ section needs no extra work for this**, writing
+it in the same `**Question?**` / answer Markdown shape every existing post already uses is enough for the
+parser to pick it up automatically.
+
+**Every post gets a real, unique OG image, generated at build time, not one shared static file.**
+Before 2026-09-13 every page and post shared one static `og-image.png`. `src/pages/og/[slug].png.ts` is
+a static image endpoint (same `output: "static"` model as every HTML page, no server involved) that
+renders a title card per post via `satori` (JSX-like tree -> SVG) and `@resvg/resvg-js` (SVG -> real PNG):
+dark ocean-900 background, a radial gradient glow, the post's actual category icon as a watermark
+(`src/lib/ogIcons.ts`, the same path data as `SectionIcon.astro`, kept in sync by hand), the category
+label, the title, and the Flowbound wordmark. `[slug].astro`'s `ogImage={post.data.ogImage ?? `/og/${post.id}.png`}`
+uses this by default; a post can still override it with a hand-made image via its existing `ogImage`
+frontmatter field.
+
+Two real, empirically-confirmed font constraints, not assumptions, worth knowing before touching this:
+**satori cannot parse WOFF2 directly** ("Unsupported OpenType signature wOF2"), so `src/lib/ogFonts.ts`
+decompresses this project's existing self-hosted `.woff2` files to raw sfnt via the `wawoff2` package
+before handing them to satori. **Satori also cannot parse Amulya at all**, even after decompression,
+because it's a variable font and satori's font parser doesn't support variable-font tables (`fvar`/`gvar`);
+confirmed by testing Amulya alone (fails) against Satoshi/IBM Plex Mono alone (works) before writing the
+real implementation. The OG cards use Satoshi (700/900) and IBM Plex Mono (500) for exactly this reason,
+not a design choice, Amulya is simply not usable here. If a future change ever needs Amulya in a
+satori-rendered image, it would need a static (non-variable) export of the font first.
+
+New devDependencies from this: `satori`, `@resvg/resvg-js`, `wawoff2`. All three are build-time only
+(nothing ships to the browser), consistent with how `@astrojs/check`/`tailwindcss`/`postcss` are already
+classified in this project. `@resvg/resvg-js` specifically has a native binary component, worth knowing
+since every other dependency here is pure JS. Adding `satori` pulled in one new moderate npm-audit
+finding (`fflate`, a DoS via malformed ZIP64 archives) accepted as low real-world risk since the only
+"archive" satori ever decompresses in this codebase is this project's own trusted font files, never
+untrusted input; not fixed via `npm audit fix --force` since that would bump satori to a breaking version
+without testing it. Separately, `npm audit` also surfaced a **pre-existing critical Astro RCE**
+(AVIF image optimization, fixed in 7.3.2, this project is pinned to 7.1.3) unrelated to anything added
+today; flagged for its own dedicated version-bump-and-test cycle rather than folded into this change.
+
 **Cross-linking is structural, not a per-post content task.** `src/pages/blog/[slug].astro` renders a
 "Related reading" section under every post automatically: it scores every other published post (same
 `category` +10, each shared `tags` entry +3), takes the top 3, and renders them as clickable cards
@@ -763,13 +807,49 @@ or discarding it entirely for its own auto-generated snippet, so anything longer
 copy nobody actually sees in search results. This was already the rule for blog posts (see "Blog" above,
 the SEO content pipeline caps descriptions under 155 as part of the standard process), but the 14 static
 pages in `src/pages/*.astro` (every one except `/404`) were written before that rule existed and all
-exceeded it, some badly (`/product` ran 257 characters, `/services` 250). Fixed 2026-09-06 as part of an
+exceeded it, some badly (`/product` ran 257 characters, `/services` 250). Fixed 2026-09-13 as part of an
 SEO audit; see `seo_audit_2026_09.md` in memory for the full before/after. **When writing or editing any
 page's `description`, count the characters before committing to it**, don't eyeball it: a description that
 reads fine in the source can still be 40+ characters over budget once you actually count.
 
 Title tags have the 60-character equivalent limit already enforced by the blog pipeline; that rule now
 applies to every page's `title` prop too, not just blog posts.
+
+**Titles name the actual keyword, not just the page's internal short name.** Before 2026-09-13, every
+non-homepage page followed a bare "X | Flowbound" pattern (`/reorder` and `/pricing` were 19 characters
+each), using a fraction of the 60-character budget and never naming what a searcher would actually type.
+Rewritten to include a real keyword phrase while staying under 60 characters, e.g. `/reorder` is now
+"Automated Reorder Point Software | Flowbound" (44 chars), `/pricing` is "Automated Repricing Software |
+Flowbound" (40 chars, "Automated Repricing" rather than bare "Pricing" specifically to avoid reading as
+"what Flowbound costs" instead of the actual autonomous-repricing capability). `index.astro`'s title was
+already keyword-forward and wasn't touched. **A new page's title should follow this same pattern from the
+start**: name the real keyword/benefit, not just the page's short internal name, while respecting the
+60-character limit above.
+
+### Sitewide Organization and WebSite schema
+
+`Seo.astro` unconditionally prepends `Organization` and `WebSite` JSON-LD ahead of whatever
+page-specific `schema` prop is passed in, so every page (down to `/404`) carries one shared brand
+entity instead of leaving Google to infer "Flowbound the company" from scattered fragments. Added
+2026-09-13. No `sameAs` (no real social profiles exist anywhere in the codebase, don't add
+placeholder links just to fill the field) and no `SearchAction`/sitelinks searchbox (`blogFilter.ts`'s
+search is client-side only and never reflects its query in the URL, so a `SearchAction` would claim a
+capability that doesn't actually work; that would need wiring the search box to a real `?q=` URL
+first, a separate change).
+
+`Organization.logo` points at `public/logo-mark-ocean.svg`, a new static file, not an existing one:
+`favicon.svg` turned out to be an unrelated purple abstract mark (not the brand at all, likely a leftover
+from a much earlier concept), `public/logo-mark.svg` is a static export of the real comma-mark shape but
+in the pre-rebrand "fb" palette (green/black), and `src/assets/logo.png` is unused specifically because it
+can't be recolored without a re-export (see "Homepage" above) and would get a content-hashed, unstable
+filename if referenced from `src/assets/` anyway. `logo-mark-ocean.svg` is `LogoMark.astro`'s
+`palette="ocean"` output hand-exported to a standalone file (same path data, same hex values:
+`#104866`/`#4A6FA5`→`#166088`/`#DBE9EE`), so schema, and anything else that needs a static logo URL,
+points at something that actually matches the current brand. **If `LogoMark.astro`'s ocean colors ever
+change, update this file to match by hand**, they're not derived from one shared source.
+
+`favicon.svg` itself was also replaced with the same mark/palette (previously the same unrelated purple
+shape mentioned above, an existing bug independent of this SEO pass, fixed while already in this file).
 
 ### Structured data: one `SoftwareApplication`, everything else is `Service`
 
