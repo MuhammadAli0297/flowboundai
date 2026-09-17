@@ -242,6 +242,18 @@ changed on disk and `astro check`/`astro build` both reflect the new content cor
 cache issue (confirmed with `curl` directly against the dev server) and the fix is restarting the dev server,
 not investigating the browser.
 
+**5 more posts added 2026-09-15**, spread across 5 of the 7 categories (Industry Insights, Autonomous
+Decisions, Customer Service, Shipping & Logistics, Quality Monitoring) rather than another full per-category
+batch: "What Supply Chain Visibility Actually Means," "Safety Stock: How Much Buffer You Actually Need,"
+"First Contact Resolution for Wholesale Support," "Freight Class: What It Is and Why Rates Change," and "The
+CAPA Process for Supplier Quality Issues." Same pipeline as every prior batch (competitor-gap research,
+`services.ts` accuracy check, 5+ body links, 3+ FAQ links), dated 2026-09-05 through 2026-09-13 continuing
+the archive's existing every-other-day cadence with no adjacent same-category accent-color repeats. The
+catalog is 40 posts across 7 categories as of this batch. One accuracy check worth repeating: the CAPA post's
+closing tie-in had to be written carefully to say Quality Monitoring flags the defect pattern and supplies
+the supplier scorecard data a CAPA's root-cause step would use, not that it runs the CAPA process itself,
+since `services.ts` doesn't describe any corrective-action-workflow capability.
+
 ### Data-driven pages vs. narrative pages
 
 `src/data/services.ts` is the single source of truth for `/services` content. The nav dropdown
