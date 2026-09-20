@@ -8,13 +8,22 @@ interface Props {
   // artifacts, but this hand-drawn vector's gradient stops are just hex values, so it's the
   // reliable way to get an ocean-toned mark. Same shape either way, only the fill colors change.
   palette?: "fb" | "ocean"
+  // Adds a thin outer ring in the river color. The ocean palette's dark comma fill (#104866) and
+  // the gradient's dark stop (#166088) both sit too close to bg-ocean-900 (the footer background,
+  // #166088 exactly for the gradient stop, a 1.00:1 contrast ratio) to read as their own shape
+  // there, verified by computing real WCAG contrast rather than eyeballing it. Rather than
+  // recoloring the mark for dark placements, this ring keeps the brand colors untouched and just
+  // defines the silhouette against a dark background. Pass `ring` wherever the mark sits on
+  // ocean-900/ocean-950 (currently: Footer, via LogoLockup's `dark` prop); leave it off on light
+  // backgrounds, where it's redundant (same color as the page).
+  ring?: boolean
   // Needed because Nav and Footer both render this on the same page at once: two <svg> defs with
   // the same gradient id would collide (duplicate IDs in one document), so each instance needs
   // its own.
   id?: string
 }
 
-const { size = 32, class: className = "", palette = "fb", id = "fb-mark" } = Astro.props
+const { size = 32, class: className = "", palette = "fb", ring = false, id = "fb-mark" } = Astro.props
 const gradId = `${id}-grad`
 const clipId = `${id}-clip`
 
@@ -54,4 +63,5 @@ const riverColor = palette === "ocean" ? "#DBE9EE" : "#FFFFFF"
     <path d="M118,36 A20,20 0 0,1 128,54" fill="none" stroke={commaFill} stroke-opacity="0.35" stroke-width="3" stroke-linecap="round" />
     <path d="M82,146 A20,20 0 0,1 72,164" fill="none" stroke={commaFill} stroke-opacity="0.3" stroke-width="3" stroke-linecap="round" />
   </g>
+  {ring && <circle cx="100" cy="100" r="98" fill="none" stroke={riverColor} stroke-width="4" />}
 </svg>

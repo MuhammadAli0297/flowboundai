@@ -53,6 +53,27 @@ the dark comma (`ocean-950`) and the mid-blue gradient comma, but pulled from th
 instead of sitting outside it. The `"fb"` palette (the untouched original mark, unused in code today but
 preserved) still uses true white, don't change that one.
 
+**A dark-placement outline, added 2026-09-20.** Real contrast bug, found by computing actual WCAG ratios
+rather than eyeballing: on the footer's `ocean-900` background (`#166088`), the ocean-palette mark's
+gradient ends at that exact same hex, a 1.00:1 ratio, and the dark comma fill (`ocean-950`, `#104866`)
+only clears 1.43:1, so the mark's right edge was functionally invisible there. Fixed not by recoloring the
+mark (several recolor options were prototyped and compared with real contrast numbers before picking this
+one, since a distinct "dark mark" would have meant maintaining a third palette) but by adding a thin
+`ocean-100` ring (`r="98"`, `stroke-width="4"` on the 200x200 viewBox) that traces the outer edge:
+`LogoMark.astro` takes a `ring` boolean prop for this, off by default, and `LogoLockup.astro` passes
+`ring={dark}` so Footer picks it up automatically and Nav stays untouched. `public/logo-mark-ocean-dark.svg`
+is the same ring treatment as a standalone static file, for anywhere a file is needed instead of the live
+component. **Any future dark (`ocean-900`/`ocean-950`) placement of the mark should pass `ring`**, and any
+future standalone dark-background export should copy `logo-mark-ocean-dark.svg`'s pattern rather than
+reusing the plain `logo-mark-ocean.svg`.
+
+**The favicon now has a matching dark-chrome variant.** `public/favicon-dark.svg` is `favicon.svg` plus the
+same outline ring, served via a second `<link rel="icon">` in `BaseLayout.astro` gated on
+`media="(prefers-color-scheme: dark)"` (the original `favicon.svg` link is now explicitly
+`media="(prefers-color-scheme: light)"`), so a browser with dark tab chrome picks the outlined version
+automatically, no JS involved. Kept in sync by hand with `logo-mark-ocean-dark.svg`, same as the existing
+`favicon.svg`/`logo-mark-ocean.svg` pair.
+
 ## Color palette
 Sampled directly from the real logo file (`public/logo.png`), not estimated.
 
@@ -315,9 +336,14 @@ same kind of card this later pass was flattening, don't convert those without be
 - `src/components/LogoLockup.astro`: logo lockup (mark plus wordmark), used in nav and footer, renders
   `LogoMark.astro` with `palette="ocean"`
 - `src/components/LogoMark.astro`: hand-redrawn vector mark on its own, for anywhere the wordmark isn't
-  needed, takes `palette` (`"fb"` or `"ocean"`) and `id` props
+  needed, takes `palette` (`"fb"` or `"ocean"`), `ring` (dark-placement outline, see Logo above), and `id`
+  props
 - `public/logo-mark.svg`: source vector for the mark, also the basis for the generated OG image
-- `public/favicon.svg`: the favicon (a vector version, not the PNG logo)
+- `public/logo-mark-ocean-dark.svg`: static export of the ocean palette with the dark-placement ring, for
+  anywhere a standalone file is needed instead of the live component on a dark background
+- `public/favicon.svg`: the favicon (a vector version, not the PNG logo), served for light browser chrome
+- `public/favicon-dark.svg`: favicon with the same ring treatment, served for dark browser chrome via a
+  `prefers-color-scheme` media query on the `<link>` tag in `BaseLayout.astro`
 - `public/fonts/`: self-hosted Satoshi, IBM Plex Mono, and Amulya (homepage/Nav/Footer/logo, `/product`,
   `/services`, all ten capability/narrative pages, `/how-it-works`, and `/blog`, see Typography above)
   `.woff2` files

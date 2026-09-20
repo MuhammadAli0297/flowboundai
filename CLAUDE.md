@@ -1047,6 +1047,26 @@ the actual trigger gap in pixels (scripted scroll + state inspection) before gue
 theoretical rootMargin/threshold math and the empirical measurement agreed here, but confirm rather than
 assume next time too.
 
+### Logo dark-mode outline and dual favicon (2026-09-20)
+
+The founder shared the real source mark (`src/assets/logo.png`) for a fresh look at recoloring it; turned
+out to be a request worth acting on for a real reason, not just a repaint. Comparing options in a
+side-by-side artifact (light-mode candidates, dark-mode candidates, a favicon-size check, full lockup
+previews, all with real computed WCAG contrast numbers rather than eyeballed) surfaced a genuine bug: on
+the footer's `ocean-900` background, the ocean-palette mark's gradient stop and the background are the
+exact same hex, `1.00:1` contrast, so the mark's right edge was invisible there, not just subtle. The user
+picked "Ocean Classic" (today's live colors, unchanged) for light placements and "Ocean Outlined" for dark
+ones over a full recolor: `LogoMark.astro` gained a `ring` prop (a thin `ocean-100` circle, `r="98"`,
+`stroke-width="4"`, off by default) that defines the silhouette without touching the brand's actual fill
+colors; `LogoLockup.astro` passes `ring={dark}` so Footer picks it up automatically and Nav is byte-for-byte
+unchanged, confirmed with a real Playwright screenshot, not just "the code looks right." `public/
+favicon-dark.svg` (the same ring treatment) is now served alongside the existing `favicon.svg` via two
+`<link rel="icon">` tags in `BaseLayout.astro`, split on `media="(prefers-color-scheme: light/dark)"`, so a
+browser with dark tab chrome gets the outlined version with no JS involved. `public/logo-mark-ocean-dark.svg`
+is the same ring treatment as a standalone file, mirroring the existing `logo-mark-ocean.svg`. See
+`BRAND_GUIDELINES.md`'s Logo section for the full contrast numbers and the file-by-file breakdown.
+**Any future dark-background placement of the mark should pass `ring`, not a recolor.**
+
 ### Brand and copy rules (`BRAND_GUIDELINES.md`)
 
 Read this before writing any user-facing copy or touching visual styling. Highlights:
