@@ -26,6 +26,10 @@ const panelClass = "w-64 overflow-hidden rounded-2xl border border-ocean-900/10 
 // overflow-hidden (that would clip the flyouts). Round only the first/last row instead.
 const outerPanelClass = "w-64 rounded-2xl border border-ocean-900/10 bg-fb-white shadow-xl"
 const panelLinkClass = "font-amulya block px-4 py-3 text-[0.88rem] font-normal text-ocean-950 transition-colors hover:bg-ocean-100/60 hover:text-ocean-600"
+// Mobile menu: the same weight/hover language as the desktop flyout above (panelLinkClass-ish),
+// just full-width rows instead of a floating panel, since it's a dropdown under the header rather
+// than a hover flyout.
+const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] font-medium text-ocean-950 transition-colors hover:bg-ocean-200/60"
 ---
 
 <header class="sticky top-0 z-50 border-b border-ocean-700/15 bg-ocean-100/90 font-amulya backdrop-blur">
@@ -33,14 +37,103 @@ const panelLinkClass = "font-amulya block px-4 py-3 text-[0.88rem] font-normal t
     <a href="/" class="shrink-0">
       <LogoLockup />
     </a>
-    <nav class="ml-auto hidden items-center gap-6 md:flex lg:gap-8">
+    <div class="ml-auto flex items-center">
+      <nav class="hidden items-center gap-6 md:flex lg:gap-8">
+        {navLinks.map((l) =>
+          l.label === "Services" ? (
+            <div class="group/services relative">
+              <a href={l.href} class={`${linkClass} flex items-center gap-1`}>
+                Services
+                <svg
+                  class="h-3 w-3 shrink-0 transition-transform duration-150 group-hover/services:-rotate-180 group-focus-within/services:-rotate-180"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </a>
+              <div class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/services:visible group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:opacity-100">
+                <div class={outerPanelClass}>
+                  <a href="/ask-flowbound/" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
+                  {menuServices.map(({ service, expand }, i) => {
+                    const isLast = i === menuServices.length - 1
+                    const roundedLast = isLast ? "rounded-b-2xl" : ""
+                    return expand ? (
+                      <div class="group/item relative">
+                        <a href={`/services/#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
+                          {service.name}
+                          <span class="font-mono text-xs text-ocean-950/30">&rsaquo;</span>
+                        </a>
+                        <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all duration-150 group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
+                          <div class={panelClass}>
+                            {service.capabilities.map((capability) => (
+                              <a href={capability.href ?? `/services/#${service.slug}`} class={panelLinkClass}>{capability.title}</a>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <a href={service.href ?? `/services/#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <a href={l.href} class={linkClass}>
+              {l.label}
+            </a>
+          )
+        )}
+      </nav>
+      <a
+        href="/#cta"
+        class="group relative ml-6 hidden shrink-0 items-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-ocean-700 bg-ocean-700 px-3 py-2 font-amulya text-[0.8rem] font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-2.5 hover:shadow-[0_10px_22px_-8px_rgba(79,109,122,0.55)] sm:inline-flex sm:px-4 sm:text-[0.85rem] lg:ml-10"
+      >
+        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+        <span class="relative z-10">Request a pilot</span>
+        <span aria-hidden="true" class="relative z-10 hidden transition-transform duration-300 ease-out group-hover:translate-x-1 sm:inline">&rarr;</span>
+      </a>
+      <button
+        type="button"
+        class="group relative ml-3 flex h-9 w-9 shrink-0 items-center justify-center md:hidden"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Toggle menu"
+        data-mobile-menu-toggle
+      >
+        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 -translate-y-[7px] rounded-full bg-ocean-950 transition-transform duration-300 ease-out group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"></span>
+        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ocean-950 transition-opacity duration-200 ease-out group-aria-expanded:opacity-0"></span>
+        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 translate-y-[6px] rounded-full bg-ocean-950 transition-transform duration-300 ease-out group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"></span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="invisible absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] -translate-y-2 overflow-y-auto border-b border-ocean-700/15 bg-ocean-100 opacity-0 shadow-lg transition-all duration-200 ease-out data-[state=open]:visible data-[state=open]:translate-y-0 data-[state=open]:opacity-100 md:hidden"
+    data-mobile-menu
+    data-state="closed"
+  >
+    <nav class="flex flex-col gap-1 px-6 py-4">
       {navLinks.map((l) =>
         l.label === "Services" ? (
-          <div class="group/services relative">
-            <a href={l.href} class={`${linkClass} flex items-center gap-1`}>
+          <div>
+            <button
+              type="button"
+              class={`${mobileLinkClass} group flex w-full items-center justify-between`}
+              aria-controls="mobile-services-panel"
+              aria-expanded="false"
+              data-accordion-toggle
+            >
               Services
               <svg
-                class="h-3 w-3 shrink-0 transition-transform duration-150 group-hover/services:-rotate-180 group-focus-within/services:-rotate-180"
+                aria-hidden="true"
+                class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-aria-expanded:-rotate-180"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -50,48 +143,84 @@ const panelLinkClass = "font-amulya block px-4 py-3 text-[0.88rem] font-normal t
               >
                 <path d="m6 9 6 6 6-6" />
               </svg>
-            </a>
-            <div class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-all duration-150 group-hover/services:visible group-hover/services:opacity-100 group-focus-within/services:visible group-focus-within/services:opacity-100">
-              <div class={outerPanelClass}>
-                <a href="/ask-flowbound/" class={`${panelLinkClass} rounded-t-2xl`}>Ask Flowbound</a>
-                {menuServices.map(({ service, expand }, i) => {
-                  const isLast = i === menuServices.length - 1
-                  const roundedLast = isLast ? "rounded-b-2xl" : ""
-                  return expand ? (
-                    <div class="group/item relative">
-                      <a href={`/services/#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
+            </button>
+            <div
+              id="mobile-services-panel"
+              class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out data-[state=open]:grid-rows-[1fr]"
+              data-accordion-panel
+              data-state="closed"
+            >
+              <div class="overflow-hidden">
+                <a href="/ask-flowbound/" class={`${mobileLinkClass} pl-6 text-[0.88rem] font-normal`}>Ask Flowbound</a>
+                {menuServices.map(({ service, expand }) =>
+                  expand ? (
+                    <div>
+                      <button
+                        type="button"
+                        class={`${mobileLinkClass} group flex w-full items-center justify-between pl-6 text-[0.88rem] font-normal`}
+                        aria-controls={`mobile-service-${service.slug}-panel`}
+                        aria-expanded="false"
+                        data-accordion-toggle
+                      >
                         {service.name}
-                        <span class="font-mono text-xs text-ocean-950/30">&rsaquo;</span>
-                      </a>
-                      <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all duration-150 group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
-                        <div class={panelClass}>
+                        <svg
+                          aria-hidden="true"
+                          class="h-3 w-3 shrink-0 transition-transform duration-200 group-aria-expanded:-rotate-180"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
+                      </button>
+                      <div
+                        id={`mobile-service-${service.slug}-panel`}
+                        class="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 ease-out data-[state=open]:grid-rows-[1fr]"
+                        data-accordion-panel
+                        data-state="closed"
+                      >
+                        <div class="overflow-hidden">
                           {service.capabilities.map((capability) => (
-                            <a href={capability.href ?? `/services/#${service.slug}`} class={panelLinkClass}>{capability.title}</a>
+                            <a
+                              href={capability.href ?? `/services/#${service.slug}`}
+                              class={`${mobileLinkClass} pl-9 text-[0.82rem] font-normal text-ocean-950/75`}
+                            >
+                              {capability.title}
+                            </a>
                           ))}
                         </div>
                       </div>
                     </div>
                   ) : (
-                    <a href={service.href ?? `/services/#${service.slug}`} class={`${panelLinkClass} ${roundedLast}`}>{service.name}</a>
+                    <a href={service.href ?? `/services/#${service.slug}`} class={`${mobileLinkClass} pl-6 text-[0.88rem] font-normal`}>
+                      {service.name}
+                    </a>
                   )
-                })}
+                )}
               </div>
             </div>
           </div>
         ) : (
-          <a href={l.href} class={linkClass}>
+          <a href={l.href} class={mobileLinkClass}>
             {l.label}
           </a>
         )
       )}
     </nav>
-    <a
-      href="/#cta"
-      class="group relative ml-6 inline-flex shrink-0 items-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-ocean-700 bg-ocean-700 px-3 py-2 font-amulya text-[0.8rem] font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-2.5 hover:shadow-[0_10px_22px_-8px_rgba(79,109,122,0.55)] sm:px-4 sm:text-[0.85rem] lg:ml-10"
-    >
-      <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-      <span class="relative z-10">Request a pilot</span>
-      <span aria-hidden="true" class="relative z-10 hidden transition-transform duration-300 ease-out group-hover:translate-x-1 sm:inline">&rarr;</span>
-    </a>
+    <div class="border-t border-ocean-700/15 px-6 py-4">
+      <a
+        href="/#cta"
+        class="flex w-full items-center justify-center rounded-full border border-ocean-700 bg-ocean-700 px-4 py-2.5 font-amulya text-[0.9rem] font-semibold text-fb-white transition-colors hover:bg-ocean-600"
+      >
+        Request a pilot
+      </a>
+    </div>
   </div>
 </header>
+
+<script>
+  import "../scripts/mobileMenu"
+</script>

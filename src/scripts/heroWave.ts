@@ -59,6 +59,8 @@ function initHeroWave() {
   points.rotation.x = -0.24
   scene.add(points)
 
+  const copyEl = document.querySelector("[data-hero-copy]")
+
   function resize() {
     const rect = section!.getBoundingClientRect()
     const width = Math.max(rect.width, 1)
@@ -66,6 +68,15 @@ function initHeroWave() {
     renderer.setSize(width, height, false)
     camera.aspect = width / height
     camera.updateProjectionMatrix()
+
+    // Below md, the mobile hero band (see the #hero-wave override in HeroBackground.astro) sits
+    // below the real copy block instead of a guessed fixed offset: min-h-screen-nav + justify-start
+    // means how much empty space is left below the buttons varies a lot by viewport height, and
+    // this re-measures on every resize so it keeps up if the copy reflows (e.g. a rotation).
+    if (copyEl) {
+      const copyBottom = copyEl.getBoundingClientRect().bottom - rect.top
+      section!.style.setProperty("--hero-copy-bottom", `${Math.max(copyBottom, 0)}px`)
+    }
   }
   resize()
   window.addEventListener("resize", resize)

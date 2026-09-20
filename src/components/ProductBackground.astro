@@ -9,7 +9,7 @@
 <div class="hero-canvas-wrap absolute inset-0 overflow-hidden" aria-hidden="true">
   <div class="hero-base-gradient absolute inset-0"></div>
   <span class="hero-hub-glow"></span>
-  <canvas id="product-hero-wave" class="absolute inset-0 h-full w-full"></canvas>
+  <canvas id="product-hero-wave" class="hero-canvas-chip" style="--hero-focal: 68% 42%"></canvas>
   <div class="absolute inset-0 bg-grain opacity-20 mix-blend-overlay"></div>
 </div>
 
@@ -22,18 +22,29 @@
   }
 
   /* soft breathing glow positioned where the WebGL streams converge, roughly two-thirds across
-     the frame, so the "hub" reads as one coherent light source rather than just particle density */
+     the frame, so the "hub" reads as one coherent light source rather than just particle density.
+     Hidden below md: at that width the canvas itself shrinks into a small corner chip (see
+     .hero-canvas-chip in src/index.css) since hero copy runs the section's full width there, and
+     this glow's fixed 26rem size/position was tuned for the desktop layout, sitting squarely
+     under that full-width copy otherwise. */
   .hero-hub-glow {
-    position: absolute;
-    top: 42%;
-    left: 68%;
-    width: 26rem;
-    height: 26rem;
-    transform: translate(-50%, -50%);
-    border-radius: 9999px;
-    background: radial-gradient(circle, rgba(219, 233, 238, 0.28) 0%, rgba(74, 111, 165, 0.16) 45%, transparent 72%);
-    filter: blur(4px);
-    animation: hero-hub-breathe 6s ease-in-out infinite;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero-hub-glow {
+      position: absolute;
+      top: 42%;
+      left: 68%;
+      width: 26rem;
+      height: 26rem;
+      transform: translate(-50%, -50%);
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(219, 233, 238, 0.28) 0%, rgba(74, 111, 165, 0.16) 45%, transparent 72%);
+      filter: blur(4px);
+      animation: hero-hub-breathe 6s ease-in-out infinite;
+      display: block;
+    }
   }
 
   @keyframes hero-hub-breathe {

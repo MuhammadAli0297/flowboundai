@@ -44,6 +44,35 @@ something heavier, don't add a framework or a heavy library site-wide.
 - `src/content/blog/`: Markdown blog posts via Astro's Content Layer API, schema in `src/content.config.ts`;
   `/blog` (paginated index), `/blog/[slug]`, `/blog/tags/[tag]` all derive from this collection
 
+### Navigation
+
+**Mobile hamburger menu, added 2026-09-20** (`Nav.astro` had no mobile nav at all before this: below
+`md`, the desktop `<nav>` just disappeared with no replacement, leaving the header logo and a CTA button
+with nothing else reachable). A hamburger button (`md:hidden`, three bars that morph into an X via
+`aria-expanded`-driven Tailwind `group-aria-expanded:` variants, no separate JS-toggled class needed)
+opens a dropdown panel (`data-mobile-menu`, `visibility`/`opacity`/`translate` transition off a `data-state`
+attribute, same mechanism as the desktop Services flyout just driven by a click instead of `:hover`) listing
+`navLinks` plus a full-width "Request a pilot" CTA. `src/scripts/mobileMenu.ts` drives it: closes on a link
+click, outside click, Escape, or resizing past `md`. Real bug fixed in the same pass: the header's
+right-alignment came from `ml-auto` on the `<nav>` element itself, so once `<nav>` went `display:none` below
+`md` that auto-margin vanished too and the hamburger (and the CTA before it) packed left next to the logo
+instead of sitting at the right edge; fixed by moving `ml-auto` onto a wrapper `<div>` that's always present
+regardless of which children inside it are hidden at a given breakpoint.
+
+Services needs a second level: on desktop it's a hover flyout, and three of its entries
+(`servicesMenu`'s `expand: true` ones, Inventory/Supplier Management/Autonomous) have their own nested
+flyout of capability links. The mobile menu mirrors this as nested accordions, not flat links: the
+top-level Services row expands to show Ask Flowbound plus each service, and the three `expand: true`
+services are themselves toggle buttons that expand a further-indented list of that service's
+`capabilities`. **First shipped without this nesting** (flat links only, silently dropping the whole
+second level for those three services), caught when the user asked "where are the inventory/supplier
+management/autonomous sub-menus." Fixed by generalizing `mobileMenu.ts`'s accordion logic: every
+toggle/panel pair (the top-level Services one and each nested one) is wired the same generic way via
+`data-accordion-toggle`/`aria-controls` matching a panel's `id`, so nesting one accordion inside another
+just works with no extra script code, and a future fourth `expand: true` service needs no script changes
+either. **A new expandable service in `servicesMenu` needs no manual mobile-menu wiring**, the nested
+accordion is generated from the same `expand`/`capabilities` data the desktop flyout already reads.
+
 ### Blog
 
 Every post needs a `category` (one fixed value from `src/data/blogCategories.ts`, each mapped to a
@@ -849,6 +878,56 @@ the static fallback itself looks reasonable rather than blank or broken. For a r
 loop (a threshold crossing, a flag-and-hold), a short screenshot burst can still miss the exact window by
 luck; when that happens, replicate the timeline math standalone in `node -e` (pure arithmetic, no browser
 needed) to confirm the trigger condition is reachable at plausible `t` values before concluding it's broken.
+
+### Hero animations on mobile (2026-09-20)
+
+**Real bug, not a style choice: every one of the fourteen hero animations (the twelve canvas heroes above,
+plus the homepage and `/product` WebGL ones) was drawn assuming a desktop layout where hero copy stays
+confined to roughly the left 55-58% of the section, leaving the right side clear.** Below `md`, hero copy
+runs the section's full width instead (no dedicated column reserved for it, see every hero's own `h1`/`p`
+`max-w-*` classes, none of which are small enough to actually constrain width at a phone viewport), so the
+same right-side composition ended up sitting directly under the text instead of beside it: a hub icon
+overlapping specific words (`/ask-flowbound`'s spark sat directly on top of "calendar"), particle fields
+scattered through paragraph copy (`/product`'s "Convergent Signals"). Caught from a user screenshot, not
+proactively.
+
+**Fix: a shared `.hero-canvas-chip` CSS class (`src/index.css`), applied to every one of the fourteen hero
+canvases, shrinks the whole animation into a small round chip below `md` instead of trying to redesign each
+of the fourteen bespoke compositions' internal geometry for a narrower strip** (which full-width copy would
+still cross into). The chip sits in the section's own bottom padding (`py-20`/`pb-20` = 80px), real empty
+space on every one of these pages by construction: flexbox padding is never consumed by overflowing
+content, regardless of how tall the copy block gets, so this is a hard geometric guarantee the same way the
+original desktop `CLIP_XF` clip was, not a percentage tuned by eye. `object-fit: cover` crops into each
+composition's own focal point (`--hero-focal`, a CSS custom property set inline per component, matching that
+script's `HUB_XF`/`HUB_YF` or equivalent) rather than shrinking the whole scene down to illegibility. At
+`md`+ the class resets to the original full-bleed behavior, unchanged. Critically, **none of the fourteen
+scripts' own draw/resize logic needed to change**: every one already measures the section (not the canvas
+element) for its internal math, so shrinking the canvas element's own CSS box via `object-fit` is a pure
+presentation change, decoupled from the drawing coordinate system. The two WebGL heroes' oversized ambient
+glow layers (`ProductBackground.astro`'s `.hero-hub-glow`, `HeroBackground.astro`'s `.hero-streak`), both
+independent full-bleed decorative elements positioned for the same desktop-only assumption, are hidden below
+`md` for the same reason rather than also being chip-ified (a 26rem blur glow doesn't scale down
+meaningfully into a 60px circle).
+
+**The homepage got a bigger, content-aware treatment on top of the base chip, at the user's explicit
+follow-up request ("is there no way to have my hero animations on mobile, at least for the homepage").**
+`/` (and `/product`, `/services`, though the latter has no canvas hero) use `min-h-screen-nav` +
+`justify-start` rather than the twelve canvas heroes' content-driven `min-h-[560px]`, which means the
+section is pinned to the *full viewport height* with copy pinned to the *top*, leaving real, often
+substantial (200px+), empty space below the buttons on a typical phone, not just the guaranteed-but-thin
+80px padding strip. `src/scripts/heroWave.ts`'s existing `resize()` now also measures the real bottom edge
+of the button row live (`data-hero-copy` on that row in `Hero.astro`) and exposes it as `--hero-copy-bottom`
+on the section; `HeroBackground.astro` uses that to override `.hero-canvas-chip`'s mobile geometry (via a
+higher-specificity `#hero-wave` id selector, scoped inside its own `@media (max-width: 767px)` block so it
+never touches the desktop rule) into a full-width rounded band starting just below the buttons, rather than
+a small fixed corner chip. This scales with whatever room actually exists on a given device instead of a
+guessed percentage: verified at ~358×209px on an iPhone 13, ~396×317px on a Pro Max, and gracefully down to
+a thin ~40px sliver (never negative, never overlapping) on an iPhone SE or a short landscape phone, where
+content height leaves only the guaranteed 80px padding available, same floor the base chip relies on
+everywhere else. **This bigger treatment is homepage-only for now**, scoped the same deliberate way every
+other homepage-specific exception in this file is (`/product` shares the identical `min-h-screen-nav`/
+`justify-start` layout shape and could reuse the same technique, but wasn't asked for yet, don't extend it
+there without being asked, same standing rule as everything else in the "Homepage" section above).
 
 ### Site-wide UI refinement (2026-09-20)
 
