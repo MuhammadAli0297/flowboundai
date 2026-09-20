@@ -254,6 +254,22 @@ closing tie-in had to be written carefully to say Quality Monitoring flags the d
 the supplier scorecard data a CAPA's root-cause step would use, not that it runs the CAPA process itself,
 since `services.ts` doesn't describe any corrective-action-workflow capability.
 
+**5 more posts added 2026-09-20**, one keyword target per post, picked from a real gap analysis against the
+existing 40-post archive (no topic overlap) plus live competitor-article validation via WebSearch before
+writing (real top-ranking H2/H3-structured articles, not vendor homepages), same as every prior batch:
+"Inventory Cycle Counting: The ABC Method" (Inventory Management), "Three-Way Matching for Purchase Orders"
+(Supplier Management), "Economic Order Quantity (EOQ), Explained" (Autonomous Decisions), "Reducing Where's
+My Order Support Tickets" (Customer Service), and "Landed Cost: The Full Formula" (Shipping & Logistics),
+dated 2026-09-22 through 2026-09-30 continuing the every-other-day cadence with no adjacent same-category
+accent-color repeats. The catalog is 45 posts across 7 categories as of this batch. The WISMO post
+(`reducing-wheres-my-order-support-tickets.md`) deliberately covers different ground than the existing
+`wheres-my-order-is-a-supply-chain-question.md`: the older post frames order-status questions as a data-
+visibility problem, this one is about concrete ticket-*volume*-reduction tactics, and each links to the
+other rather than duplicating it. Same accuracy discipline as every batch: the landed-cost post's product
+tie-in is careful to say Flowbound doesn't calculate customs duties or import paperwork, only that Shipping
+Optimization keeps the freight component of landed cost down and Pricing adjusts sell price when costs
+shift, since `services.ts` describes no customs/duty-calculation capability.
+
 ### Data-driven pages vs. narrative pages
 
 `src/data/services.ts` is the single source of truth for `/services` content. The nav dropdown
@@ -1107,8 +1123,8 @@ products; Flowbound is one product with capabilities, not fourteen products. Fix
 
 Served from `https://www.flowbound.ai` on Vercel (the bare apex `flowbound.ai` 308-redirects to it on every
 path, see "SEO and canonical URLs" above), connected to `MuhammadAli0297/flowboundai` on GitHub. Every push
-to `main` auto-deploys; no environment variables required. Split commits by concern (feature/bugfix/docs)
-rather than bundling unrelated changes.
+to `main` auto-deploys to production; no environment variables required. Split commits by concern
+(feature/bugfix/docs) rather than bundling unrelated changes.
 
 **Standing rule, added 2026-09-20: `README.md` gets reviewed as part of any deploy that changes something
 it describes**, not just when asked separately. The repo is public for portfolio purposes (see the
@@ -1119,3 +1135,34 @@ table, the "Engineering highlights" list, the screenshot, or any specific conven
 shape, card treatment, etc.). If it does, update the README in the same push, don't let it drift and
 catch up later. A screenshot only needs regenerating when the change is visually significant enough that
 the current one would look wrong or misleading next to the live site, not for every deploy.
+
+**Standing rule, added 2026-09-20: "push and deploy" means three things happen
+together, every time, not just a `git push`:**
+1. **Every markdown doc touched by the session's changes gets reviewed and updated in the same push**, not
+   just `README.md`. That now explicitly includes `CLAUDE.md` (this file, append the session's work under
+   the relevant section before pushing) and `BRAND_GUIDELINES.md` when a change affects anything it
+   describes. This is a review-and-update pass done as part of staging the push, not a hard gate that stops
+   and asks first, apply judgment the same way the README rule already does (a docs-only typo fix doesn't
+   need a highlights-list entry; a new content batch or a new sitewide convention does).
+2. **The public GitHub repo (`MuhammadAli0297/flowboundai`) gets the new code pushed.**
+3. **A deploy actually happens**, and "stage" and "prod" are two different, deliberate destinations, not
+   interchangeable words:
+   - **Stage** = push the work to a non-`main` branch and open a PR (`gh pr create`). Vercel's existing
+     GitHub integration auto-generates a Preview deployment for that branch/PR with no extra config, no
+     second Vercel project, and no vercel.json. That preview URL is "stage." `main` is untouched, so
+     production is not affected.
+   - **Prod** = merging that PR's branch into `main` (or pushing straight to `main`), which is what
+     actually triggers the live `www.flowbound.ai` deploy. This still only happens on an explicit
+     later go-ahead, never automatically just because a stage push went out, matching the pre-existing
+     "work locally, deploy only on an explicit ask" default this project has followed since its first
+     production push (see the `deployment_reference` memory).
+
+There is no separate staging *environment* (no second domain, no dedicated Vercel project) and none should
+be silently created; "stage" is the branch-PR-preview flow above unless the user explicitly asks for a real
+dedicated staging environment as its own infra task.
+
+**User habit, noted 2026-09-20: after a prod deploy, the user closes the current session and starts a new
+one.** This isn't an action for Claude to take (a session can't close itself), just context: don't expect a
+long-running session to continue seamlessly past a "deploy to prod" instruction, and don't be surprised if
+the next message arrives in a fresh session with no memory of this one beyond what's saved to project
+memory and `CLAUDE.md`. Doesn't apply to a stage/preview push, only prod.

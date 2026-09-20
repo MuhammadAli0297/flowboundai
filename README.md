@@ -16,7 +16,7 @@ the fast alternative to an SAP implementation. Live at
 
 A static, server-render-free marketing site (Astro, `output: "static"`) covering a homepage, a
 product page, seven dedicated capability pages, three narrative service pages, a fully filterable
-blog (40 posts across 7 categories), and supporting pages, 143 built routes total (including a
+blog (45 posts across 7 categories), and supporting pages, 154 built routes total (including a
 uniquely generated OG share image per blog post). Built and maintained solo, end to end:
 architecture, visual design system, copywriting, SEO, and production deploys.
 
@@ -52,7 +52,7 @@ explicitly emulating `reducedMotion: 'no-preference'` to catch a real class of b
 machine's OS-level accessibility setting was silently masking (default screenshots always showed
 the static fallback frame, never the live animation).
 
-**A repeatable SEO content pipeline, not ad hoc blog posts.** Every post (40 as of this writing,
+**A repeatable SEO content pipeline, not ad hoc blog posts.** Every post (45 as of this writing,
 up from an original batch of 21) goes through the same defined process: competitor-article
 research against actual top-ranking pages (not vendor homepages), a content-gap analysis, a
 featured-snippet-targeted outline, a draft in a consistent voice, an EEAT self-review, and
@@ -115,7 +115,7 @@ numbers by feel.
 | Framework | [Astro](https://astro.build) 7, static output, zero client-side JS framework runtime by default |
 | Language | TypeScript, strict mode |
 | Styling | Tailwind CSS 3, a custom two-palette design system (see `tailwind.config.js`) |
-| 3D / WebGL | [three.js](https://threejs.org), scoped to 2 of 143 pages (see highlights above) |
+| 3D / WebGL | [three.js](https://threejs.org), scoped to 2 of 154 pages (see highlights above) |
 | Animation | Hand-written Canvas 2D (12 bespoke hero compositions), `IntersectionObserver`-driven scroll reveals, vanilla TS, no animation library |
 | Content | Astro Content Layer API, Markdown blog posts, schema-validated via `src/content.config.ts` |
 | Fonts | Satoshi, IBM Plex Mono, Amulya, all self-hosted `.woff2`, no third-party font CDN |
@@ -152,7 +152,7 @@ environment variables are required.
 
 ## Pages
 
-143 built routes. The core set:
+154 built routes. The core set:
 
 | Route | File | Notes |
 |---|---|---|
@@ -189,7 +189,7 @@ automatically.
 
 ```
 src/
-├── pages/            One file per route (143 built routes)
+├── pages/            One file per route (154 built routes)
 ├── layouts/           BaseLayout.astro: shared shell (nav, footer, font preloads, Seo)
 ├── components/        Nav, Footer, logo, homepage sections, one animated hero
 │                       background component per secondary page
