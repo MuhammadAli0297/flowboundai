@@ -1,0 +1,37 @@
+---
+// Homepage plan item #5 (stat tiles) reworked as a non-numeric trust strip: Flowbound is
+// pre-launch (Cta.astro: "onboarding a small group of business pilots right now"), so there are
+// no real client-count/years-in-business numbers to feature yet, and this project's accuracy
+// rule (check before a capability or company claim, same discipline as the blog's EEAT pass)
+// applies just as much to stats as it does to product claims. Every phrase here is already
+// backed by existing copy elsewhere on the page, not a new claim: "Free pilot" mirrors Hero's
+// "Start free pilot", "Days, not months" mirrors WhyUs's "No SI required. You're connected in
+// days, not months", "Reasoning included" mirrors ProductSystem's Consulting Wrapper tile.
+// Revisit with real numbers once there are pilots to report on.
+const signals = [
+  { headline: "Free pilot", detail: "No cost, no contract to start." },
+  { headline: "Days, not months", detail: "Connected without an SI or a rollout project." },
+  { headline: "Reasoning included", detail: "Every recommendation explained in plain language." },
+]
+---
+
+<section class="border-b border-fb-white/10 bg-ocean-900 py-14 font-amulya md:py-16">
+  <div class="container-fb">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+      {signals.map((s, i) => (
+        <div
+          data-reveal
+          class="reveal-item border border-fb-white/15 p-6 text-center transition-colors duration-300 hover:border-fb-white/35 hover:bg-fb-white/5"
+          style={`transition-delay: ${i * 90}ms`}
+        >
+          <p class="text-[1.15rem] font-semibold text-fb-white">{s.headline}</p>
+          <p class="mt-1.5 text-[0.85rem] font-normal text-fb-white/80">{s.detail}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import "../scripts/scrollReveal"
+</script>

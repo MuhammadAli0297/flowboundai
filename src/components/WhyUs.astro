@@ -18,22 +18,25 @@ const GLOW_SIZE = 340
   <div class="container-fb">
     <div class="reveal-item max-w-xl" data-reveal>
       <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">Why small business teams choose Flowbound</p>
-      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.2rem]">
+      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
         Built for the team that doesn't have an SAP budget.
       </h2>
     </div>
 
+    <!-- thin-border card trial (see BRAND_GUIDELINES.md / homepage plan): no tilt, no solid fill,
+         just a 1px border sitting directly on the section background, closer to a restrained/
+         "engineered" reference feel than the tinted, tilting cards ProductSystem and HowItWorks
+         use. reveal-item lives directly on each card rather than a separate wrapper, since
+         there's no tilt-card transition on it to conflict with. -->
     <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-5 overflow-hidden sm:grid-cols-2 md:grid-cols-3">
       {reasons.map((r, i) => (
-        <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 80}ms`}>
-          <div
-            data-tilt
-            class="tilt-card group relative z-10 h-full overflow-hidden border border-ocean-700/20 bg-ocean-200 p-6 hover:border-ocean-700/45"
-          >
-            <SectionIcon name={r.icon} class="h-7 w-7 shrink-0 text-ocean-500" />
-            <p class="mt-4 text-[0.98rem] font-normal leading-relaxed text-ocean-950">{r.text}</p>
-            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-ocean-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-          </div>
+        <div
+          data-reveal
+          class="reveal-item group relative z-10 h-full border border-ocean-700/25 p-6 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-200/40"
+          style={`transition-delay: ${i * 80}ms`}
+        >
+          <SectionIcon name={r.icon} class="h-7 w-7 shrink-0 text-ocean-500" />
+          <p class="mt-4 text-[0.98rem] font-normal leading-relaxed text-ocean-950">{r.text}</p>
         </div>
       ))}
 
@@ -51,6 +54,5 @@ const GLOW_SIZE = 340
 
 <script>
   import "../scripts/hoverGlow"
-  import "../scripts/cardTilt"
   import "../scripts/scrollReveal"
 </script>

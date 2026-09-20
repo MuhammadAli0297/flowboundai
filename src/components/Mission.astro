@@ -1,3 +1,16 @@
+---
+// Each token becomes its own scroll-scrubbed word: opacity ramps from dim to full as
+// --mission-scroll (set by missionScroll.ts) crosses that word's position in the line. "period."
+// is kept as one token (rather than splitting the trailing period into its own word) since a lone
+// punctuation mark fading in on its own beat would read as a stray flicker, not a word.
+const statementWords: (string | { text: string; italic: true })[] = [
+  "We're", "built", "for", "small", "and", "local", "businesses,",
+  { text: "period.", italic: true },
+  "You", "deserve", "the", "same", "caliber", "of", "tools", "the", "big",
+  "companies", "use,", "without", "the", "price", "tag", "or", "the", "consultants.",
+]
+---
+
 <section id="smb" class="relative overflow-hidden border-b border-ocean-700/15 bg-ocean-200 py-20 font-amulya md:py-28">
   <!-- a single slow-drifting wash, quieter than ProductSystem's pair since this section is mostly
        type: atmosphere behind the words, not something competing with them for attention -->
@@ -7,9 +20,17 @@
 
   <div class="container-fb relative max-w-2xl">
     <p class="reveal-item mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950" data-reveal>Who we build for</p>
-    <p class="reveal-item text-[1.3rem] font-light leading-snug tracking-tight text-ocean-950 md:text-[1.5rem]" data-reveal style="transition-delay: 90ms">
-      We're built for small and local businesses, <span class="font-medium italic">period</span>. You deserve the
-      same caliber of tools the big companies use, without the price tag or the consultants.
+    <p
+      class="statement-line text-[1.3rem] font-light leading-snug tracking-tighter text-ocean-950 md:text-[1.5rem]"
+      style={`--word-total: ${statementWords.length}; --reveal-span: 0.2`}
+    >
+      {statementWords.map((token, i) => {
+        const text = typeof token === "string" ? token : token.text
+        const italic = typeof token !== "string" && token.italic
+        return (
+          <span class={`scrub-word${italic ? " font-medium italic" : ""}`} style={`--word-index: ${i}`}>{text} </span>
+        )
+      })}
     </p>
     <p class="reveal-item mt-6 text-[1.02rem] font-normal leading-relaxed text-ocean-950" data-reveal style="transition-delay: 180ms">
       We integrate with your tools, learn your numbers in a few weeks, then start making calls, tuning the whole
@@ -40,13 +61,42 @@
     50% { transform: translate(-3vw, 4vh); }
   }
 
+  /* Each word's color is a function of how far --mission-scroll (0 to 1 across the section's
+     full height, set continuously by missionScroll.ts) has moved past that word's own position
+     in the line (--word-index / --word-total). The reveal has to finish early, not spread across
+     the section's whole scroll-through: the statement line sits near the section's top, so by
+     the time --mission-scroll gets much past ~0.18 the line has already scrolled up under the
+     sticky nav. --reveal-span compresses the full word sequence into just the first slice of the
+     section's scroll (0.2 by default), so --mission-scroll is rescaled to an effective 0-to-1
+     before comparing it to each word's threshold. --w-progress goes negative before a word's turn
+     and past 1 once it's fully revealed; color-mix() clamps out-of-range percentages on its own,
+     so there's no need to separately clamp --w-progress. No transition: progress is already
+     recomputed every scroll tick, so words track scroll position directly rather than lagging
+     behind it.
+
+     This was originally an opacity fade (dim = low opacity), reworked after a real legibility
+     bug: fading text opacity toward a LIGHT background necessarily tanks contrast, since the
+     blended pixel drifts toward the background color. At this section's ocean-200 background,
+     getting the dim state legible (WCAG AA 4.5:1) required opacity >= ~0.85, leaving almost no
+     room for a visible dim/bright difference; the actual shipped 0.22 minimum measured only
+     1.4:1, unreadable (confirmed with real contrast math, not eyeballed). Fixed by mixing between
+     two already-legible solid colors instead of fading toward the background: ocean-900 (#166088,
+     4.55:1 against ocean-200) for the dim/unrevealed state, ocean-950 (#104866, 6.50:1, the same
+     color the rest of the section's body text already uses) for revealed. Contrast now stays
+     above AA at every point along the transition, not just at the two ends. */
+  .scrub-word {
+    --w-progress: calc(((var(--mission-scroll, 0) / var(--reveal-span, 0.2)) - (var(--word-index, 0) / var(--word-total, 1))) / var(--reveal-window, 0.06));
+    color: color-mix(in srgb, #166088 calc((1 - var(--w-progress)) * 100%), #104866 calc(var(--w-progress) * 100%));
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .mission-ambient-blob {
-      animation: none;
+    .scrub-word {
+      color: #104866;
     }
   }
 </style>
 
 <script>
   import "../scripts/scrollReveal"
+  import "../scripts/missionScroll"
 </script>

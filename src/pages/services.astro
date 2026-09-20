@@ -33,11 +33,10 @@ const toneStyles = {
     eyebrow: "text-ocean-950",
     heading: "text-ocean-950",
     body: "text-ocean-950",
-    card: "border-ocean-700/20 bg-ocean-200 hover:border-ocean-700/45",
+    card: "border-ocean-700/25 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-200/40",
     cardHeading: "text-ocean-950",
     cardBody: "text-ocean-950",
     index: "text-ocean-950",
-    accentLine: "bg-ocean-500",
     glowBlend: "mix-blend-multiply",
     glowStops: "rgba(74,111,165,0.15), transparent 70%",
     icon: "text-ocean-950/[14%]",
@@ -51,11 +50,10 @@ const toneStyles = {
     eyebrow: "text-ocean-950",
     heading: "text-ocean-950",
     body: "text-ocean-950",
-    card: "border-ocean-700/20 bg-ocean-100 hover:border-ocean-700/45",
+    card: "border-ocean-700/25 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-100/40",
     cardHeading: "text-ocean-950",
     cardBody: "text-ocean-950",
     index: "text-ocean-950",
-    accentLine: "bg-ocean-500",
     glowBlend: "mix-blend-multiply",
     glowStops: "rgba(74,111,165,0.15), transparent 70%",
     icon: "text-ocean-950/[14%]",
@@ -69,11 +67,10 @@ const toneStyles = {
     eyebrow: "text-ocean-100",
     heading: "text-fb-white",
     body: "text-fb-white/65",
-    card: "border-fb-white/15 bg-fb-white/5 hover:border-ocean-100/40 hover:bg-fb-white/10",
+    card: "border-fb-white/15 transition-colors duration-300 hover:border-ocean-100/40 hover:bg-fb-white/10",
     cardHeading: "text-fb-white",
     cardBody: "text-fb-white/60",
     index: "text-ocean-100",
-    accentLine: "bg-ocean-100",
     glowBlend: "",
     glowStops: "rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%",
     icon: "text-ocean-100/[18%]",
@@ -151,7 +148,7 @@ const schema = [
         <SectionIcon name="network" class="h-6 w-6 text-ocean-100" />
         <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Services</p>
       </div>
-      <h1 class="max-w-2xl font-amulya text-[2.3rem] font-bold leading-[1.1] tracking-tight text-fb-white md:text-[3rem]">
+      <h1 class="max-w-2xl font-amulya text-[2.3rem] font-bold leading-[1.1] tracking-tighter text-fb-white md:text-[3rem]">
         Supply chain services built for teams without an <span class="font-medium italic text-ocean-100">SAP budget</span>.
       </h1>
       <p class="mt-5 max-w-xl text-[1.02rem] font-light leading-relaxed text-fb-white/65">
@@ -161,7 +158,7 @@ const schema = [
       <div class="mt-9 flex flex-wrap items-center gap-4">
         <a
           href="#cta"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
+          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
         >
           <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-900 transition-transform duration-500 ease-out group-hover:scale-x-100" />
           <span class="relative z-10">Request a pilot</span>
@@ -169,7 +166,7 @@ const schema = [
         </a>
         <a
           href="#agent"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-md border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
+          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
         >
           <span aria-hidden="true" class="absolute inset-0 bg-fb-white/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
           <span class="relative z-10">See how it works</span>
@@ -201,7 +198,7 @@ const schema = [
       <div class="flex items-start justify-between gap-8">
         <div class={`${revealCycle[0]} max-w-xl`} data-reveal>
           <p class={`mb-4 font-mono text-xs uppercase tracking-[0.2em] ${toneStyles.paper.eyebrow}`}>Ask Flowbound</p>
-          <h2 class={`font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${toneStyles.paper.heading}`}>
+          <h2 class={`font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter md:text-[2.2rem] ${toneStyles.paper.heading}`}>
             A consultant on demand, built into your web app.
           </h2>
           <p class={`mt-5 text-[0.98rem] font-normal leading-relaxed ${toneStyles.paper.body}`}>
@@ -224,13 +221,11 @@ const schema = [
         {agentCapabilities.map((capability, i) => (
           <div data-reveal class={`${revealCycle[0]} h-full`} style={`transition-delay: ${i * 90}ms`}>
             <div
-              data-tilt
-              class={`tilt-card group relative z-10 h-full overflow-hidden border p-8 ${toneStyles.paper.card}`}
+              class={`group relative z-10 h-full overflow-hidden border p-8 ${toneStyles.paper.card}`}
             >
               <span class={`font-mono text-sm ${toneStyles.paper.index}`}>{String(i + 1).padStart(2, "0")}</span>
               <h3 class={`mt-3 font-amulya text-[1.15rem] font-medium leading-snug ${toneStyles.paper.cardHeading}`}>{capability.title}</h3>
               <p class={`mt-3 text-[0.95rem] font-normal leading-relaxed ${toneStyles.paper.cardBody}`}>{capability.description}</p>
-              <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${toneStyles.paper.accentLine}`} />
             </div>
           </div>
         ))}
@@ -273,7 +268,7 @@ const schema = [
                  comment for why (a real bug this codebase already shipped and fixed once). */}
               <div class={variant === "reveal-clip" ? "reveal-clip-mask" : ""}>
                 <p class={`mb-4 font-mono text-xs uppercase tracking-[0.2em] ${tone.eyebrow}`}>{service.name}</p>
-                <h2 class={`font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight md:text-[2.2rem] ${tone.heading}`}>
+                <h2 class={`font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter md:text-[2.2rem] ${tone.heading}`}>
                   {service.headline}
                 </h2>
                 <p class={`mt-5 text-[0.98rem] font-normal leading-relaxed ${tone.body}`}>{service.description}</p>
@@ -294,13 +289,11 @@ const schema = [
               <div data-reveal class={`${variant} h-full`} style={`transition-delay: ${i * 90}ms`}>
                 <div class={`flex h-full flex-col ${variant === "reveal-clip" ? "reveal-clip-mask" : ""}`}>
                   <div
-                    data-tilt
-                    class={`tilt-card group relative z-10 flex-1 overflow-hidden border p-8 ${tone.card}`}
+                    class={`group relative z-10 flex-1 overflow-hidden border p-8 ${tone.card}`}
                   >
                     <span class={`font-mono text-sm ${tone.index}`}>{String(i + 1).padStart(2, "0")}</span>
                     <h3 class={`mt-3 font-amulya text-[1.15rem] font-medium leading-snug ${tone.cardHeading}`}>{capability.title}</h3>
                     <p class={`mt-3 text-[0.95rem] font-normal leading-relaxed ${tone.cardBody}`}>{capability.description}</p>
-                    <div class={`absolute inset-x-0 bottom-0 h-0.5 origin-center scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${tone.accentLine}`} />
                   </div>
                   {capability.href && (
                     <div class="mt-6 flex justify-center">
@@ -409,7 +402,6 @@ const schema = [
 
 <script>
   import "../scripts/hoverGlow"
-  import "../scripts/cardTilt"
   import "../scripts/scrollReveal"
   import "../scripts/heroScroll"
   import "../scripts/sectionIconDrift"

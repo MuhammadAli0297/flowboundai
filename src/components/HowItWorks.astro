@@ -35,7 +35,7 @@ const nodeX = [12.5, 37.5, 62.5, 87.5]
   <div class="container-fb">
     <div class="reveal-item max-w-xl" data-reveal>
       <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">How it works</p>
-      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tight text-ocean-950 md:text-[2.2rem]">
+      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
         From raw signal to a decision you can act on.
       </h2>
     </div>
@@ -94,13 +94,11 @@ const nodeX = [12.5, 37.5, 62.5, 87.5]
       {steps.map((s, i) => (
         <div data-reveal class="reveal-item relative h-full" style={`transition-delay: ${i * 90}ms`}>
           <div
-            data-tilt
-            class="tilt-card group relative z-10 h-full overflow-hidden border border-ocean-700/20 bg-ocean-100 p-8 hover:border-ocean-700/45"
+            class="group relative z-10 h-full overflow-hidden border border-ocean-700/25 p-8 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-100/40"
           >
             <span class="font-mono text-sm text-ocean-950">{s.n}</span>
             <h3 class="relative z-30 mt-3 font-amulya text-[1.05rem] font-medium leading-snug text-ocean-950">{s.title}</h3>
             <p class="relative z-30 mt-3 text-[0.92rem] font-normal leading-relaxed text-ocean-950">{s.body}</p>
-            <div class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-ocean-500 transition-transform duration-500 ease-out group-hover:scale-x-100" />
           </div>
         </div>
       ))}
@@ -213,6 +211,5 @@ const nodeX = [12.5, 37.5, 62.5, 87.5]
 
 <script>
   import "../scripts/hoverGlow"
-  import "../scripts/cardTilt"
   import "../scripts/scrollReveal"
 </script>
