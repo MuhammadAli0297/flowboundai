@@ -929,6 +929,29 @@ elsewhere on the page rather than a new claim: "Free pilot" (mirrors Hero's CTA)
 real stat tiles once there are real pilot/client numbers to report**, don't fill this slot with invented
 numbers in the meantime.
 
+**Follow-up fix, same week: scroll-reveal trigger point was measurably too late, most noticeable scrolling
+slowly.** The user reported a real, reproducible symptom: scrolling slowly (either direction) showed a
+stretch of empty/unrevealed content sitting visible on screen before it "loaded all at once." Root cause
+was `src/scripts/scrollReveal.ts`'s single shared `IntersectionObserver`, the mechanism behind every
+`.reveal-item`/`.reveal-slide`/`.reveal-scale`/`.reveal-clip` element on the site: it required 20% of an
+element's own height visible (`threshold: 0.2`) inside a viewport already shrunk 10% from the bottom
+(`rootMargin: "0px 0px -10% 0px"`) before revealing. Measured empirically (scripted incremental scroll,
+checking `getBoundingClientRect()` against `.is-revealed`, not just theorized) at a real **~140px dead
+zone** between an element's top edge crossing the actual screen bottom and the reveal actually firing. At
+normal scroll speed that gap crosses in well under a second and goes unnoticed; scrolled slowly, the same
+138px takes seconds, reading as a stall, and a whole grid row sitting at nearly the same scroll position
+means several cards cross that delayed threshold together, reading as a sudden batch. Fixed by dropping to
+`threshold: 0.05, rootMargin: "0px"`; re-measured after the change at 6-13px across several different
+elements and pages, and confirmed symmetric for the scroll-up re-entry-from-top case too. Not pushed to
+literal 0: a small buffer avoids flicker from sub-pixel scroll jitter, and triggering before an element is
+even visible would make the reveal invisible rather than just less delayed. `watchScrollProgress`-based
+effects (Hero's fade/zoom, Mission's scroll-scrub, `/how-it-works`' scroll-driven comet) were checked and
+don't have this problem, they're continuous/position-driven, not threshold-toggled, so they didn't need
+touching. **If a future animation feels "delayed" or "batchy" specifically at slow scroll speeds, measure
+the actual trigger gap in pixels (scripted scroll + state inspection) before guessing at a fix**, the
+theoretical rootMargin/threshold math and the empirical measurement agreed here, but confirm rather than
+assume next time too.
+
 ### Brand and copy rules (`BRAND_GUIDELINES.md`)
 
 Read this before writing any user-facing copy or touching visual styling. Highlights:
@@ -1086,3 +1109,13 @@ Served from `https://www.flowbound.ai` on Vercel (the bare apex `flowbound.ai` 3
 path, see "SEO and canonical URLs" above), connected to `MuhammadAli0297/flowboundai` on GitHub. Every push
 to `main` auto-deploys; no environment variables required. Split commits by concern (feature/bugfix/docs)
 rather than bundling unrelated changes.
+
+**Standing rule, added 2026-09-20: `README.md` gets reviewed as part of any deploy that changes something
+it describes**, not just when asked separately. The repo is public for portfolio purposes (see the
+README's own "License" section), so it's the first thing a visitor sees, and a stale one undersells or
+misrepresents real work the same way a stale doc anywhere else would. Before pushing a deploy, check
+whether the change affects anything the README states as fact: page/post/category counts, the tech stack
+table, the "Engineering highlights" list, the screenshot, or any specific convention it describes (button
+shape, card treatment, etc.). If it does, update the README in the same push, don't let it drift and
+catch up later. A screenshot only needs regenerating when the change is visually significant enough that
+the current one would look wrong or misleading next to the live site, not for every deploy.

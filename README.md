@@ -100,10 +100,13 @@ forgotten: the button shape went from a two-shape system to one unified pill sha
 later pass, a real, intentional convention change, tracked as one in `CLAUDE.md` rather than left
 looking like drift. A few are
 documented in `CLAUDE.md` in detail: an `IntersectionObserver` that silently never fires because
-`clip-path` was applied directly to the observed element, and a set of SVG icon glyphs where two
+`clip-path` was applied directly to the observed element, a set of SVG icon glyphs where two
 strokes met at an exact shared coordinate and compounded into a visible dark artifact only at
 certain render sizes, caught by sampling pixel color numerically rather than eyeballing a
-screenshot.
+screenshot, and a scroll-reveal trigger point that looked fine until a user reported it felt
+delayed scrolling slowly, quantified with a scripted incremental-scroll measurement (a real ~140px
+gap between an element entering the viewport and its reveal actually firing) rather than tuning the
+numbers by feel.
 
 ## Tech stack
 
