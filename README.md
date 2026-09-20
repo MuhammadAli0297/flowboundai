@@ -16,8 +16,9 @@ the fast alternative to an SAP implementation. Live at
 
 A static, server-render-free marketing site (Astro, `output: "static"`) covering a homepage, a
 product page, seven dedicated capability pages, three narrative service pages, a fully filterable
-blog (21 posts across 8 categories), and supporting pages, 86 routes total. Built and maintained
-solo, end to end: architecture, visual design system, copywriting, SEO, and production deploys.
+blog (40 posts across 7 categories), and supporting pages, 143 built routes total (including a
+uniquely generated OG share image per blog post). Built and maintained solo, end to end:
+architecture, visual design system, copywriting, SEO, and production deploys.
 
 No backend, no CMS, no JS framework runtime shipped by default. The interesting engineering is
 in what that constraint forces: hand-rolled canvas/WebGL animation, a real content pipeline for
@@ -51,11 +52,30 @@ explicitly emulating `reducedMotion: 'no-preference'` to catch a real class of b
 machine's OS-level accessibility setting was silently masking (default screenshots always showed
 the static fallback frame, never the live animation).
 
-**A repeatable SEO content pipeline, not ad hoc blog posts.** All 21 posts were rewritten through
-a defined process: competitor-article research against actual top-ranking pages (not vendor
-homepages), a content-gap analysis, a featured-snippet-targeted outline, a draft in a consistent
-voice, an EEAT self-review, and internal links woven into real sentences rather than dropped in as
-a bare list. It's the standing default for new posts now, not a one-time cleanup.
+**A repeatable SEO content pipeline, not ad hoc blog posts.** Every post (40 as of this writing,
+up from an original batch of 21) goes through the same defined process: competitor-article
+research against actual top-ranking pages (not vendor homepages), a content-gap analysis, a
+featured-snippet-targeted outline, a draft in a consistent voice, an EEAT self-review, and
+internal links woven into real sentences rather than dropped in as a bare list. It's the standing
+default, not a one-time cleanup pass.
+
+**A competitor benchmark translated into a system, not a copy.** Asked to bring the site's polish
+up to a reference competitor's level, the first step was reading that reference's actual shipped
+code (`curl`, not just looking at it in a browser), which showed it runs no animation framework at
+all, its polish came from typography discipline and a restrained, thin-bordered card language, not
+tooling sophistication. That ruled out reaching for a new dependency and turned into three
+concrete, sitewide conventions instead: every button unified to one pill shape, headline tracking
+tightened uniformly, and a flatter thin-border card treatment rolled out across every page except
+one deliberate exception, a card design on the blog that was already its own separate, considered
+piece of work and would have been wrongly flattened by a blanket rule.
+
+**Caught its own accessibility regression before it shipped.** Building a new scroll-linked text
+effect for the homepage, the first version dimmed unrevealed words via `opacity`, which measured
+out to a 1.4:1 contrast ratio against the 4.5:1 WCAG AA minimum for body text, genuinely
+unreadable, not just suboptimal. Rebuilt using `color-mix()` between two independently
+contrast-checked colors instead of fading toward the page background, the fix an opacity-only
+approach structurally can't reach. Verified with real contrast math before and after, not a visual
+judgment call either time.
 
 **Data-driven where it matters, hand-authored where it doesn't.** `src/data/services.ts` is the
 single source of truth for the services nav dropdown, the `/services` page content, and that
@@ -72,10 +92,13 @@ cause (not just "fixed"), and every explicit constraint, updated after each sess
 the start of the next. It is long because the project is real, not because it was padded.
 
 The workflow underneath it is closer to running a rigorous code review than "vibe coding": a
-constraint is stated once and expected to hold (no em dashes anywhere in the codebase, square-ish
-corners as the default border radius, contrast checked against real WCAG math rather than eyeballed),
-UI changes are verified against a running browser instead of trusted from a green build, and
-mistakes are recorded with their root cause so the same class of bug does not recur. A few are
+constraint is stated once and expected to hold (no em dashes anywhere in the codebase, contrast
+checked against real WCAG math rather than eyeballed), UI changes are verified against a running
+browser instead of trusted from a green build, and mistakes are recorded with their root cause so
+the same class of bug does not recur. Constraints also get revisited deliberately, not just set and
+forgotten: the button shape went from a two-shape system to one unified pill shape sitewide in a
+later pass, a real, intentional convention change, tracked as one in `CLAUDE.md` rather than left
+looking like drift. A few are
 documented in `CLAUDE.md` in detail: an `IntersectionObserver` that silently never fires because
 `clip-path` was applied directly to the observed element, and a set of SVG icon glyphs where two
 strokes met at an exact shared coordinate and compounded into a visible dark artifact only at
@@ -89,7 +112,7 @@ screenshot.
 | Framework | [Astro](https://astro.build) 7, static output, zero client-side JS framework runtime by default |
 | Language | TypeScript, strict mode |
 | Styling | Tailwind CSS 3, a custom two-palette design system (see `tailwind.config.js`) |
-| 3D / WebGL | [three.js](https://threejs.org), scoped to 2 of 86 pages (see highlights above) |
+| 3D / WebGL | [three.js](https://threejs.org), scoped to 2 of 143 pages (see highlights above) |
 | Animation | Hand-written Canvas 2D (12 bespoke hero compositions), `IntersectionObserver`-driven scroll reveals, vanilla TS, no animation library |
 | Content | Astro Content Layer API, Markdown blog posts, schema-validated via `src/content.config.ts` |
 | Fonts | Satoshi, IBM Plex Mono, Amulya, all self-hosted `.woff2`, no third-party font CDN |
@@ -126,7 +149,7 @@ environment variables are required.
 
 ## Pages
 
-86 built routes. The core set:
+143 built routes. The core set:
 
 | Route | File | Notes |
 |---|---|---|
@@ -163,7 +186,7 @@ automatically.
 
 ```
 src/
-├── pages/            One file per route (86 built routes)
+├── pages/            One file per route (143 built routes)
 ├── layouts/           BaseLayout.astro: shared shell (nav, footer, font preloads, Seo)
 ├── components/        Nav, Footer, logo, homepage sections, one animated hero
 │                       background component per secondary page
