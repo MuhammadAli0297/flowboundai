@@ -281,6 +281,19 @@ same kind of card this later pass was flattening, don't convert those without be
   composition every time. None of the hubs, SVG/SMIL or canvas, use a small center "core dot": a few early
   ones shipped with one to fill the empty middle of a hollow icon, but it read as a stray artifact once you
   looked for it, so it was dropped everywhere and never brought back.
+
+  **Below `md`, every one of these fourteen heroes (the twelve canvas ones above plus the homepage/`/product`
+  WebGL ones) shrinks into a small round chip via the shared `.hero-canvas-chip` class (`src/index.css`)
+  instead of the full desktop composition.** The `CLIP_XF`/right-side-strip design above only guarantees no
+  overlap with hero copy at desktop widths, where copy is confined to a left column; below `md` copy runs
+  the section's full width, so the same right-side composition would sit directly under it. The chip lives
+  in the section's own bottom padding, guaranteed-empty space on every one of these pages by construction,
+  and crops into each composition's own focal point via `object-fit: cover` rather than shrinking the whole
+  scene illegibly. The homepage gets a bigger, content-aware version of this (a full-width band sized off
+  the real measured copy height, not a fixed chip), since its full-viewport-height/top-pinned layout leaves
+  much more genuine room below the buttons than the other heroes' content-driven section height. See
+  `CLAUDE.md`'s "Hero animations on mobile" section for the full mechanism and reasoning before touching
+  either `.hero-canvas-chip` or `HeroBackground.astro`'s mobile override.
 - A "featured" CTA button that hands off to a deeper page (see the pill-button exception above) can use a
   left-to-right color-sweep hover instead of an instant color change: an absolute `inset-0` overlay in the
   darker shade, `scale-x-0 origin-left`, transitioning to `scale-x-100` on `group-hover`, clipped by the

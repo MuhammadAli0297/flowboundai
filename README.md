@@ -69,6 +69,21 @@ tightened uniformly, and a flatter thin-border card treatment rolled out across 
 one deliberate exception, a card design on the blog that was already its own separate, considered
 piece of work and would have been wrongly flattened by a blanket rule.
 
+**A responsive bug across all fourteen hero animations, fixed with a geometric guarantee instead of
+tuned percentages.** Every hero (twelve hand-written Canvas 2D compositions plus two WebGL ones)
+drew its moving composition clipped to the right side of the canvas, correct at desktop widths
+where hero copy stays confined to a left column, but below the tablet breakpoint that copy runs
+the section's full width instead, so the animation ended up sitting directly under it, a hub icon
+literally overlapping specific words. The fix mirrors the same technique already used to keep the
+desktop version safe: instead of a redesigned mobile layout per composition, every hero shrinks
+into a small chip that lives inside the section's own bottom padding, real empty space on every
+page by construction since flexbox padding is never consumed by overflowing content, so it's a
+hard guarantee rather than a percentage that happens to work at the sizes tested. The homepage got
+a further, content-aware version on top of that: its layout leaves substantially more real room
+below the fold than the others, so a small script measures the actual copy block's live height and
+sizes a full-width animated band to fill whatever space genuinely exists, verified across iPhone
+SE/13/Pro Max viewports rather than one assumed screen size.
+
 **Caught its own accessibility regression before it shipped.** Building a new scroll-linked text
 effect for the homepage, the first version dimmed unrevealed words via `opacity`, which measured
 out to a 1.4:1 contrast ratio against the 4.5:1 WCAG AA minimum for body text, genuinely

@@ -7,7 +7,7 @@
 <div class="hero-canvas-wrap absolute inset-0 overflow-hidden" aria-hidden="true">
   <div class="hero-base-gradient absolute inset-0"></div>
   <span class="hero-streak"></span>
-  <canvas id="hero-wave" class="absolute inset-0 h-full w-full"></canvas>
+  <canvas id="hero-wave" class="hero-canvas-chip" style="--hero-focal: 65% 45%"></canvas>
   <div class="absolute inset-0 bg-grain opacity-20 mix-blend-overlay"></div>
 </div>
 
@@ -19,17 +19,27 @@
       #0c3454;
   }
 
+  /* Hidden below md: this full-height streak was positioned (left: 62%) for a desktop layout
+     where hero copy is confined to a left column, and would otherwise run right through it once
+     copy spans the section's full width, same reasoning as ProductBackground's .hero-hub-glow. */
   .hero-streak {
-    position: absolute;
-    top: -20%;
-    left: 62%;
-    width: 3px;
-    height: 140%;
-    background: linear-gradient(180deg, transparent 0%, rgba(219, 233, 238, 0.5) 45%, rgba(219, 233, 238, 0.9) 50%, rgba(219, 233, 238, 0.5) 55%, transparent 100%);
-    filter: blur(6px);
-    transform: rotate(11deg);
-    opacity: 0.55;
-    animation: hero-streak-drift 14s ease-in-out infinite;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hero-streak {
+      position: absolute;
+      top: -20%;
+      left: 62%;
+      width: 3px;
+      height: 140%;
+      background: linear-gradient(180deg, transparent 0%, rgba(219, 233, 238, 0.5) 45%, rgba(219, 233, 238, 0.9) 50%, rgba(219, 233, 238, 0.5) 55%, transparent 100%);
+      filter: blur(6px);
+      transform: rotate(11deg);
+      opacity: 0.55;
+      animation: hero-streak-drift 14s ease-in-out infinite;
+      display: block;
+    }
   }
 
   @keyframes hero-streak-drift {
@@ -46,6 +56,28 @@
   @media (prefers-reduced-motion: reduce) {
     .hero-streak {
       animation: none;
+    }
+  }
+
+  /* Homepage-only upgrade from the generic small .hero-canvas-chip (src/index.css, used by every
+     other hero) to a full-width band: min-h-screen-nav + justify-start (see Hero.astro) means the
+     section is pinned to the full viewport height with the copy block pinned to the top, so on a
+     typical phone there's real, often substantial, empty space below the buttons, not just the
+     ~80px pb-20 the other hero pages can rely on. --hero-copy-bottom (set by heroWave.ts's resize,
+     re-measured live off the actual copy block's real height) marks exactly where that empty space
+     starts, so the band's size adapts correctly at any viewport height instead of guessing a fixed
+     offset. If the copy ever grows tall enough to leave no real room (a short landscape phone), the
+     calc'd height clamps to 0 and the band just disappears rather than overlapping the copy. */
+  @media (max-width: 767px) {
+    #hero-wave {
+      top: calc(var(--hero-copy-bottom, 60%) + 1.25rem);
+      left: 1rem;
+      right: 1rem;
+      bottom: auto;
+      width: calc(100% - 2rem);
+      height: calc(100% - var(--hero-copy-bottom, 60%) - 2.5rem);
+      border-radius: 1.25rem;
+      object-position: 50% 100%;
     }
   }
 </style>

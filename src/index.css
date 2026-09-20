@@ -346,3 +346,45 @@
     animation: none;
   }
 }
+
+/* Per-page hero canvas animations (12 canvas-2D compositions plus the homepage/`/product` WebGL
+   ones, see CLAUDE.md's "Capability, narrative, and blog pages" / "Homepage" sections). Every one
+   of these draws its moving composition clipped to the right side of the canvas, sized for a
+   desktop layout where hero copy is confined to roughly the left 58% of the section. Below `md`,
+   hero copy runs the section's full width instead (no dedicated column reserved for it), so that
+   same right-side composition sits directly under the text rather than beside it. Rather than
+   trying to redesign each of the 12 bespoke compositions' internal geometry for a narrower strip
+   (which the full-width copy would still cross into), the whole canvas shrinks into a small round
+   chip tucked inside the section's own bottom padding, real empty space on every one of these
+   pages by construction (flex padding is never consumed by overflowing content, regardless of how
+   tall the copy block gets). `object-fit: cover` crops into the composition's own focal point
+   (--hero-focal, set per component near its script's HUB_XF/HUB_YF) instead of shrinking the
+   whole scene down to illegibility. The canvas's own internal drawing math is untouched: it still
+   measures the full section via getBoundingClientRect(), same as at md+, so this is a pure CSS
+   presentation change, not a per-script rewrite. */
+.hero-canvas-chip {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  height: 3.75rem;
+  width: 3.75rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  object-position: var(--hero-focal, 80% 50%);
+  opacity: 0.85;
+  box-shadow: 0 0 0 1px rgba(219, 233, 238, 0.14);
+}
+
+@media (min-width: 768px) {
+  .hero-canvas-chip {
+    right: 0;
+    bottom: 0;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    object-fit: fill;
+    opacity: 1;
+    box-shadow: none;
+  }
+}
