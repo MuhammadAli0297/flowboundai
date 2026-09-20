@@ -111,9 +111,11 @@ Satoshi and IBM Plex Mono are self-hosted (not loaded from a third-party CDN) as
 `src/layouts/BaseLayout.astro`. That was a deliberate performance call: no third-party font origin sitting
 in the critical path. Satoshi is free for personal and commercial use and doesn't ship a monospace
 companion, so IBM Plex Mono stays in place for the small uppercase mono labels (eyebrows, data callouts)
-since there's no "Satoshi Mono" to swap in. Headings are semibold with tight tracking, no letter-spacing
-tricks beyond what's already set. Eyebrow labels use mono, uppercase, wide tracking, and the section's
-accent color (green off the homepage, ocean on it).
+since there's no "Satoshi Mono" to swap in. Headings are semibold with tight tracking (`tracking-tighter`
+as of the 2026-09-20 UI refinement, tightened site-wide from the original `tracking-tight`, `/404` excepted,
+see the "Site-wide UI refinement" section in `CLAUDE.md`), no letter-spacing tricks beyond that. Eyebrow
+labels use mono, uppercase, wide tracking, and the section's accent color (green off the homepage, ocean on
+it).
 
 Amulya (from Fontshare, at the user's request) follows the same self-hosting rule but is a genuine
 variable font, one `.woff2` covers weight 300 to 700 continuously (plus a second file for italic), rather
@@ -128,48 +130,65 @@ so `font-amulya` has to go on every heading tag itself, not just a wrapping sect
 doesn't reach headings the way it does for `p`/`span`/`a`.
 
 ## Buttons
-Two shapes, used deliberately: pill (`rounded-full`) is reserved for the "featured hand-off to another
-page" CTA (see the pill exception under Layout principles below), everything else is `rounded-md`,
-square-ish per the default rule. As of the button redesign on the homepage and Nav, both shapes share one
-hover language so they read as the same system despite the shape difference: a `&rarr;` that translates
-right on `group-hover`, `hover:-translate-y-0.5` plus a soft shadow, and for filled (primary) buttons a
-left-to-right color-sweep fill (`absolute inset-0 scale-x-0 origin-left` → `group-hover:scale-x-100`,
-clipped by `overflow-hidden`). Outlined (secondary) buttons get a soft background wash fading in on hover
-instead of a hard instant color invert, that reads more deliberate at this weight of button. Primary
-buttons are `font-semibold`, secondary `font-medium`, one more place weight (not just color/fill) carries
-hierarchy.
+**One shape, sitewide, as of the 2026-09-20 UI refinement: pill (`rounded-full`).** Before that date this
+was two shapes used deliberately (pill reserved for a "featured hand-off to another page" CTA, everything
+else square-ish `rounded-md`); that distinction is gone now, every button on the site is a pill, including
+Nav's CTA, every page's hero buttons, and `Cta.astro`'s two buttons. Don't reintroduce `rounded-md` on a new
+button, that's the old convention, not a variant to pick from. Square-ish corners are still the rule for
+cards and page-level surfaces (see Layout principles below), just not buttons anymore. All buttons share one
+hover language regardless of fill: a `&rarr;` that translates right on `group-hover`, `hover:-translate-y-0.5`
+plus a soft shadow, and for filled (primary) buttons a left-to-right color-sweep fill (`absolute inset-0
+scale-x-0 origin-left` → `group-hover:scale-x-100`, clipped by `overflow-hidden`). Outlined (secondary)
+buttons get a soft background wash fading in on hover instead of a hard instant color invert, that reads
+more deliberate at this weight of button. Primary buttons are `font-semibold`, secondary `font-medium`, one
+more place weight (not just color/fill) carries hierarchy.
+
+## Cards
+**Default treatment as of the 2026-09-20 UI refinement: a plain thin border sitting directly on the
+section's own background, no separate tinted fill panel.** Cards sit transparent at rest; hover adds a
+border-color darken plus a faint background tint (reusing whatever color the card's old solid fill used to
+be, at reduced opacity, as the hover-only wash) rather than a permanent tinted surface. No cursor-follow 3D
+tilt (`data-tilt`/`cardTilt.ts`) and no bottom accent-line hover-sweep on cards using this treatment, both
+dropped in favor of the plainer border+tint feedback. This replaced the older tilt-card look (solid tinted
+fill, cursor-follow tilt, sliding accent-line sweep) on every simple icon/number-plus-text card grid
+site-wide: homepage, all capability and narrative pages, `/product`, `/how-it-works`, `/services`.
+**Exception, on purpose, not an oversight:** the blog's post-card grid and "Related reading" cards kept the
+original tilt-card treatment. That's a different, more bespoke card design (category-accent top border,
+tinted icon token, footer metadata) from a separate, earlier "Card design, redone 2026-09-13" pass, not the
+same kind of card this later pass was flattening, don't convert those without being asked specifically.
+`cardTilt.ts` is still real, in-use code for that reason, not dead weight left over from the older system.
 
 ## Layout principles
 - Left-aligned text blocks, not centered. This is an operator's tool, not a consumer app.
 - Card grids and bullet checklists over long paragraphs for feature breakdowns.
 - A full-bleed dark hero and a full-bleed black comparison section, so the dark end of the palette gets
   used meaningfully and not just as an accent.
-- Square-ish corners (2 to 4px radius) on cards, buttons, and page-level surfaces. No uniform pill or
-  rounded-card look. **Exceptions:**
+- Square-ish corners (2 to 4px radius) on cards and page-level surfaces. **Buttons are the one exception to
+  this as of the 2026-09-20 UI refinement: every button on the site is now a pill (`rounded-full`)**, see
+  the Buttons section above, this used to be a two-shape system with pill reserved for "featured" CTAs but
+  that distinction no longer exists. The other pre-existing exception:
   - Small floating overlay UI (the nav's Services dropdown and its nested flyouts) is deliberately
     rounded (`rounded-2xl`), by explicit design direction, to read as a lighter-weight interactive layer
     distinct from the page's structural cards.
-  - A "featured" CTA that hands off to another page can be a fully rounded pill (`rounded-full`), by
-    explicit design direction, to visually distinguish "go explore this other thing" from the site's
-    normal square action buttons. Two variants exist on `/services`, plus the same section-level variant
-    on the homepage's `ProductSystem.astro` (`See the full product`, under the four-tile grid, linking to
-    `/product`) and `HowItWorks.astro` (`See how it works in depth`, under the four-step grid, linking to
-    `/how-it-works`): the section-level button (one per section, centered under the whole capability grid, e.g.
-    `Explore Ask Flowbound`, `Explore Customer Service`, `Explore Quality Monitoring`, wired via
-    `href`/`ctaLabel` set on the whole service in `services.ts` rather than on an individual capability),
-    and a smaller per-capability version centered
-    directly under an individual tile whenever that capability has a dedicated page (`href` set on the
-    capability instead), e.g. `Explore Demand Forecasting` under the Demand Forecasting tile. A service
-    sets `href` at either the whole-service level or the per-capability level depending on whether its
-    capabilities are better told as one narrative page or split into one page each, never both at once.
-    A section can have multiple of the smaller per-tile pills (one per capability with its own page)
-    without breaking the "sparingly" rule, since each pill belongs to its own tile rather than competing
-    for the same spotlight. Don't animate this pill's hover state via `gap` (it changes the label's
-    wrapped line count inside the `max-w` pill and shifts the tile above it); use `translate-x` on the
-    icon and arrow instead to get the "spread apart" feel without affecting layout. The larger
-    section-level pill is the exception: it's a fixed-width, one-per-section button, so `hover:gap-4` is
-    fine there and won't shift surrounding layout.
-  Don't "fix" either of these back to square; they're intentional, not an inconsistency.
+  Since every button is a pill now, the per-tile and section-level "explore this" pill CTAs described
+  below no longer visually distinguish themselves from other buttons by shape alone, just by size/position
+  (smaller, centered under a specific tile or grid). Two variants exist on `/services`, plus the same
+  section-level variant on the homepage's `ProductSystem.astro` (`See the full product`, under the four-tile
+  grid, linking to `/product`) and `HowItWorks.astro` (`See how it works in depth`, under the four-step
+  grid, linking to `/how-it-works`): the section-level button (one per section, centered under the whole
+  capability grid, e.g. `Explore Ask Flowbound`, `Explore Customer Service`, `Explore Quality Monitoring`,
+  wired via `href`/`ctaLabel` set on the whole service in `services.ts` rather than on an individual
+  capability), and a smaller per-capability version centered directly under an individual tile whenever
+  that capability has a dedicated page (`href` set on the capability instead), e.g. `Explore Demand
+  Forecasting` under the Demand Forecasting tile. A service sets `href` at either the whole-service level
+  or the per-capability level depending on whether its capabilities are better told as one narrative page
+  or split into one page each, never both at once. A section can have multiple of the smaller per-tile
+  pills (one per capability with its own page) without breaking the "sparingly" rule, since each pill
+  belongs to its own tile rather than competing for the same spotlight. Don't animate this pill's hover
+  state via `gap` (it changes the label's wrapped line count inside the `max-w` pill and shifts the tile
+  above it); use `translate-x` on the icon and arrow instead to get the "spread apart" feel without
+  affecting layout. The larger section-level pill is the exception: it's a fixed-width, one-per-section
+  button, so `hover:gap-4` is fine there and won't shift surrounding layout.
 - No purple, no gradients beyond the subtle green gradient in the logo mark and the hero background glow.
 - Secondary-page hero: full-bleed dark section with an animated line-art graphic, same "vibe" as the
   homepage hero used to be, but each page gets its **own** graphic composition rather than reusing

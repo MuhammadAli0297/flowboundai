@@ -834,6 +834,101 @@ loop (a threshold crossing, a flag-and-hold), a short screenshot burst can still
 luck; when that happens, replicate the timeline math standalone in `node -e` (pure arithmetic, no browser
 needed) to confirm the trigger condition is reachable at plausible `t` values before concluding it's broken.
 
+### Site-wide UI refinement (2026-09-20)
+
+At the user's request, the homepage was benchmarked against an external reference site (sunstice.com) for
+"sharpness" and polish, not to copy its colors or layout (explicitly ruled out) but to identify what was
+actually producing that feel, then translate the applicable parts into Flowbound's own identity. Inspecting
+the reference's actual code (not just screenshots) turned up a useful fact worth remembering before treating
+any polished site as requiring heavy tooling: it runs no animation framework at all (no GSAP, no Lenis, no
+ScrollTrigger, just Webflow's native interactions), and its main visual lever was disciplined typography
+(a distinctive display font, tight tracking) plus a genuinely restrained, thin-bordered card language, not
+JS sophistication. That meant this site's existing vanilla-JS/Canvas approach was already fully capable of
+matching it; the gap was in restraint and craft, not capability. Three changes came out of this, first
+piloted on the homepage, then (on explicit request) extended to every page on the site:
+
+**Pill buttons are now the only button shape on the site.** The old two-shape system (`rounded-md` square-ish
+default, `rounded-full` pill reserved for "featured hand-off" CTAs, see `BRAND_GUIDELINES.md`) is gone.
+Every button, everywhere, including `Nav.astro`'s CTA, `Cta.astro`'s two buttons, every page's hero CTAs, and
+the blog's hero CTAs, is now `rounded-full`. The **only** remaining `rounded-md` anywhere in `src/` is the
+blog post card's small category-icon token background (`src/pages/blog/[...page].astro`), which was never a
+button and wasn't touched. `BRAND_GUIDELINES.md`'s "Buttons" section and its Layout-principles corner-radius
+bullet need to reflect this if you're reading this before checking there; don't reintroduce `rounded-md` on
+a new button without being asked, that's a reversed convention now, not an inconsistency to "fix."
+
+**Headline tracking tightened site-wide.** `tracking-tight` (Tailwind's `-0.025em`) became `tracking-tighter`
+(`-0.05em`) on every H1 and H2 across every page, plus Mission's headline-equivalent statement paragraph.
+`/404` was deliberately excluded, same as every other pass in this file, it's still on the original
+`fb-*`/Satoshi system and was never brought into any of this scope. The homepage Hero's H1 also picked up a
+size bump (`3rem` → `3.35rem` at the `md` breakpoint) for more contrast against its small eyebrow line; that
+resize was specific to that one composition and wasn't applied to any other page's H1, only the tracking
+change was rolled out universally. A new headline anywhere on the site should default to `tracking-tighter`
+going forward, not `tracking-tight`.
+
+**Thin-border cards replaced `tilt-card` almost everywhere.** The cursor-follow 3D tilt (`data-tilt`, driven
+by `src/scripts/cardTilt.ts`) plus solid tinted fill plus bottom accent-line hover-sweep, used on every
+simple icon/number + heading + short-text card grid site-wide, was replaced with a flatter treatment: a
+plain thin border sitting directly on the section's own background (transparent at rest, no separate tinted
+panel), a hover-only border-darken plus faint background-tint, no tilt, no accent-line sweep. Converted:
+homepage's `ProductSystem.astro`/`HowItWorks.astro`, all 7 dedicated capability pages' "capabilities" and
+"how it works" step grids, all 3 whole-service narrative pages, `/product`, `/how-it-works`, and
+`/services`' tone-based card system (`toneStyles.paper/white/dark.card` in `services.astro`, now defined
+centrally there rather than per-instance, along with the two `data-tilt` usages and the two `accentLine`
+divs it drove, all removed). The now-dead `cardTilt` script import was removed from every one of those
+files. Homepage's `WhyUs.astro` had already been converted earlier in the same session as the initial
+one-grid trial; this extended the same treatment to everywhere else that matched its pattern.
+
+**`cardTilt.ts` is still real, actively-used code, not dead after this**, don't delete it or assume every
+`tilt-card` reference is legacy. The blog's post-card grid (`src/pages/blog/[...page].astro`) and its
+"Related reading" cards (`src/pages/blog/[slug].astro`) deliberately kept the original tilt-card treatment.
+Those aren't the same kind of card this pass was flattening: they're a different, more bespoke design
+(category-accent 3px top border, tinted icon token, date/read-time footer) from the "Card design, redone
+2026-09-13" pass documented under "Blog" above, and converting them to the thin-border style would have
+undone real, previously-approved, considered work for no reason connected to this pass's actual goal. If
+the thin-border treatment ever needs to reach the blog's post cards too, that's a separate, explicit ask,
+not an extension of this one.
+
+**New scroll-scrubbed statement section, in `Mission.astro`.** The homepage's Mission section's headline
+statement ("We're built for small and local businesses, period...") now splits into individually
+scroll-scrubbed words via a new `src/scripts/missionScroll.ts` (same `watchScrollProgress` pattern as
+`heroScroll.ts`, setting a `--mission-scroll` custom property consumed entirely in CSS `calc()`/`color-mix()`,
+no per-frame JS style writes beyond the one property). Each word's color ramps from a dim to a fully-emphasized
+state as the section scrolls through view, reversible scrolling back up like every other animation on this
+site. The reveal is deliberately compressed into roughly the first 20% of the section's own scroll-through
+(`--reveal-span: 0.2` on `.statement-line`), not spread across the whole section: the statement line sits
+close to the section's top, so a reveal timed to the section's full height would still be finishing after
+the line had already scrolled up under the sticky nav, invisible to the reader by the time it completed.
+**Any future scroll-scrubbed effect on a short element near the top of a section needs this same compression**,
+don't assume the section's full scroll-through is a safe timing budget for content that isn't near its
+bottom.
+
+**A real WCAG contrast bug was found and fixed while building the above, worth knowing before dimming text
+toward a light background anywhere else.** The first version dimmed unrevealed words via `opacity` (fading
+toward Mission's `ocean-200` background). Real contrast math on the actual shipped values showed the dim
+state measured only 1.4:1, nowhere near the 4.5:1 AA minimum, genuinely unreadable, not just "a little
+low." Getting it legible via opacity alone would have needed roughly 85%+ opacity as the *minimum*, leaving
+almost no visible range for a dim/bright effect at all. Fixed by switching to `color-mix()` between two
+already-legible solid colors instead of fading toward the background: `ocean-900` (`#166088`, 4.55:1
+against `ocean-200`) for the dim/unrevealed state, `ocean-950` (`#104866`, 6.50:1, the same color the rest
+of the section's body text already uses) for fully revealed. Contrast now stays above AA at every point
+along the transition, not just at the two endpoints. **General rule, extending [[contrast_compliance]]'s
+existing ones: fading text opacity toward a light background is not a safe way to create a "dim but still
+legible" visual state, the blended pixel necessarily drifts toward the background color as opacity drops.
+Use a real color transition between two colors independently checked for contrast instead, never assume a
+partial-opacity state is legible just because full opacity was.**
+
+**New `TrustBar.astro`**, a compact 3-tile strip between `Hero` and `ProductSystem` on the homepage, using
+the new thin-border card style on a dark `ocean-900` background (extending the hero's dark moment by one
+more section before the page goes light for `ProductSystem`). This is standing in for what the reference
+site used stat tiles (client count, years, a rating) for, but Flowbound has no real numbers like that yet,
+it's still pilot-stage per `Cta.astro`'s own copy ("onboarding a small group of business pilots right
+now"), and this project's accuracy rule against inventing capability claims applies equally to inventing
+company stats. The three tiles are short honest phrases instead, each already backed by existing copy
+elsewhere on the page rather than a new claim: "Free pilot" (mirrors Hero's CTA), "Days, not months"
+(mirrors `WhyUs`), "Reasoning included" (mirrors `ProductSystem`'s Consulting Wrapper tile). **Revisit with
+real stat tiles once there are real pilot/client numbers to report**, don't fill this slot with invented
+numbers in the meantime.
+
 ### Brand and copy rules (`BRAND_GUIDELINES.md`)
 
 Read this before writing any user-facing copy or touching visual styling. Highlights:
