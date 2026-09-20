@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Dark-placement counterpart to logo-mark-ocean.svg: same shape and colors as
+       LogoMark.astro's palette="ocean" ring={true} rendering, for use anywhere a standalone file
+       is needed on a dark (ocean-900/ocean-950) background instead of the live component. If
+       LogoMark.astro's ocean colors or ring radius/width ever change, update this file to match,
+       they're kept in sync by hand. -->
+  <defs>
+    <linearGradient id="ocean-dark-grad" x1="60" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4A6FA5"/>
+      <stop offset="1" stop-color="#166088"/>
+    </linearGradient>
+    <clipPath id="ocean-dark-clip">
+      <circle cx="100" cy="100" r="100"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#ocean-dark-clip)">
+    <path d="M100,0 A100,100 0 0,0 100,200 A50,50 0 0,0 100,100 A50,50 0 0,1 100,0 Z" fill="#104866"/>
+    <path d="M100,0 A100,100 0 0,1 100,200 A50,50 0 0,1 100,100 A50,50 0 0,0 100,0 Z" fill="url(#ocean-dark-grad)"/>
+    <path d="M100,-4 A52,52 0 0,1 100,100 A52,52 0 0,0 100,204" fill="none" stroke="#DBE9EE" stroke-width="30" stroke-linecap="round"/>
+    <path d="M118,36 A20,20 0 0,1 128,54" fill="none" stroke="#104866" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round"/>
+    <path d="M82,146 A20,20 0 0,1 72,164" fill="none" stroke="#104866" stroke-opacity="0.3" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <circle cx="100" cy="100" r="98" fill="none" stroke="#DBE9EE" stroke-width="4"/>
+</svg>

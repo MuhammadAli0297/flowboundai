@@ -9,7 +9,7 @@ const { dark = false } = Astro.props
 ---
 
 <div class="flex items-center gap-2.5">
-  <LogoMark size={30} palette="ocean" id={dark ? "footer-mark" : "nav-mark"} />
+  <LogoMark size={30} palette="ocean" ring={dark} id={dark ? "footer-mark" : "nav-mark"} />
   <span class:list={["font-amulya text-[1.15rem] font-bold tracking-tight", dark ? "text-fb-white" : "text-ocean-950"]}>
     Flowbound<span class:list={["font-medium", dark ? "text-ocean-100" : "text-ocean-600"]}>.ai</span>
   </span>
