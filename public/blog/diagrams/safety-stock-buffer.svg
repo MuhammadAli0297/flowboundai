@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="ssTitle ssDesc">
+  <title id="ssTitle">Why a safety stock buffer prevents a stockout during a demand spike</title>
+  <desc id="ssDesc">A chart of inventory level across the lead time window. Under average demand, stock declines to the top of the safety stock buffer and the buffer stays untouched. Under a demand spike, stock declines faster and consumes the entire buffer, ending right at zero without going negative, which is what the buffer is sized to absorb.</desc>
+  <rect x="1" y="1" width="758" height="418" rx="4" fill="#FFFFFF" stroke="#C0D6DF" stroke-width="1.5" />
+
+  <!-- axes -->
+  <line x1="150" y1="40" x2="150" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <line x1="150" y1="340" x2="700" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <text x="150" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">UNITS IN STOCK</text>
+  <text x="700" y="366" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">LEAD TIME →</text>
+
+  <!-- safety stock buffer band -->
+  <rect x="150" y="260" width="550" height="60" fill="#C0D6DF" fill-opacity="0.45" />
+  <line x1="150" y1="260" x2="700" y2="260" stroke="#4F6D7A" stroke-width="1.5" stroke-dasharray="5 5" />
+  <text x="420" y="295" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.05em" fill="#104866" fill-opacity="0.65">SAFETY STOCK BUFFER</text>
+
+  <!-- demand lines -->
+  <path d="M150,90 L700,260" fill="none" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" />
+  <path d="M150,90 L700,320" fill="none" stroke="#57647D" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 6" />
+
+  <!-- legend -->
+  <line x1="470" y1="60" x2="498" y2="60" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" />
+  <text x="504" y="64" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Average demand</text>
+  <line x1="470" y1="78" x2="498" y2="78" stroke="#57647D" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 6" />
+  <text x="504" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Demand spike</text>
+
+  <!-- endpoints -->
+  <circle cx="700" cy="260" r="5.5" fill="#4A6FA5" stroke="#FFFFFF" stroke-width="2" />
+  <circle cx="700" cy="320" r="5.5" fill="#57647D" stroke="#FFFFFF" stroke-width="2" />
+  <text x="628" y="246" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Buffer untouched</text>
+  <text x="628" y="336" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Buffer used, no stockout</text>
+</svg>

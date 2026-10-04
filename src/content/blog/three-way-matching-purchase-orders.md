@@ -2,7 +2,8 @@
 title: "Three-Way Matching for Purchase Orders"
 description: "What three-way matching is, why it catches billing errors a busy team would otherwise miss, and how to run it without a dedicated AP department."
 publishDate: 2026-09-24
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Supplier Management"
 tags: ["three-way match", "purchase orders", "supplier management", "small business", "accounts payable"]
 ---
@@ -28,6 +29,11 @@ mistake or something worth a harder look.
 
 Three-way matching is comparing all three, not just glancing at the invoice and paying it because the total
 looks roughly right.
+
+![Three documents, a purchase order, receiving report, and invoice, feeding into a match check: the purchase order and invoice both show 500 units but the receiving report shows only 480, so the match fails and the invoice is held for review](/blog/diagrams/three-way-match.svg)
+
+*The PO and invoice agree with each other. It's the receiving record, the one document that reflects what
+actually showed up, that catches the gap.*
 
 ## Why this matters more than it seems to on paper
 

@@ -2,7 +2,8 @@
 title: "Customer Service SLAs You Can Actually Hit"
 description: "How a small distributor should set response and resolution SLAs by channel, sized to what the team can hit every week, not an aspirational number."
 publishDate: 2026-08-26
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Customer Service"
 tags: ["customer service", "SLA", "response time", "small business", "wholesale"]
 ---

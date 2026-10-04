@@ -2,7 +2,8 @@
 title: "Cut Repetitive Customer Service Questions"
 description: "Order status, stock, and price aren't FAQ topics, they're live data lookups. Here's why the usual FAQ playbook stalls, and what actually closes the gap."
 publishDate: 2026-07-31
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Customer Service"
 tags: ["customer service", "customer service automation", "small business", "wholesale"]
 ---

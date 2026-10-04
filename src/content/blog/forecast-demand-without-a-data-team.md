@@ -2,7 +2,8 @@
 title: "Demand Forecasting Without a Data Team"
 description: "A practical demand forecasting guide for small and mid-sized teams: the formula, the methods, and how often to redo it, no data scientist required."
 publishDate: 2026-07-22
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Inventory Management"
 tags: ["demand forecasting", "inventory management", "small business"]
 ---

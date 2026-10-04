@@ -2,7 +2,8 @@
 title: "Reorder Point: The Formula, With Real Numbers"
 description: "What a reorder point is, the formula to calculate it, and how to handle variable lead times, multiple suppliers, and brand new SKUs with no sales history."
 publishDate: 2026-07-26
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Autonomous Decisions"
 tags: ["reorder point", "reorder points", "inventory management", "stockouts", "safety stock"]
 ---
@@ -31,6 +32,11 @@ buffer against a busy week. Ten units a day for 14 days is 140 units of demand d
 buffer worth roughly two to four days of average sales, 20 to 40 units, and your reorder point lands
 somewhere around 160 to 180 units. Hit that number, place the order. Simple in principle, and for a SKU with
 steady sales and a supplier who ships on time, that's genuinely the whole calculation.
+
+![A sawtooth chart of inventory level over time, showing stock declining, crossing the reorder point, continuing to fall through the lead time toward the safety stock floor, then jumping back up when the new order arrives](/blog/diagrams/reorder-point-curve.svg)
+
+*Stock declines at a steady rate, crosses the reorder point, and keeps falling through the lead time before
+the new order arrives and the cycle resets.*
 
 Most guides stop there. The formula holds up fine in the example above because both inputs, sales pace and
 lead time, are treated as fixed numbers. In practice, neither one is, and that's where the math most small

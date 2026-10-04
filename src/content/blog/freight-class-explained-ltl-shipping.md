@@ -2,7 +2,8 @@
 title: "Freight Class: What It Is and Why Rates Change"
 description: "What freight class is, the four factors that set it, and how to avoid the reclass fees that quietly inflate an LTL freight bill."
 publishDate: 2026-09-11
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Shipping & Logistics"
 tags: ["freight class", "LTL shipping", "shipping optimization", "freight costs"]
 ---
@@ -21,6 +22,10 @@ class 50 (least expensive to ship) to class 500 (most expensive), and that class
 into what a carrier charges. Two shipments of the same weight and the same distance can have meaningfully
 different freight costs if they carry different classes, because class reflects more than just how heavy
 something is.
+
+![A step chart showing freight class falling as density rises: roughly class 400 at low density around one pound per cubic foot, stepping down through 300, 200, 150, 100, 85, 70, and 65, to class 60 at the highest densities](/blog/diagrams/freight-class-density.svg)
+
+*Density alone moves a shipment several classes. It's usually the single biggest lever on the bill.*
 
 ## The four factors that actually determine your freight class
 

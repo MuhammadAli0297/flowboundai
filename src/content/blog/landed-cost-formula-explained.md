@@ -2,7 +2,8 @@
 title: "Landed Cost: The Full Formula"
 description: "What landed cost actually includes beyond the supplier invoice, the formula for calculating it, and why skipping it quietly erodes margin."
 publishDate: 2026-09-30
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Shipping & Logistics"
 tags: ["landed cost", "shipping optimization", "pricing strategy", "wholesale", "margin"]
 ---
@@ -34,6 +35,10 @@ Each piece is straightforward on its own, but easy to leave out when a quick pri
 for that shipment, duties add $0.60, insurance and handling add another $0.40. Landed cost is $12.20, not
 $10. If a reorder decision, or a sell price, is built off the $10 invoice number, the real margin on that
 SKU is running about 18 percent thinner than it looks on paper.
+
+![A waterfall chart building from a $10.00 product cost up to a $12.20 landed cost, adding freight, duties, and insurance and handling one step at a time](/blog/diagrams/landed-cost-waterfall.svg)
+
+*Each add-on looks small on its own. Stacked together, they're 22% on top of the invoice price.*
 
 ## Why this gets skipped
 

@@ -11,6 +11,7 @@ const blog = defineCollection({
     publishDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     author: z.string().default("Flowbound"),
+    authorTitle: z.string().optional(),
     category: z.enum(blogCategoryNames),
     tags: z.array(z.string()).default([]),
     ogImage: z.string().optional(),

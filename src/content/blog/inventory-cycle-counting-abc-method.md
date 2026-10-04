@@ -2,7 +2,8 @@
 title: "Inventory Cycle Counting: The ABC Method"
 description: "What cycle counting is, how the ABC method decides what to count and how often, and how to run counts without shutting the warehouse down."
 publishDate: 2026-09-22
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Inventory Management"
 tags: ["cycle counting", "inventory management", "ABC analysis", "small business", "warehouse operations"]
 ---
@@ -37,6 +38,11 @@ sales velocity, not alphabetically:
   drift without burning the same effort as your top movers.
 - **C items** (the long tail, low value or rarely moving) get counted quarterly. These carry the least risk
   per unit, so a full count a few times a year is enough.
+
+![A Pareto chart of SKUs ranked by value: a small number of high-value SKUs on the left account for roughly 80% of total value, with a cumulative line climbing steeply at first then flattening out across the long tail of B and C items](/blog/diagrams/abc-pareto-chart.svg)
+
+*A small slice of SKUs usually accounts for most of the value, which is exactly why they get counted the
+most often.*
 
 A distributor running this consistently, counting A items weekly and B/C items on a longer rotation, can
 reach accuracy in the high 90s within about six months, mostly because the A-item errors that actually cost

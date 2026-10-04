@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="rpTitle rpDesc">
+  <title id="rpTitle">Inventory level over time, with the reorder point and lead time marked</title>
+  <desc id="rpDesc">A sawtooth chart showing stock declining from a full level, crossing a reorder point line that triggers a new order, continuing to decline through the lead time down toward a safety stock floor, then jumping back up when the order arrives. The pattern repeats each cycle.</desc>
+  <rect x="1" y="1" width="758" height="418" rx="4" fill="#FFFFFF" stroke="#C0D6DF" stroke-width="1.5" />
+
+  <!-- axes -->
+  <line x1="150" y1="40" x2="150" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <line x1="150" y1="340" x2="730" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <text x="150" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">UNITS IN STOCK</text>
+  <text x="730" y="366" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">TIME →</text>
+
+  <!-- safety stock band -->
+  <rect x="150" y="300" width="580" height="40" fill="#C0D6DF" fill-opacity="0.35" />
+
+  <!-- reorder point + safety stock reference lines -->
+  <line x1="150" y1="220" x2="730" y2="220" stroke="#4F6D7A" stroke-width="1.5" stroke-dasharray="5 5" />
+  <text x="140" y="224" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#104866">Reorder point</text>
+
+  <line x1="150" y1="300" x2="730" y2="300" stroke="#4F6D7A" stroke-width="1.5" stroke-dasharray="5 5" />
+  <text x="140" y="304" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#104866">Safety stock</text>
+
+  <!-- stock level sawtooth -->
+  <path d="M150,90 L310,220 L380,300 M380,90 L540,220 L610,300 M610,90 L730,170"
+        fill="none" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- restock jumps -->
+  <line x1="380" y1="300" x2="380" y2="90" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 7" />
+  <line x1="610" y1="300" x2="610" y2="90" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 7" />
+
+  <!-- order placed / arrives markers -->
+  <circle cx="310" cy="220" r="5.5" fill="#57647D" stroke="#FFFFFF" stroke-width="2" />
+  <text x="310" y="206" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Order placed</text>
+
+  <circle cx="380" cy="90" r="5.5" fill="#57647D" stroke="#FFFFFF" stroke-width="2" />
+  <text x="380" y="76" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Order arrives</text>
+
+  <!-- lead time bracket -->
+  <line x1="310" y1="358" x2="380" y2="358" stroke="#104866" stroke-opacity="0.5" stroke-width="1.5" />
+  <line x1="310" y1="352" x2="310" y2="364" stroke="#104866" stroke-opacity="0.5" stroke-width="1.5" />
+  <line x1="380" y1="352" x2="380" y2="364" stroke="#104866" stroke-opacity="0.5" stroke-width="1.5" />
+  <text x="345" y="380" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.04em" fill="#104866" fill-opacity="0.7">LEAD TIME</text>
+</svg>

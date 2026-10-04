@@ -2,7 +2,8 @@
 title: "The CAPA Process for Supplier Quality Issues"
 description: "What a CAPA process is, when a supplier issue needs one instead of a one-off fix, and how to run it without a dedicated quality team."
 publishDate: 2026-09-13
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Quality Monitoring"
 tags: ["CAPA", "corrective action", "supplier quality", "root cause analysis"]
 ---
@@ -38,6 +39,11 @@ The practical trigger most small teams can use without a formal quality system: 
 issue with the same supplier twice, that's no longer a one-off, that's a pattern asking for a root cause.
 
 ## The CAPA process, without the enterprise paperwork
+
+![A five-step horizontal flow diagram: Containment, Root Cause Analysis, Corrective Action, Preventive Action, Verification, each connected by an arrow to the next](/blog/diagrams/capa-process-flow.svg)
+
+*Five steps, in order. Skipping straight from containment to corrective action is what leaves the root
+cause, and the next occurrence, unaddressed.*
 
 **Containment.** Stop the immediate problem from spreading, hold or return the affected batch, before doing
 anything else. This is the corrective half, and it's usually already happening informally even at operations

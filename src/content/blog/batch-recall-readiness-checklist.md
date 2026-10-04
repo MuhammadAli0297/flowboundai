@@ -2,7 +2,8 @@
 title: "Batch Recall Readiness Checklist"
 description: "The records a small distributor needs before a supplier recall hits: lot numbers tied to POs, which customers got a batch, and who to call first."
 publishDate: 2026-08-28
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Quality Monitoring"
 tags: ["quality monitoring", "recall readiness", "lot traceability", "supplier management", "compliance"]
 ---

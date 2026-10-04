@@ -2,7 +2,8 @@
 title: "Shipping Optimization for Distributors"
 description: "Most shipping advice is written for parcel sellers. Here's what shipping optimization actually looks like for wholesale and distribution freight."
 publishDate: 2026-07-28
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Shipping & Logistics"
 tags: ["shipping optimization", "logistics", "freight", "small business"]
 ---

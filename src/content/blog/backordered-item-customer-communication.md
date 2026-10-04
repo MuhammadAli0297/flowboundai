@@ -2,7 +2,8 @@
 title: "How to Handle a Backordered Item"
 description: "When to tell a customer their order has a backordered line, what ETA actually satisfies them, and whether to hold, split-ship, or cancel it."
 publishDate: 2026-08-14
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Customer Service"
 tags: ["customer service", "backorders", "order tracking", "wholesale", "inventory management"]
 ---

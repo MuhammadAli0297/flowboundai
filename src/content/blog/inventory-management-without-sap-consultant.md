@@ -2,7 +2,8 @@
 title: "Do You Need SAP? A Distributor's Guide"
 description: "Do you need SAP for a small distribution business? What it costs, what it's actually for, and how to get the same visibility without the consultant."
 publishDate: 2026-07-20
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Inventory Management"
 tags: ["sap alternative", "inventory management", "small business", "erp"]
 ---

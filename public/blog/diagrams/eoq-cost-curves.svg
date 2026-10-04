@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="eoqTitle eoqDesc">
+  <title id="eoqTitle">Economic order quantity: where total cost is lowest</title>
+  <desc id="eoqDesc">A chart with order quantity on the x-axis and cost on the y-axis. Holding cost rises as order quantity grows. Ordering cost falls as order quantity grows, since fewer, larger orders mean fewer order-placement costs. Total cost is the sum of the two, a U-shaped curve, and its minimum is the economic order quantity.</desc>
+  <rect x="1" y="1" width="758" height="418" rx="4" fill="#FFFFFF" stroke="#C0D6DF" stroke-width="1.5" />
+
+  <!-- axes -->
+  <line x1="150" y1="40" x2="150" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <line x1="150" y1="340" x2="700" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <text x="150" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">COST</text>
+  <text x="700" y="366" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">ORDER QUANTITY →</text>
+
+  <!-- holding cost (rising) -->
+  <path d="M150.0,331.1 L159.2,329.6 L168.3,328.0 L177.5,326.5 L186.7,325.0 L195.8,323.5 L205.0,321.9 L214.2,320.4 L223.3,318.9 L232.5,317.4 L241.7,315.8 L250.8,314.3 L260.0,312.8 L269.2,311.3 L278.3,309.7 L287.5,308.2 L296.7,306.7 L305.8,305.2 L315.0,303.6 L324.2,302.1 L333.3,300.6 L342.5,299.1 L351.7,297.5 L360.8,296.0 L370.0,294.5 L379.2,293.0 L388.3,291.4 L397.5,289.9 L406.7,288.4 L415.8,286.9 L425.0,285.3 L434.2,283.8 L443.3,282.3 L452.5,280.8 L461.7,279.2 L470.8,277.7 L480.0,276.2 L489.2,274.7 L498.3,273.2 L507.5,271.6 L516.7,270.1 L525.8,268.6 L535.0,267.1 L544.2,265.5 L553.3,264.0 L562.5,262.5 L571.7,261.0 L580.8,259.4 L590.0,257.9 L599.2,256.4 L608.3,254.9 L617.5,253.3 L626.7,251.8 L635.8,250.3 L645.0,248.8 L654.2,247.2 L663.3,245.7 L672.5,244.2 L681.7,242.7 L690.8,241.1 L700.0,239.6"
+        fill="none" stroke="#7E9471" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- ordering cost (falling) -->
+  <path d="M150.0,61.2 L159.2,101.8 L168.3,132.2 L177.5,155.6 L186.7,174.3 L195.8,189.6 L205.0,202.3 L214.2,213.0 L223.3,222.2 L232.5,230.1 L241.7,237.0 L250.8,243.2 L260.0,248.6 L269.2,253.4 L278.3,257.8 L287.5,261.7 L296.7,265.3 L305.8,268.6 L315.0,271.6 L324.2,274.3 L333.3,276.9 L342.5,279.2 L351.7,281.4 L360.8,283.4 L370.0,285.3 L379.2,287.1 L388.3,288.8 L397.5,290.3 L406.7,291.8 L415.8,293.2 L425.0,294.5 L434.2,295.7 L443.3,296.9 L452.5,298.0 L461.7,299.0 L470.8,300.0 L480.0,301.0 L489.2,301.9 L498.3,302.8 L507.5,303.6 L516.7,304.4 L525.8,305.2 L535.0,305.9 L544.2,306.6 L553.3,307.3 L562.5,307.9 L571.7,308.5 L580.8,309.1 L590.0,309.7 L599.2,310.2 L608.3,310.8 L617.5,311.3 L626.7,311.8 L635.8,312.3 L645.0,312.7 L654.2,313.2 L663.3,313.6 L672.5,314.0 L681.7,314.4 L690.8,314.8 L700.0,315.2"
+        fill="none" stroke="#4F6D7A" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- total cost (U-shaped) -->
+  <path d="M150.0,52.2 L159.2,91.4 L168.3,120.2 L177.5,142.1 L186.7,159.3 L195.8,173.1 L205.0,184.2 L214.2,193.4 L223.3,201.1 L232.5,207.5 L241.7,212.9 L250.8,217.5 L260.0,221.4 L269.2,224.7 L278.3,227.5 L287.5,229.9 L296.7,232.0 L305.8,233.7 L315.0,235.2 L324.2,236.4 L333.3,237.5 L342.5,238.3 L351.7,238.9 L360.8,239.4 L370.0,239.8 L379.2,240.1 L388.3,240.2 L397.5,240.2 L406.7,240.2 L415.8,240.0 L425.0,239.8 L434.2,239.5 L443.3,239.2 L452.5,238.8 L461.7,238.3 L470.8,237.8 L480.0,237.2 L489.2,236.6 L498.3,235.9 L507.5,235.2 L516.7,234.5 L525.8,233.7 L535.0,232.9 L544.2,232.1 L553.3,231.3 L562.5,230.4 L571.7,229.5 L580.8,228.5 L590.0,227.6 L599.2,226.6 L608.3,225.6 L617.5,224.6 L626.7,223.6 L635.8,222.6 L645.0,221.5 L654.2,220.4 L663.3,219.3 L672.5,218.2 L681.7,217.1 L690.8,216.0 L700.0,214.8"
+        fill="none" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" />
+
+  <!-- EOQ marker -->
+  <line x1="396.3" y1="340" x2="396.3" y2="240.2" stroke="#104866" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="4 4" />
+  <circle cx="396.3" cy="240.2" r="5.5" fill="#4A6FA5" stroke="#FFFFFF" stroke-width="2" />
+  <text x="396.3" y="356" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.04em" fill="#104866">EOQ</text>
+
+  <!-- legend -->
+  <line x1="470" y1="56" x2="498" y2="56" stroke="#4A6FA5" stroke-width="3" stroke-linecap="round" />
+  <text x="504" y="60" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Total cost</text>
+  <line x1="470" y1="74" x2="498" y2="74" stroke="#7E9471" stroke-width="2.5" stroke-linecap="round" />
+  <text x="504" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Holding cost</text>
+  <line x1="470" y1="92" x2="498" y2="92" stroke="#4F6D7A" stroke-width="2.5" stroke-linecap="round" />
+  <text x="504" y="96" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">Ordering cost</text>
+</svg>

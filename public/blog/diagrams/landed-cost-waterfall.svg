@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="lcTitle lcDesc">
+  <title id="lcTitle">Landed cost, built up from product cost through freight, duties, and insurance and handling</title>
+  <desc id="lcDesc">A waterfall chart starting at a $10.00 product cost, adding $1.20 in freight, $0.60 in duties, and $0.40 in insurance and handling, for a total landed cost of $12.20 per unit.</desc>
+  <rect x="1" y="1" width="758" height="418" rx="4" fill="#FFFFFF" stroke="#C0D6DF" stroke-width="1.5" />
+
+  <line x1="150" y1="340" x2="700" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <text x="150" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">COST PER UNIT</text>
+
+  <!-- connectors -->
+  <g stroke="#104866" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 4">
+    <line x1="232.5" y1="116.9" x2="287.5" y2="116.9" />
+    <line x1="342.5" y1="90.2" x2="397.5" y2="90.2" />
+    <line x1="452.5" y1="76.8" x2="507.5" y2="76.8" />
+    <line x1="562.5" y1="67.8" x2="617.5" y2="67.8" />
+  </g>
+
+  <!-- bars -->
+  <rect x="177.5" y="116.9" width="55.0" height="223.1" fill="#4F6D7A" />
+  <rect x="287.5" y="90.2" width="55.0" height="26.8" fill="#96742E" />
+  <rect x="397.5" y="76.8" width="55.0" height="13.4" fill="#96742E" />
+  <rect x="507.5" y="67.8" width="55.0" height="8.9" fill="#96742E" />
+  <rect x="617.5" y="67.8" width="55.0" height="272.2" fill="#4A6FA5" />
+
+  <!-- value labels -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#104866" text-anchor="middle">
+    <text x="205.0" y="108.9">$10.00</text>
+    <text x="315.0" y="82.2">+$1.20</text>
+    <text x="425.0" y="68.8">+$0.60</text>
+    <text x="535.0" y="59.8">+$0.40</text>
+    <text x="645.0" y="59.8" font-weight="600">$12.20</text>
+  </g>
+
+  <!-- category labels -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" letter-spacing="0.02em" fill="#104866" fill-opacity="0.65" text-anchor="middle">
+    <text x="205.0" y="358">Product cost</text>
+    <text x="315.0" y="358">+ Freight</text>
+    <text x="425.0" y="358">+ Duties</text>
+    <text x="535.0" y="352">+ Insurance</text>
+    <text x="535.0" y="366">&#160;&#160;&amp; handling</text>
+    <text x="645.0" y="358" fill="#104866" fill-opacity="1" font-weight="600">Landed cost</text>
+  </g>
+</svg>

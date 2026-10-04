@@ -2,7 +2,8 @@
 title: "Multi-Location Inventory: Keeping Stock in Sync"
 description: "Why warehouse, storefront, and wholesale counts drift apart, how to net out reserved stock, and how to decide who gets the last units."
 publishDate: 2026-09-03
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Inventory Management"
 tags: ["inventory management", "multi-channel", "multi-location", "wholesale", "overselling"]
 ---

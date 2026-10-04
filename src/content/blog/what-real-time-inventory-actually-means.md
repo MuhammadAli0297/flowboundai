@@ -2,7 +2,8 @@
 title: "Inventory Tracking: The Complete Guide"
 description: "What inventory tracking actually means, the methods that work at each stage, and the wholesale mistakes most retail-focused guides skip."
 publishDate: 2026-07-30
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Inventory Management"
 tags: ["inventory tracking", "inventory management", "real-time inventory", "wholesale"]
 ---

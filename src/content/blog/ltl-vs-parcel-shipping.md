@@ -2,7 +2,8 @@
 title: "LTL vs. Parcel Shipping: How to Decide"
 description: "The real weight, dimension, and freight class breakpoints for choosing LTL freight over parcel shipping, and the mistakes that cost you either way."
 publishDate: 2026-08-12
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Shipping & Logistics"
 tags: ["shipping optimization", "LTL freight", "freight class", "parcel shipping", "small business"]
 ---

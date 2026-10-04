@@ -2,7 +2,8 @@
 title: "How to Track Supplier Quality Issues"
 description: "A single bad batch is normal. A rising defect rate from one supplier isn't. Here's the math that tells the two apart, no quality team required."
 publishDate: 2026-07-31
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Quality Monitoring"
 tags: ["quality monitoring", "supplier management", "defect tracking", "small business"]
 ---

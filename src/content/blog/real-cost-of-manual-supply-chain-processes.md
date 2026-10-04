@@ -2,7 +2,8 @@
 title: "The Real Cost of Manual Supply Chain Processes"
 description: "A worked framework for pricing out what manual reordering, tracking, and supplier chasing really cost your team, in hours and in dollars."
 publishDate: 2026-08-20
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Industry Insights"
 tags: ["industry insights", "manual processes", "supply chain costs", "inventory management", "operations"]
 ---

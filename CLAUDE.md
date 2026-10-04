@@ -208,6 +208,56 @@ doesn't (a capability page and its own product marketing page, like `/pricing/`,
 conflate the two when picking a FAQ link target). A new post should hit both minimums as part of the
 pipeline's linking step, not as an afterthought pass at the end.
 
+**Every post has a named `Person` author, not a generic `Organization` byline, since 2026-10-04.**
+Fixes a P1 from the 2026-10-04 SEO audit (`seo_audit_2026_10.md`): all 45 posts previously shared
+`author: "Flowbound"`, rendered in schema as `{"@type": "Organization", name: "Flowbound"}`, no visible
+byline anywhere on the page. Each post's frontmatter now has `author` (a real name) and `authorTitle` (their
+role), assigned round-robin across three names in publish-date order: Ryo Shibata (CTO), Muhammad Hassan
+(CEO), Muhammad Ali (CFO) — the user's explicit choice over a single standing author or topic-based
+assignment. `[slug].astro`'s `BlogPosting` schema now emits `{"@type": "Person", name: post.data.author,
+jobTitle: post.data.authorTitle}`, and the post hero also renders a small visible byline ("By {author},
+{authorTitle}") next to the date, on the user's explicit request that this be more than schema-only, since a
+visible byline is a stronger E-E-A-T signal than hidden JSON-LD alone. **A new post's frontmatter needs both
+`author` and `authorTitle` set**, continuing the same round-robin rather than defaulting back to
+"Flowbound": count the existing 45 posts in publish-date order, the 46th post goes to whichever of the three
+names is next in the cycle (post 46 → Ryo Shibata, the cycle restarts).
+
+**8 posts have a real hand-built SVG diagram, added 2026-10-04, fixing another P1 from the same audit.**
+Before this, all 45 posts had zero embedded images of any kind, a closed door to Google Images discovery and
+genuinely thinner content than competitors' labeled charts/diagrams. Since there's no real product UI to
+screenshot honestly and no analytics yet to identify actual highest-traffic posts (the P0 analytics finding
+is still blocked on a GA4 ID), the 8 posts picked were the ones where a real, mathematically accurate diagram
+genuinely clarifies the concept rather than decorates it: `reorder-point-math` (sawtooth inventory/lead-time
+chart), `safety-stock-how-much-buffer-you-need` (buffer-absorbs-a-demand-spike chart), `economic-order-
+quantity-eoq-explained` (the real EOQ cost curves, computed from the same kh=1/ko=20 cost functions the SVG
+path data was generated from, not hand-drawn approximations), `inventory-cycle-counting-abc-method` (a
+Pareto chart), `landed-cost-formula-explained` (a waterfall chart, deliberately rebuilt once already to
+match this post's actual worked-example numbers, $10 → $12.20, not an arbitrary illustrative set), `capa-
+process-supplier-quality-issues` (a 5-step flow diagram, also rebuilt once to match this post's actual 5
+named steps — Containment, Root Cause Analysis, Corrective Action, Preventive Action, Verification — after
+an initial 6-step draft invented an "Identify" step and a reopen-loop the post's text never describes),
+`freight-class-explained-ltl-shipping` (a real NMFC density-to-class step chart), and `three-way-matching-
+purchase-orders` (a three-document match/mismatch diagram). **Two of these diagrams were rebuilt mid-session
+specifically because their first draft used plausible-sounding numbers that didn't match the post's own
+worked example** — same accuracy discipline as the `services.ts` capability-claim rule elsewhere in this
+file, just applied to a diagram's numbers instead of prose.
+
+Deliberately **not** fabricated product screenshots: the audit's fix suggestion mentioned "annotated
+screenshots" as one option, but Flowbound has no shipping product UI to screenshot honestly, and a faked
+screenshot would be exactly the kind of dishonest marketing asset this project's accuracy rules exist to
+prevent. SVG diagrams in the `ocean` palette, reusing each post's own category accent color as a single
+highlight (`blogCategories.ts`'s `accent`, e.g. `#7E9471` sage for Supplier Management's three-way-match
+diagram), were the honest alternative that still satisfies the actual SEO goal (real visual content, Google
+Images indexability) without inventing a fake product artifact. Files live in `public/blog/diagrams/<slug>.
+svg` (plain static assets, not Astro-processed, referenced via standard Markdown `![alt](...)` image syntax
+with a real descriptive `alt` and an italicized caption line beneath), not `src/assets/`, since they don't
+need Astro's image-optimization pipeline (SVGs don't rasterize-optimize) and a stable, predictable public
+path is more useful here than content-hashed filenames. **A new post that would genuinely benefit from a
+diagram should follow the same pattern**: a real SVG in `public/blog/diagrams/`, numbers that match the
+post's own worked example exactly, the `ocean` palette plus that post's category accent, descriptive alt
+text, and a short italic caption — not a decorative stock-style image and not a screenshot of a product
+surface that doesn't exist.
+
 **FAQPage schema is parsed from the existing Markdown, not duplicated into frontmatter.** Every post's
 "## FAQ" section (see above) already has real, visible Q&A content; `src/lib/faq.ts`'s
 `parseFaqFromMarkdown()` pulls it straight out of `post.body` (Astro's glob loader keeps the raw,
@@ -1227,7 +1277,7 @@ turned up 12 findings; the 3 flagged critical were fixed one at a time with appr
   GA4 Measurement ID first, the code change itself (one script in `BaseLayout.astro` plus a conversion event
   on "Request a pilot") is small.
 
-Of the remaining 9 findings, the first P1 was picked up and fixed in a later session (2026-10-04):
+Of the remaining 9 findings, three P1s were picked up and fixed in later sessions, all still 2026-10-04:
 
 - **`heroWave.ts`/`productHeroWave.ts` now dynamically `import("three")` instead of a static top-level
   import**, so the ~500KB chunk is no longer bundled into `/`'s or `/product`'s eagerly-parsed initial
@@ -1243,12 +1293,19 @@ Of the remaining 9 findings, the first P1 was picked up and fixed in a later ses
   `<script>`/`modulepreload`), confirmed the compiled hero chunk contains the dynamic `import()` call, and a
   real Playwright run (two screenshots ~600ms apart, buffer-compared as different) confirmed both heroes
   still render and animate correctly end to end.
+- **Named `Person` author + visible byline on all 45 posts**, replacing the generic `Organization` byline.
+  See "Every post has a named `Person` author" under "Blog" above for the full detail (round-robin
+  assignment, schema shape, the frontmatter convention a new post needs to follow).
+- **8 posts got a real hand-built SVG diagram**, replacing the zero-images-across-45-posts finding for that
+  subset. See "8 posts have a real hand-built SVG diagram" under "Blog" above for which posts, why those
+  specific ones, and the convention (`public/blog/diagrams/`, numbers matched to the post's own worked
+  example, no fabricated screenshots) a future post should follow.
 
-The remaining 8 findings (P1-P3: no About/Team page, zero images across all 45 blog posts, no named
-author/`Person` schema, `prefetchAll: true` now that the site has scaled past a handful of pages, the
-broader non-Astro npm audit findings, `/404` missing `noindex`, no security response headers, no `sameAs`
-social links) are open and unscheduled. Full detail on all 12, including what's already strong, is in the
-audit artifact linked from that session.
+The remaining 6 findings (P1-P3: no About/Team page, the other 37 blog posts still have no embedded image,
+`prefetchAll: true` now that the site has scaled past a handful of pages, the broader non-Astro npm audit
+findings, `/404` missing `noindex`, no security response headers, no `sameAs` social links) are open and
+unscheduled. Full detail on all 12, including what's already strong, is in the audit artifact linked from
+that session.
 
 ### Structured data: one `SoftwareApplication`, everything else is `Service`
 

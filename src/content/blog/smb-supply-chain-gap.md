@@ -2,7 +2,8 @@
 title: "Supply Chain Management for Small Businesses"
 description: "A practical overview of supply chain management for small wholesale and distribution teams, built for a business with no dedicated department."
 publishDate: 2026-07-29
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Industry Insights"
 tags: ["supply chain management", "small business", "wholesale", "distribution", "industry insights"]
 ---

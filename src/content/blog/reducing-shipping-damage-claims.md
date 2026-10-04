@@ -2,7 +2,8 @@
 title: "How to Reduce Shipping Damage Claims"
 description: "Why freight arrives damaged, how to build a packaging standard by weight and fragility, and how to file claims fast when damage still happens."
 publishDate: 2026-08-24
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Shipping & Logistics"
 tags: ["shipping optimization", "damage claims", "quality monitoring", "freight", "small business"]
 ---

@@ -2,7 +2,8 @@
 title: "How to Reduce Rush Shipping Costs"
 description: "Rush shipping costs usually aren't a carrier problem. Here's the reorder timing failure behind most expedited shipments, and how to catch it earlier."
 publishDate: 2026-08-04
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Shipping & Logistics"
 tags: ["shipping", "reorder points", "small business", "expedited shipping"]
 ---

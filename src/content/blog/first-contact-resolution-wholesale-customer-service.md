@@ -2,7 +2,8 @@
 title: "First Contact Resolution for Wholesale Support"
 description: "What first contact resolution means for wholesale customer service, why it beats response time as a metric, and how to raise it without adding headcount."
 publishDate: 2026-09-09
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Customer Service"
 tags: ["first contact resolution", "customer service metrics", "wholesale", "customer service"]
 ---

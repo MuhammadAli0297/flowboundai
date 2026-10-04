@@ -2,7 +2,8 @@
 title: "How to Build a Supplier Scorecard"
 description: "How to build a supplier scorecard from data you already have: defect rate, on-time-in-full, and how to read the numbers without a procurement team."
 publishDate: 2026-08-01
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Quality Monitoring"
 tags: ["quality monitoring", "supplier management", "scorecards"]
 ---

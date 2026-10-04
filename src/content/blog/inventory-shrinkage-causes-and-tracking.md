@@ -2,7 +2,8 @@
 title: "Inventory Shrinkage: Causes and How to Track It"
 description: "What inventory shrinkage actually is, the formula to calculate your rate, realistic benchmarks, and how a small distributor can track it without an ERP."
 publishDate: 2026-08-08
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Inventory Management"
 tags: ["inventory management", "shrinkage", "inventory tracking", "warehouse operations", "small business"]
 ---

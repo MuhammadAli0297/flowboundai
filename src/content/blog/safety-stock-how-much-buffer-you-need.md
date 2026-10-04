@@ -2,7 +2,8 @@
 title: "Safety Stock: How Much Buffer You Actually Need"
 description: "How to calculate safety stock without a statistics degree: the practical formula, how lead time and demand variability change it, and common mistakes."
 publishDate: 2026-09-07
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Autonomous Decisions"
 tags: ["safety stock", "reorder points", "inventory management", "stockouts", "demand forecasting"]
 ---
@@ -39,6 +40,11 @@ lead time is 150 units. Over the last several orders, the busiest single day sol
 delivery took 15 days. Max-case demand during lead time is 25 x 15 = 375 units. Subtract the average case
 (150) and the gap is 225 units. That's your safety stock: not a guess, and not a statistics exercise, just
 the honest distance between what usually happens and what has actually happened at its worst.
+
+![A chart showing inventory declining under average demand versus a demand spike: the average-demand line ends right at the top of the safety stock buffer, untouched, while the demand-spike line consumes the full buffer and ends at zero without going negative](/blog/diagrams/safety-stock-buffer.svg)
+
+*Under average demand the buffer goes untouched. Under a demand spike it absorbs the difference, which is
+exactly what it's sized to do.*
 
 This version deliberately skips standard deviation and service-level Z-scores. They produce a more precise
 number if you have enough clean historical data to calculate variance reliably, which most small operations

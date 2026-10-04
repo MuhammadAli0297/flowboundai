@@ -2,7 +2,8 @@
 title: "Dead Stock vs. Slow-Moving Inventory"
 description: "Dead stock and slow-moving stock look identical on a shelf. Here's the actual test to tell them apart, and why a wholesale account changes the answer."
 publishDate: 2026-08-02
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Inventory Management"
 tags: ["inventory management", "dead stock", "slow-moving inventory", "small business"]
 ---

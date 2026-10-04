@@ -46,7 +46,11 @@ const schema = [
     description: post.data.description,
     datePublished: post.data.publishDate.toISOString(),
     dateModified: (post.data.updatedDate ?? post.data.publishDate).toISOString(),
-    author: { "@type": "Organization", name: post.data.author },
+    author: {
+      "@type": "Person",
+      name: post.data.author,
+      ...(post.data.authorTitle ? { jobTitle: post.data.authorTitle } : {}),
+    },
   },
   {
     "@context": "https://schema.org",
@@ -97,6 +101,10 @@ const schema = [
         </span>
         <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
           {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
+        </p>
+        <span class="text-ocean-950/20">&middot;</span>
+        <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
+          By {post.data.author}{post.data.authorTitle && `, ${post.data.authorTitle}`}
         </p>
       </div>
       <h1 class="mt-4 font-amulya text-[2rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.4rem]">

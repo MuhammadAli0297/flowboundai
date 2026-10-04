@@ -2,7 +2,8 @@
 title: "Economic Order Quantity (EOQ), Explained"
 description: "The EOQ formula, a worked example, and why it's a useful starting point for order sizing but a poor fit for demand that actually moves around."
 publishDate: 2026-09-26
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Autonomous Decisions"
 tags: ["EOQ", "reorder points", "autonomous decisions", "inventory management", "purchasing automation"]
 ---
@@ -43,6 +44,10 @@ That's genuinely useful math. A [reorder point](/blog/reorder-point-math/) tells
 level where a new order needs to go out. EOQ tells you the size of that order once triggered. Used together,
 they answer both halves of a purchasing decision that a lot of small teams still answer by gut feel, ordering
 "about what we usually order" without ever checking whether that number is actually efficient.
+
+![A chart with order quantity on the x-axis and cost on the y-axis: holding cost rises, ordering cost falls, and total cost traces a U-shaped curve with its minimum marked as the EOQ](/blog/diagrams/eoq-cost-curves.svg)
+
+*Holding cost rises with order size, ordering cost falls, and the total cost curve bottoms out at the EOQ.*
 
 ## Where the formula breaks down
 

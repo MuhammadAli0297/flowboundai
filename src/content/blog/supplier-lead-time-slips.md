@@ -2,7 +2,8 @@
 title: "Managing Supplier Lead Time Variability"
 description: "Most lead time advice assumes an ERP and a stats background. Here's how to catch supplier lead time slips early with just a spreadsheet."
 publishDate: 2026-07-24
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Supplier Management"
 tags: ["supplier management", "lead times", "small business"]
 ---

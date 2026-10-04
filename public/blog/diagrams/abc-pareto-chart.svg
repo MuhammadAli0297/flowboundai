@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 420" role="img" aria-labelledby="abcTitle abcDesc">
+  <title id="abcTitle">ABC classification: a small share of SKUs drives most of the value</title>
+  <desc id="abcDesc">A Pareto chart of 20 SKUs ranked by annual value. Bars show each SKU's individual share of total value, declining sharply from left to right. A line shows cumulative value share, reaching about 80 percent by the eighth SKU. Those SKUs are the A band, counted and verified most often. The remaining B and C bands hold progressively less value and are counted less frequently.</desc>
+  <rect x="1" y="1" width="758" height="418" rx="4" fill="#FFFFFF" stroke="#C0D6DF" stroke-width="1.5" />
+
+  <!-- axes + gridlines -->
+  <line x1="150" y1="40" x2="150" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <line x1="150" y1="340" x2="700" y2="340" stroke="#104866" stroke-opacity="0.35" stroke-width="1.5" />
+  <text x="150" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">% OF TOTAL VALUE</text>
+  <text x="700" y="366" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" letter-spacing="0.06em" fill="#104866" fill-opacity="0.55">SKUs, RANKED BY VALUE →</text>
+
+  <!-- band dividers -->
+  <line x1="370" y1="40" x2="370" y2="340" stroke="#104866" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 4" />
+  <line x1="507.5" y1="40" x2="507.5" y2="340" stroke="#104866" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 4" />
+  <text x="260" y="60" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="600" fill="#B8704F">A</text>
+  <text x="438.75" y="60" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="600" fill="#8A5A3F">B</text>
+  <text x="603.75" y="95" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="600" fill="#6B6B6B">C</text>
+
+  <!-- value-share bars, band A (idx 0-7) -->
+  <g fill="#B8704F">
+    <rect x="155.2" y="282.0" width="17.1" height="58.0" />
+    <rect x="182.7" y="293.5" width="17.1" height="46.5" />
+    <rect x="210.2" y="302.7" width="17.1" height="37.3" />
+    <rect x="237.7" y="310.0" width="17.1" height="30.0" />
+    <rect x="265.2" y="316.0" width="17.1" height="24.0" />
+    <rect x="292.7" y="320.7" width="17.1" height="19.3" />
+    <rect x="320.2" y="324.5" width="17.1" height="15.5" />
+    <rect x="347.7" y="327.6" width="17.1" height="12.4" />
+  </g>
+  <!-- band B (idx 8-12) -->
+  <g fill="#B8704F" fill-opacity="0.6">
+    <rect x="375.2" y="330.0" width="17.1" height="10.0" />
+    <rect x="402.7" y="332.0" width="17.1" height="8.0" />
+    <rect x="430.2" y="333.6" width="17.1" height="6.4" />
+    <rect x="457.7" y="334.8" width="17.1" height="5.2" />
+    <rect x="485.2" y="335.9" width="17.1" height="4.1" />
+  </g>
+  <!-- band C (idx 13-19) -->
+  <g fill="#B8704F" fill-opacity="0.45">
+    <rect x="512.7" y="336.7" width="17.1" height="3.3" />
+    <rect x="540.2" y="337.3" width="17.1" height="2.7" />
+    <rect x="567.7" y="337.9" width="17.1" height="2.1" />
+    <rect x="595.2" y="338.3" width="17.1" height="1.7" />
+    <rect x="622.7" y="338.6" width="17.1" height="1.4" />
+    <rect x="650.2" y="338.9" width="17.1" height="1.1" />
+    <rect x="677.7" y="339.1" width="17.1" height="0.9" />
+  </g>
+
+  <!-- cumulative % line -->
+  <polyline points="163.8,282.0 191.2,235.5 218.8,198.1 246.2,168.2 273.8,144.1 301.2,124.8 328.8,109.3 356.2,96.9 383.8,86.9 411.2,78.9 438.8,72.5 466.2,67.3 493.8,63.2 521.2,59.9 548.8,57.2 576.2,55.1 603.8,53.4 631.2,52.0 658.8,50.9 686.2,50.0"
+            fill="none" stroke="#104866" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+  <circle cx="356.2" cy="96.9" r="4.5" fill="#104866" stroke="#FFFFFF" stroke-width="1.5" />
+  <text x="356.2" y="84" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#104866">~80% of value</text>
+  <circle cx="686.2" cy="50.0" r="4.5" fill="#104866" stroke="#FFFFFF" stroke-width="1.5" />
+</svg>

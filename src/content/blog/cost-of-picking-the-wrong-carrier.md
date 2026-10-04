@@ -2,7 +2,8 @@
 title: "How to Choose a Freight Carrier"
 description: "A practical carrier selection framework for small distributors picking between a few regional or national options per lane, no logistics team required."
 publishDate: 2026-08-03
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Shipping & Logistics"
 tags: ["shipping", "logistics", "carrier selection", "small business"]
 ---

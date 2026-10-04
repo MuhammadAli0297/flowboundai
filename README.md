@@ -201,6 +201,12 @@ automatically.
   `src/scripts/blogFilter.ts`.
 - Card thumbnails (`src/components/BlogThumbnail.astro`) are generated from the post's category
   icon rather than real images, no photography to source or maintain as posts get added.
+- 8 posts embed a real, hand-built SVG diagram in the body (`public/blog/diagrams/`) where a chart
+  genuinely clarifies the concept, a reorder-point sawtooth, the real EOQ cost curves, a Pareto
+  chart, a landed-cost waterfall, a 5-step CAPA flow, a freight-class density curve, a three-way
+  match, built in the site's own ocean palette rather than a stock photo or a fabricated product
+  screenshot. Each post's `author`/`authorTitle` frontmatter drives a `Person` schema byline too,
+  not a generic company byline.
 
 ## Project structure
 

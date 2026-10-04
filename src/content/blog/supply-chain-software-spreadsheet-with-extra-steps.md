@@ -2,7 +2,8 @@
 title: "Supply Chain Software for Small Business"
 description: "A small business guide to supply chain software: what it does, when a spreadsheet still works, and the real signs you've outgrown one."
 publishDate: 2026-07-29
-author: "Flowbound"
+author: "Ryo Shibata"
+authorTitle: "CTO"
 category: "Industry Insights"
 tags: ["industry insights", "small business", "supply chain software", "buying guide"]
 ---

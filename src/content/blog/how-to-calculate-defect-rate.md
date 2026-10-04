@@ -2,7 +2,8 @@
 title: "How to Calculate Defect Rate (and Benchmarks)"
 description: "The defect rate formula explained, plus realistic benchmark ranges by product type and when a rising rate on one SKU or supplier needs action."
 publishDate: 2026-08-16
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Quality Monitoring"
 tags: ["quality monitoring", "defect rate", "supplier scorecards", "inventory management", "wholesale"]
 ---

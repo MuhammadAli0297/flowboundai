@@ -2,7 +2,8 @@
 title: "Supplier Onboarding Checklist for New Vendors"
 description: "What to collect and verify before the first purchase order with a new supplier, the red flags that predict trouble, and how to structure a trial order."
 publishDate: 2026-08-10
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Supplier Management"
 tags: ["supplier management", "onboarding", "vendor vetting", "purchase orders", "small business"]
 ---

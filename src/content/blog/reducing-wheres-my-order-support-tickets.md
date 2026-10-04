@@ -2,7 +2,8 @@
 title: "Reducing Where's My Order Support Tickets"
 description: "Why order-status questions make up most support volume for a wholesale operation, and the concrete steps that cut ticket volume without adding staff."
 publishDate: 2026-09-28
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Customer Service"
 tags: ["order tracking", "customer service", "response time", "wholesale", "small business"]
 ---

@@ -2,7 +2,8 @@
 title: "Wholesale Pricing Strategy: A Practical Guide"
 description: "A wholesale pricing strategy guide for distributors: cost-plus formulas, tiered pricing, repricing cadence, and what manual repricing actually costs."
 publishDate: 2026-08-06
-author: "Flowbound"
+author: "Muhammad Ali"
+authorTitle: "CFO"
 category: "Autonomous Decisions"
 tags: ["pricing strategy", "wholesale pricing", "margin", "small business"]
 ---

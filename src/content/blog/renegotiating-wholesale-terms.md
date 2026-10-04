@@ -2,7 +2,8 @@
 title: "How to Renegotiate Wholesale Pricing Terms"
 description: "When to ask a supplier for better pricing tiers or order minimums, how to build the case with real order data, and mistakes that waste your leverage."
 publishDate: 2026-08-22
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Supplier Management"
 tags: ["supplier management", "wholesale", "pricing tiers", "negotiation", "order minimums"]
 ---

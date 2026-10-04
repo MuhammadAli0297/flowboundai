@@ -2,7 +2,8 @@
 title: "Purchase Order Approval Workflow"
 description: "What a PO approval workflow actually is, what it's checking, and how a one-person approval chain can automate the routine calls safely."
 publishDate: 2026-08-05
-author: "Flowbound"
+author: "Muhammad Hassan"
+authorTitle: "CEO"
 category: "Autonomous Decisions"
 tags: ["autonomous decisions", "purchase orders", "reorder points", "operations"]
 ---
