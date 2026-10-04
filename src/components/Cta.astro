@@ -1,62 +1,80 @@
-<section id="cta" class="relative overflow-hidden bg-ocean-100 py-20 font-amulya md:py-24">
-  <!-- a quiet pulse behind the button row, not the whole section: draws the eye to the one thing
-       this section wants you to do, without competing with the copy above it -->
-  <div class="pointer-events-none absolute inset-0 flex items-end justify-center pb-[6.5rem] md:pb-[7rem]" aria-hidden="true">
-    <span class="cta-pulse"></span>
+<section id="cta" class="cta-depth relative overflow-hidden py-20 font-hanken md:py-24">
+  <!-- Ambient atmosphere, not a halo stuck behind the buttons: one large soft teal orb, same device
+       as the hero's grain+orb pattern. Originally two orbs (mint + taupe); once the background
+       became a real saturated plum rather than a neutral dark tone, mint read as a bold near-
+       complementary clash against it and taupe read muddy (warm brown against cool purple, not
+       enough saturation on either side for the pairing to feel deliberate). Teal sits closer to
+       purple on the wheel, so it reads as atmosphere, not a competing color statement. Mint stays
+       reserved for the one deliberate accent (the headline's "right now") rather than also doing
+       ambient-glow duty. -->
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <span class="cta-orb bold-orb"></span>
   </div>
 
   <div class="container-fb relative text-center">
-    <h2 class="reveal-item mx-auto max-w-xl font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.3rem]" data-reveal>
-      We're onboarding a small group of business pilots right now.
+    <h2 class="reveal-item mx-auto max-w-xl text-[1.9rem] font-bold leading-tight tracking-tighter text-bold-paper md:text-[2.3rem]" data-reveal>
+      We're onboarding a small group of business pilots <em class="font-instrument font-normal italic text-bold-mint">right now</em>.
     </h2>
-    <p class="reveal-item mx-auto mt-4 max-w-md text-[0.98rem] font-normal leading-relaxed text-ocean-950" data-reveal style="transition-delay: 90ms">
+    <p class="reveal-item mx-auto mt-4 max-w-md text-[0.98rem] font-normal leading-relaxed text-bold-paper/75" data-reveal style="transition-delay: 90ms">
       Tell us a bit about your supply chain and we'll get back to you within a few days. No sales pressure, just a
       real conversation about how we can help your team run tighter and smarter.
     </p>
     <div class="reveal-item mt-9 flex flex-wrap items-center justify-center gap-4" data-reveal style="transition-delay: 180ms">
       <a
         href="mailto:hello@flowbound.ai?subject=Pilot%20request"
-        class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ocean-700 bg-ocean-700 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgba(79,109,122,0.45)]"
+        class="group inline-flex items-center gap-2 rounded-full bg-bold-mint-deep px-6 py-3.5 font-semibold text-bold-paper transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgba(26,122,100,0.5)]"
       >
-        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-        <span class="relative z-10">Request a pilot</span>
-        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+        <span>Request a pilot</span>
+        <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
       <a
         href="mailto:hello@flowbound.ai?subject=Question"
-        class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-ocean-700 px-6 py-3.5 font-medium text-ocean-950 transition-all duration-300 ease-out hover:-translate-y-0.5"
+        class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-bold-paper/30 px-6 py-3.5 font-medium text-bold-paper transition-all duration-300 ease-out hover:-translate-y-0.5"
       >
-        <span aria-hidden="true" class="absolute inset-0 bg-ocean-700/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
+        <span aria-hidden="true" class="absolute inset-0 bg-bold-paper/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
         <span class="relative z-10">Talk to us</span>
         <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
     </div>
-    <p class="reveal-item mt-6 font-mono text-xs uppercase tracking-[0.15em] text-ocean-950" data-reveal style="transition-delay: 270ms">hello@flowbound.ai</p>
+    <p class="reveal-item mt-6 font-mono text-xs uppercase tracking-[0.15em] text-bold-paper/60" data-reveal style="transition-delay: 270ms">hello@flowbound.ai</p>
   </div>
 </section>
 
 <style>
-  .cta-pulse {
-    width: 22rem;
-    height: 5rem;
-    border-radius: 9999px;
-    background: radial-gradient(ellipse, rgba(74, 111, 165, 0.22) 0%, transparent 72%);
-    animation: cta-pulse-breathe 3.4s ease-in-out infinite;
+  /* Flat bg-bold-ink + bg-grain read as "plain" on their own, per direct feedback. A radial
+     gradient (richer plum near the top, fading to a near-black plum at the edges) gives the
+     section real dimensionality, like it's lit from one side, instead of one pastel-adjacent flat
+     tone. Grain stays layered on top in the same background-image stack (both have to live in one
+     declaration, a class-level background-image and an inline one can't composite, the second just
+     replaces the first), same SVG turbulence data URI as the `bg-grain` Tailwind utility. */
+  .cta-depth {
+    background-color: #2E1630;
+    background-image:
+      radial-gradient(ellipse 140% 100% at 30% 0%, #3D2440 0%, #2E1630 45%, #170B19 100%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   }
 
-  @keyframes cta-pulse-breathe {
+  .cta-orb {
+    width: 34rem;
+    height: 34rem;
+    background: #6E9CA3;
+    opacity: 0.12;
+    top: -13rem;
+    left: -10rem;
+    animation: cta-orb-breathe 5s ease-in-out infinite;
+  }
+
+  @keyframes cta-orb-breathe {
     0%, 100% {
-      opacity: 0.6;
-      transform: scale(1);
+      opacity: 0.07;
     }
     50% {
-      opacity: 1;
-      transform: scale(1.12);
+      opacity: 0.14;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cta-pulse {
+    .cta-orb {
       animation: none;
     }
   }

@@ -67,6 +67,35 @@
   font-display: swap;
 }
 
+/* Hot Sauce rebuild (see CLAUDE.md). Hanken Grotesk is a true variable font like Amulya above, one
+   file covering 400-800 (confirmed against Google's own served file: every requested static weight
+   resolved to the identical woff2, so there was never a set of discrete weights to download).
+   Instrument Serif ships only as a single static weight (400) in upright and italic, used
+   deliberately sparingly as an editorial accent, not a running body face. Both applied explicitly
+   via `font-hanken`/`font-instrument`, scoped page by page as the rebuild proceeds, same rollout
+   pattern Amulya used. */
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("/fonts/hanken-grotesk-variable.woff2") format("woff2");
+  font-weight: 400 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/instrument-serif-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -386,5 +415,47 @@
     object-fit: fill;
     opacity: 1;
     box-shadow: none;
+  }
+}
+
+/* ============================================================
+   Hot Sauce rebuild primitives (see CLAUDE.md). Added page by
+   page; nothing here is referenced by pages still on fb/ocean.
+   Named "bold-*" for the palette (the rebuild's second pick,
+   after "hot sauce" turned out to overlap with gogreenlit.com).
+   ============================================================ */
+
+/* Blurred gradient orb for the grain+orb hero pattern. Size/position/color set per instance via
+   inline style or a sibling utility class; this just carries the blur + circle + non-interactive
+   bits every orb needs. */
+.bold-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* Glass panel for "real product UI in a frame" moments (hero live-data panel, etc). Sits on top of
+   the grain+orb hero, so it needs its own opaque-ish backdrop rather than relying on the section
+   background. */
+.bold-glass {
+  background: rgba(239, 247, 242, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(42, 31, 41, 0.14);
+  box-shadow: 0 14px 34px rgba(42, 31, 41, 0.12);
+}
+
+/* FAQ accordion (faqAccordion.ts toggles aria-expanded + the [hidden] attribute on the answer).
+   CSS-only chevron rotation off the aria state, no JS style writes. */
+.bold-faq-row .bold-faq-chevron {
+  transition: transform 0.2s ease-out;
+}
+.bold-faq-row[aria-expanded="true"] .bold-faq-chevron {
+  transform: rotate(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .bold-faq-row .bold-faq-chevron {
+    transition: none;
   }
 }

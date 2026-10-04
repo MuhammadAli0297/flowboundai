@@ -41,6 +41,29 @@ export default {
           900: "#166088", // baltic blue
           950: "#104866", // darkened baltic blue, body/heading text only
         },
+        // Sitewide rebuild, in progress page by page (see CLAUDE.md "Hot Sauce" rebuild section,
+        // the project kept that name even after the palette moved on). Additive alongside fb/ocean
+        // so not-yet-converted pages are unaffected; fb/ocean get removed once every page is
+        // migrated. This is the SECOND palette used in that rebuild, "Bold": the first ("hot sauce",
+        // warm dark-green + orange) turned out to overlap with another site the user runs
+        // (gogreenlit.com) closely enough to require a repick, not just a retint, since the conflict
+        // was the hue family itself. Bold is a cool eggplant/mint direction with no hue overlap with
+        // that site. Full rationale + contrast math worked out in the approved mockup round.
+        bold: {
+          paper: "#EFF7F2", // pale mint-white, primary light background
+          mist: "#C9EFE6", // derived pale mint tint, soft section/card fill, decorative only
+          // Deepened from the user's literal #2A1F29 swatch at their request ("too pastel and
+          // plain" after the glow got toned down) — same lightness/contrast margin, more actual
+          // purple separation between channels (R46/G22/B48 vs the original's close-together
+          // R42/G31/B41) so it reads as a real plum instead of a desaturated dark grey. Still 14.5:1
+          // on paper, 10.6:1 against mint, both comfortably unchanged from the original.
+          ink: "#2E1630", // plum, primary text + dark bookend sections
+          "ink-deep": "#170B19", // derived, even darker, vignette/gradient edge only, not for text
+          taupe: "#6E5A52", // secondary text/borders on light bg, clears 4.5:1 on paper, safe for small text too
+          teal: "#6E9CA3", // dusty teal, tertiary accent (large text/non-text only on light; fine as text on ink)
+          mint: "#8FE3D3", // bright mint, accent text/icon on dark ink bg (~10.6:1); too light for paper text
+          "mint-deep": "#1A7A64", // derived, accent fill (pairs with paper text, ~4.8:1) and accent text on paper
+        },
       },
       fontFamily: {
         display: ["Satoshi", "sans-serif"],
@@ -49,6 +72,12 @@ export default {
         // Homepage + Nav + Footer + logo only, applied explicitly via `font-amulya`, see the
         // @font-face comment in src/index.css. Everywhere else keeps `font-display`/`font-body`.
         amulya: ["Amulya", "sans-serif"],
+        // Hot Sauce rebuild: Hanken Grotesk is the new display/body face, Instrument Serif is an
+        // editorial accent used sparingly (one emphasized word in a headline, pull-quotes). Applied
+        // explicitly via `font-hanken`/`font-instrument` on converted pages only, same scoped-rollout
+        // pattern Amulya used. IBM Plex Mono (`font-mono`) carries over unchanged.
+        hanken: ["Hanken Grotesk", "sans-serif"],
+        instrument: ["Instrument Serif", "Georgia", "serif"],
       },
       backgroundImage: {
         "grain": "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E\")",

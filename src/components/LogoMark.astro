@@ -6,16 +6,20 @@ interface Props {
   // the homepage's ocean palette, for use anywhere ocean has been extended to (Nav, Footer): the
   // raster logo.png can't be recolored without re-exporting the asset and risking gradient/edge
   // artifacts, but this hand-drawn vector's gradient stops are just hex values, so it's the
-  // reliable way to get an ocean-toned mark. Same shape either way, only the fill colors change.
-  palette?: "fb" | "ocean"
+  // reliable way to get an ocean-toned mark. "bold" is the Hot Sauce rebuild's current palette (see
+  // CLAUDE.md; the rebuild kept its original name after the palette itself changed from "hot sauce"
+  // to "Bold" following a conflict with another site, gogreenlit.com), mint-to-deep-mint gradient
+  // comma, ink solid comma. Same shape either way, only the fill colors change.
+  palette?: "fb" | "ocean" | "bold"
   // Adds a thin outer ring in the river color. The ocean palette's dark comma fill (#104866) and
   // the gradient's dark stop (#166088) both sit too close to bg-ocean-900 (the footer background,
   // #166088 exactly for the gradient stop, a 1.00:1 contrast ratio) to read as their own shape
-  // there, verified by computing real WCAG contrast rather than eyeballing it. Rather than
-  // recoloring the mark for dark placements, this ring keeps the brand colors untouched and just
-  // defines the silhouette against a dark background. Pass `ring` wherever the mark sits on
-  // ocean-900/ocean-950 (currently: Footer, via LogoLockup's `dark` prop); leave it off on light
-  // backgrounds, where it's redundant (same color as the page).
+  // there, verified by computing real WCAG contrast rather than eyeballing it. Bold has the same
+  // issue against a bold-ink footer (commaFill is bold-ink itself). Rather than recoloring the
+  // mark for dark placements, this ring keeps the brand colors untouched and just defines the
+  // silhouette against a dark background. Pass `ring` wherever the mark sits on ocean-900/950 or
+  // bold-ink (currently: Footer, via LogoLockup's `dark` prop); leave it off on light backgrounds,
+  // where it's redundant (same color as the page).
   ring?: boolean
   // Needed because Nav and Footer both render this on the same page at once: two <svg> defs with
   // the same gradient id would collide (duplicate IDs in one document), so each instance needs
@@ -27,14 +31,23 @@ const { size = 32, class: className = "", palette = "fb", ring = false, id = "fb
 const gradId = `${id}-grad`
 const clipId = `${id}-clip`
 
-const commaFill = palette === "ocean" ? "#104866" : "#0A0A0A"
-const gradFrom = palette === "ocean" ? "#4A6FA5" : "#468B79"
-const gradTo = palette === "ocean" ? "#166088" : "#003828"
-// The river was pure white in both palettes originally. For "ocean" it's now ocean-100 (Alice
-// Blue, #DBE9EE) instead, at the user's request: still light enough for a clean divide against
-// the dark comma (ocean-950) and the mid-blue gradient comma, but pulled from the same five-color
-// family instead of sitting outside it. "fb" (the untouched real brand mark) keeps true white.
-const riverColor = palette === "ocean" ? "#DBE9EE" : "#FFFFFF"
+const commaFill = palette === "ocean" ? "#104866" : palette === "bold" ? "#2A1F29" : "#0A0A0A"
+// "bold"'s gradient first tried mint-to-deep-mint, a single hue stretched across a huge lightness
+// range (#8FE3D3 to #1A7A64); it read as washed out, muddy grey-green in the middle of the blend
+// rather than vivid, a known pitfall of gradating one hue across too wide a lightness span. Mint to
+// taupe instead: two real, similarly-weighted palette colors, cool to warm, so the transition itself
+// stays colorful rather than just fading to grey.
+const gradFrom = palette === "ocean" ? "#4A6FA5" : palette === "bold" ? "#8FE3D3" : "#468B79"
+const gradTo = palette === "ocean" ? "#166088" : palette === "bold" ? "#6E5A52" : "#003828"
+// The river was pure white in "fb" and a near-white tint in "ocean" (ocean-100). For "bold" it's
+// deliberately NOT near-white: dusty teal (#6E9CA3), a real tone from the palette, continuing the
+// genuine 3-color-combo rule the user set for this mark when "sauce" first replaced "ocean" here
+// (solid ink comma, mint-to-taupe gradient comma, teal river) rather than leaning on a white/
+// near-white as the third color the way the other two palettes do. Taupe itself was tried as the
+// river first but measures only 2.44:1 against the ink footer, too close to the comma it's supposed
+// to separate from when used as the ring; dusty teal clears 5.24:1 there instead, and taupe found a
+// better home as the gradient's second stop.
+const riverColor = palette === "ocean" ? "#DBE9EE" : palette === "bold" ? "#6E9CA3" : "#FFFFFF"
 ---
 
 <svg width={size} height={size} viewBox="0 0 200 200" class={className} aria-hidden="true">
