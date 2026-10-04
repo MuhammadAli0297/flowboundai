@@ -36,6 +36,182 @@ JS framework by default: no React or any JS framework ships on most of this site
 scoped/lazy-loaded/single-page pattern rather than defaulting to zero JS if a future page genuinely needs
 something heavier, don't add a framework or a heavy library site-wide.
 
+### Hot Sauce rebuild (sitewide, in progress, started 2026-10-04)
+
+**The whole site is being rebuilt onto a new visual system, page by page, on a local branch
+(`redesign/hot-sauce`), never pushed or merged until the user explicitly says so.** The project kept
+the branch/internal name "Hot Sauce" even after the palette itself moved on (see below), the same way
+code sometimes keeps an original codename after a pivot. If you're picking this up in a fresh session:
+check `git branch --show-current` and `git log` on that branch before assuming the live `ocean`/`fb`
+system described elsewhere in this file is still current anywhere except pages not yet migrated.
+
+**Why:** the user felt the existing `ocean`/Amulya system (see "Homepage" below) had gone "dull and
+bland" and wanted something "dynamic, fresh, and bold" that makes content "jump off the screen," a
+full visual rebuild, not a tweak. They set three process rules up front, all still in force: (1)
+mockups first, reviewed and approved via the Artifact tool, no code until a direction is approved; (2)
+once implementing, work strictly page by page, stop after each one and wait for the user to look at it
+themselves (`http://localhost:4321`) before moving to the next; (3) nothing gets pushed to `main` or
+deployed until they say so, full stop, independent of (2).
+
+**Mockup process, five real rounds, worth knowing before re-deriving any of this:**
+1. A literal translation of a user-given 5-color palette onto the *existing* page layouts. Rejected:
+   "I'm not like drawn to the site. It just looks like every other web page out there."
+2. "Manifest": a from-scratch dark, document/manifest-inspired direction (Big Shoulders Display, line-
+   item rows instead of cards, routing-checkpoint diagrams, hard edges, a live-data-readout hero
+   instead of abstract art). This direction was approved and became the structural foundation, but on
+   the *first* palette tried with it.
+3. Manifest re-skinned onto a second user-given palette (Shadow Grey/Pearl Aqua, teal-on-near-black).
+   Palette swap only, same structure, to test the system's portability.
+4. User, still not satisfied, gave a screenshot of 7 more palette options ("calm," "winter," "bold,"
+   "option 5," "option 2," "hot sauce," "huda") and asked for **light mode**, using whatever "the
+   newest/highest ranking tech sites" are doing. This produced the real pivot: researched conventions
+   from Linear, Stripe, Arc, Vercel, Raycast, and Attio (bento grids, grain-textured gradient-blur
+   heroes, glass panels over real-looking product UI instead of abstract art, annotated line diagrams
+   with leader labels instead of card rows, a single dark "bookend" band breaking up an otherwise light
+   page), picked "hot sauce" (the only warm, high-saturation option with both a real light tone and two
+   usable accents) over the other 6, and delivered the result as five static "stills" with captions
+   naming which real site's convention each piece borrowed from, not a working coded page, per the
+   user's explicit request for that format. Approved: "this is fantastic, this is the direction I want
+   to go." Extended with 5 more stills (a capability-page template, the blog) to confirm the system
+   generalizes past the homepage before committing to it.
+5. User asked for a full page-by-page checklist and to start implementing. Checkpoint 1 (shared chrome,
+   see below) was built in "hot sauce" colors, at which point the user flagged a real external
+   conflict: **the hot sauce palette and structural devices were too close to another live site they
+   run, gogreenlit.com** (dark green ground, orange accent, cream sections, a grain+orb hero, a
+   highlighted-text headline block, even a status-chip badge). Confirmed by fetching and screenshotting
+   gogreenlit.com directly rather than taking the concern on faith. The real cause wasn't execution,
+   it was the hue family itself (warm dark-green-plus-orange is a common "earthy modern SaaS" direction
+   right now), so retinting wouldn't have fixed it. Repicked from the original 7 palettes to "Bold" (a
+   cool eggplant-and-mint direction with no hue overlap with gogreenlit at all), re-mocked it in the
+   same artifact, approved, then re-applied to checkpoint 1's actual code.
+
+The approved mockup artifact (still live, reflects the "Bold" palette, five homepage stills plus five
+template-check stills for a capability page and the blog) is the design reference for every page still
+to come: `https://claude.ai/artifact/79AWJ5c2M8sCs3ARd24gFq`. Read it before building a new page type
+rather than re-deriving the system from scratch.
+
+**The approved design system, "Bold":**
+- **Palette** — Tailwind namespace `bold` in `tailwind.config.js`, additive alongside `fb`/`ocean` (not
+  yet removed, won't be until every page is migrated): `paper` `#EFF7F2` (primary light bg), `mist`
+  `#C9EFE6` (derived pale mint tint, soft card/section fill), `ink` `#2E1630` (primary text + dark
+  bookend sections), `ink-deep` `#170B19` (derived, vignette/gradient-edge only, never text), `taupe`
+  `#6E5A52` (secondary text/borders on light bg), `teal` `#6E9CA3` (tertiary accent), `mint` `#8FE3D3`
+  (the one bold accent, text/icon on dark surfaces), `mint-deep` `#1A7A64` (derived, accent text/fills
+  on light surfaces). `ink` is enriched from the user's literal swatch (`#2A1F29`) at their explicit
+  request after it read "too pastel and plain" once the glow effects were toned down, see the contrast
+  and color-harmony notes below before changing any of these again.
+- **Fonts** — Hanken Grotesk (self-hosted variable, one file covers weight 400-800, same
+  one-file-many-weights trick Amulya already used) as `font-hanken`, Instrument Serif (self-hosted,
+  regular + italic, both static) as `font-instrument`, used sparingly as an editorial accent (one
+  emphasized word in a headline, a pull-quote), never as a running body face. IBM Plex Mono carries
+  over unchanged as `font-mono`. All added alongside Satoshi/Amulya in `src/index.css`, not replacing
+  them yet.
+- **Structural devices**, all established in the mockup and now real code or real code waiting to
+  happen: a grain-textured gradient-blur hero (reuses the existing `bg-grain` Tailwind utility, already
+  defined before this rebuild started), a glass panel for showing real-looking product UI in the hero
+  (`.bold-glass` in `src/index.css`) instead of abstract decorative art, a bento grid for capability
+  lists instead of a uniform card row, an annotated line diagram with alternating leader-label text for
+  "how it works" sections instead of another card row, a real accordion FAQ (`.bold-faq-row` +
+  `src/scripts/faqAccordion.ts`, a generic single-row-open-at-a-time component, document-wide via
+  `[data-faq-list]`, not scoped like the mobile nav's own accordion logic), and exactly one dark
+  "bookend" section per page breaking up otherwise-light content (so dark-vs-light carries real
+  emphasis instead of losing meaning from overuse). Pill buttons continue as the sitewide shape
+  (unchanged convention from before this rebuild).
+- **Dark sections need real depth, not a flat fill.** `Cta.astro`'s `.cta-depth` class is the reference
+  pattern: a `background-image` stack combining a radial gradient (lighter near one edge, fading to
+  `ink-deep` at the far edges, like the section is lit from one side) with the same grain SVG data URI
+  `bg-grain` uses, declared together in one CSS property since a class-level `background-image` and an
+  inline/scoped one can't composite, the later one just replaces the former. A flat `bg-bold-ink
+  bg-grain` combo was tried first and called out directly as "too pastel and plain." Reuse this same
+  two-layer recipe (gradient + grain, one declaration) for every future large dark section, starting
+  with the homepage hero.
+- **An ambient glow's color has to be picked relative to the actual background hue it sits on, re-
+  learned the hard way on the CTA band.** The first version used two orbs (mint + taupe) tuned against
+  the original, less-saturated `ink`. Once `ink` was enriched into a real saturated plum, mint (cool,
+  roughly complementary to purple) started reading as a bold clashing contrast rather than soft
+  atmosphere, and taupe (warm, muted) read muddy against a now-cool-saturated background. Fixed by
+  dropping to one orb in teal, which sits closer to purple on the color wheel and reads as atmosphere
+  instead of a competing color statement, while reserving mint exclusively for deliberate accents (the
+  "right now" headline word, button fills) rather than also doing ambient-wash duty. **Before reusing
+  an orb/glow color on a new section, check it against that section's actual background color, not
+  just copy the hex from another section**, this exact mistake is easy to repeat.
+- **Contrast rules specific to this palette** (worked out with real sRGB relative-luminance math, not
+  eyeballed, same discipline the `contrast_compliance` memory already requires sitewide): `mint` only
+  clears AA as text/icons on dark `ink` surfaces (~10.6:1); it measures only ~1.4:1 against `paper` and
+  must never be small text or a fill there. `mint-deep` is the light-surface equivalent, ~4.8:1 against
+  `paper`, safe as text or as a fill paired with `paper`-colored text on top (never `ink` text on a
+  `mint-deep` fill, only ~3:1, this exact bug shipped once on the real CTA/Nav buttons and had to be
+  fixed after the user flagged the button text as unreadable). `taupe` genuinely clears 4.5:1 against
+  `paper` on its own, unlike hot sauce's `olive` before it, so it does real secondary-body-text duty
+  with no workaround needed. `teal` is safe as text/icons on `ink` but, like `mint`, not as small text
+  on `paper`.
+- **A two-stop gradient within one hue, stretched across too wide a lightness range, reads muddy and
+  washed-out in the middle of the blend, not vivid.** Hit this on the logo mark: the first "bold"
+  gradient ran bright `mint` to `mint-deep`, both are "the same color" at different lightness, and the
+  transition zone desaturated visually even though the math was a clean linear interpolation. Fixed by
+  gradating `mint` to `taupe` instead, two real palette colors with an actual hue difference (cool to
+  warm), so the blend stays colorful all the way through. If a future gradient looks flat or grey in
+  the middle, check whether both stops are really the same hue before adding more stops or more
+  contrast, that's usually the actual cause.
+- **Logo** — `LogoMark.astro`'s `palette="bold"`: solid `ink` comma, `mint`-to-`taupe` gradient comma
+  (see above), `teal` river/ring (not `paper`/white, not `taupe`: taupe was tried for the ring first
+  but only clears 2.44:1 against the `ink` footer, too close to the comma it's supposed to separate
+  from; `teal` clears 5.24:1 there). Continues this mark's standing rule (set when "ocean" first
+  replaced "fb" here, re-confirmed explicitly by the user for "bold"): never fall back to white/near-
+  white as the third color just because it's convenient, use a real color from the current palette and
+  actually check its contrast in both the light (nav) and dark (footer) placements.
+
+**Rollout discipline:** every addition (colors, fonts, primitives) is additive alongside the existing
+`fb`/`ocean` system; nothing is removed or renamed out from under not-yet-converted pages. Cleanup
+(deleting the old tokens, old font-faces, and this whole section's "in progress" framing) happens in
+one dedicated pass only once literally every page is migrated, the same pattern `ocean` itself followed
+when it replaced `fb`.
+
+**Verification gotcha specific to this rebuild, likely to resurface:** after editing `tailwind.config.js`
+mid-session, a `npm run dev` restart can *appear* to not pick up new theme colors (new utility classes
+show up in the rendered HTML with seemingly no CSS behind them) even after a restart. Before concluding
+the dev server itself is broken and trying another restart, `curl` its actual served stylesheet
+(`curl -s http://localhost:4321/src/index.css`) and grep for the specific rule
+(e.g. `grep -o "\.bg-bold-ink {[^}]*}"`) to check the real compiled value. In the one case this came up
+this session, the CSS was already correct both times it was checked, the apparent bug was a stale
+browser tab loaded before an in-progress restart had finished, not a real compile failure, caught by
+comparing the actual served CSS bytes rather than trusting what a screenshot from an already-open tab
+showed.
+
+**Checklist** (22 items; update the checkbox state here as items land, this is the actual tracker, not
+a chat message that will scroll away):
+- [x] 1. Shared system: fonts, `bold` tokens, Nav, Footer, Cta, logo. Built, then revised across several
+      rounds of direct feedback (button-fill text contrast, glow brightness, logo gradient muddiness,
+      ink richness, glow color harmony), all fixes described above. Not yet committed.
+- [ ] 2. Homepage (`/`) — grain+orb hero (replacing the three.js WebGL hero per explicit user decision,
+      see "Homepage" below, this will make that section's three.js description stale once it ships),
+      proof strip, bento capability grid, comparison band. Use `.cta-depth`'s gradient+grain recipe for
+      any dark section here.
+- [ ] 3. `/reorder` — first capability-template page (already mocked in the artifact)
+- [ ] 4. `/demand-forecasting`
+- [ ] 5. `/inventory-tracking`
+- [ ] 6. `/shipping-optimization`
+- [ ] 7. `/supplier-coordination`
+- [ ] 8. `/wholesale-account-management`
+- [ ] 9. `/pricing`
+- [ ] 10. `/ask-flowbound`
+- [ ] 11. `/customer-service`
+- [ ] 12. `/quality-monitoring`
+- [ ] 13. `/how-it-works`
+- [ ] 14. `/services`
+- [ ] 15. `/product`
+- [ ] 16. Blog index + pagination (`/blog`)
+- [ ] 17. Blog post template (`[slug].astro`, one template change, applies to all published posts)
+- [ ] 18. Blog tag pages (`/blog/tags/[tag]`)
+
+Items 3-9 (the 7 capability pages) share one template, so once item 3 is approved the rest should move
+fast. `/404` stays on the current `fb`/Satoshi system for now, per an explicit user decision, picked up
+later if ever, same as every past redesign pass in this project.
+
+**New files from checkpoint 1, for reference:** `public/fonts/hanken-grotesk-variable.woff2`,
+`public/fonts/instrument-serif-400.woff2`, `public/fonts/instrument-serif-400-italic.woff2`,
+`src/scripts/faqAccordion.ts`.
+
 ### Page structure
 
 - `src/pages/`: one file per route, mostly flat (no nested layouts beyond `BaseLayout`)
