@@ -251,6 +251,8 @@ untrusted input; not fixed via `npm audit fix --force` since that would bump sat
 without testing it. Separately, `npm audit` also surfaced a **pre-existing critical Astro RCE**
 (AVIF image optimization, fixed in 7.3.2, this project is pinned to 7.1.3) unrelated to anything added
 today; flagged for its own dedicated version-bump-and-test cycle rather than folded into this change.
+**Fixed 2026-10-04**: upgraded to `astro@7.3.5` as part of a wider SEO/technical audit, see "SEO audit
+fixes (2026-10-04)" below.
 
 **Cross-linking is structural, not a per-post content task.** `src/pages/blog/[slug].astro` renders a
 "Related reading" section under every post automatically: it scores every other published post (same
@@ -1197,6 +1199,39 @@ change, update this file to match by hand**, they're not derived from one shared
 
 `favicon.svg` itself was also replaced with the same mark/palette (previously the same unrelated purple
 shape mentioned above, an existing bug independent of this SEO pass, fixed while already in this file).
+
+### SEO audit fixes (2026-10-04)
+
+A fresh best-practices SEO/technical audit (not benchmarked against named competitors, by explicit choice)
+turned up 12 findings; the 3 flagged critical were fixed one at a time with approval between each, 2 of the
+3 shipped to prod, the third deliberately deferred:
+
+- **Astro upgraded `7.1.3` → `7.3.5`**, closing the critical AVIF-optimization RCE flagged back in the
+  2026-09-13 audit and left open since (see the "Blog" section's OG-image paragraph above). `npm audit`
+  confirms `astro` no longer appears in the report at all (critical count: 1 → 0). Verified with a clean
+  `astro check` (0 errors/warnings/hints) and `astro build` (same 154 pages), plus a real Playwright
+  screenshot of the homepage and `/product` WebGL heroes and a blog post to confirm no visual regression
+  from the version bump. No app code changed, only `package.json`/`package-lock.json`.
+- **Sitemap now carries a real `<lastmod>` on every one of its 64 URLs**, via a `serialize()` function in
+  `astro.config.mjs`. Before this it had none. Three sources, each chosen to be an honest "this actually
+  changed" signal rather than a blanket build-time stamp (which would falsely tell Google every page
+  changed on every deploy): blog posts read `updatedDate ?? publishDate` straight off their own frontmatter
+  (parsed directly off disk at config-eval time, since `astro:content` isn't available yet that early);
+  `/blog/` and its pagination pages use the most recent post's date, since a new post is what actually
+  changes those listings; static pages use `git log -1 --format=%cI` against that page's own source file.
+  **If a new top-level static page is added under `src/pages/`, add it to `astro.config.mjs`'s
+  `staticPageFiles` map too**, or it silently ships with no lastmod.
+- **No analytics (GA4) is still deliberately unresolved**, same blocker as the 2026-09-13 audit: no
+  Measurement ID yet. User explicitly chose to skip it this round and ship the other two criticals to prod
+  without it rather than wait. Pick this up the same way described in `seo_audit_2026_09.md`: ask for the
+  GA4 Measurement ID first, the code change itself (one script in `BaseLayout.astro` plus a conversion event
+  on "Request a pilot") is small.
+
+The remaining 9 findings (P1-P3: no About/Team page, three.js loading eagerly instead of on-demand on `/`
+and `/product`, zero images across all 45 blog posts, no named author/`Person` schema, `prefetchAll: true`
+now that the site has scaled past a handful of pages, the broader non-Astro npm audit findings, `/404`
+missing `noindex`, no security response headers, no `sameAs` social links) are open and unscheduled. Full
+detail on all 12, including what's already strong, is in the audit artifact linked from that session.
 
 ### Structured data: one `SoftwareApplication`, everything else is `Service`
 
