@@ -28,12 +28,14 @@ SEO copy, and a verification process that substitutes for a test suite on a proj
 
 **Zero-JS-by-default, with two deliberately scoped exceptions, each verified, not assumed.**
 The site ships no JavaScript framework runtime on any page. Two pages (the homepage and
-`/product`) run a real WebGL particle system via three.js. That dependency is a 515KB chunk, and
-after every build I grep the built `dist/*.html` output to confirm it is referenced by exactly
-those two pages and no others, rather than trusting that a lazy import stayed scoped. Every other
-page's animated hero is hand-written Canvas 2D: 12 distinct compositions (bar charts, radar
-sweeps, racing lanes, a conveyor belt, comet-trail pulses), each modeling something specific to
-that page's content, not one template recolored twelve times.
+`/product`) run a real WebGL particle system via three.js. That dependency is a 515KB chunk,
+dynamically `import()`ed only once its hero section is about to enter the viewport rather than
+bundled into the page's initial script, so it's a separate, lazily-fetched request, not dead
+weight on first paint. After every build I grep the built `dist/*.html` output to confirm the
+chunk is referenced by exactly those two pages and no others, rather than trusting that scoping
+stayed intact. Every other page's animated hero is hand-written Canvas 2D: 12 distinct
+compositions (bar charts, radar sweeps, racing lanes, a conveyor belt, comet-trail pulses), each
+modeling something specific to that page's content, not one template recolored twelve times.
 
 **A real, diagnosed SEO bug, not a hypothetical one.** Google Search Console flagged
 "Alternate page with proper canonical tag" across the blog. Root cause turned out to be two

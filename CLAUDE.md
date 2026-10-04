@@ -1227,11 +1227,28 @@ turned up 12 findings; the 3 flagged critical were fixed one at a time with appr
   GA4 Measurement ID first, the code change itself (one script in `BaseLayout.astro` plus a conversion event
   on "Request a pilot") is small.
 
-The remaining 9 findings (P1-P3: no About/Team page, three.js loading eagerly instead of on-demand on `/`
-and `/product`, zero images across all 45 blog posts, no named author/`Person` schema, `prefetchAll: true`
-now that the site has scaled past a handful of pages, the broader non-Astro npm audit findings, `/404`
-missing `noindex`, no security response headers, no `sameAs` social links) are open and unscheduled. Full
-detail on all 12, including what's already strong, is in the audit artifact linked from that session.
+Of the remaining 9 findings, the first P1 was picked up and fixed in a later session (2026-10-04):
+
+- **`heroWave.ts`/`productHeroWave.ts` now dynamically `import("three")` instead of a static top-level
+  import**, so the ~500KB chunk is no longer bundled into `/`'s or `/product`'s eagerly-parsed initial
+  script. Both scripts already had an `IntersectionObserver` that paused/resumed the render loop once
+  loaded; that same observer now also triggers the one-time dynamic import on first intersection (both hero
+  sections sit above the fold, so in practice the fetch kicks off within ~100ms of `DOMContentLoaded`, but as
+  a separate async chunk request, not blocking the main script's parse/execution the way a static import
+  does). A type-only `import type * as ThreeTypes from "three"` stays at the top of each file for type
+  annotations (`BufferAttribute` casts) — this is fully erased at compile time and doesn't reintroduce a
+  real module-graph dependency; the runtime namespace comes from the dynamic `import()` inside `start()`.
+  Verified: `astro check`/`astro build` clean (154 pages), grepped `dist/index.html` and
+  `dist/product/index.html` to confirm neither references `three.module*.js` directly anymore (no
+  `<script>`/`modulepreload`), confirmed the compiled hero chunk contains the dynamic `import()` call, and a
+  real Playwright run (two screenshots ~600ms apart, buffer-compared as different) confirmed both heroes
+  still render and animate correctly end to end.
+
+The remaining 8 findings (P1-P3: no About/Team page, zero images across all 45 blog posts, no named
+author/`Person` schema, `prefetchAll: true` now that the site has scaled past a handful of pages, the
+broader non-Astro npm audit findings, `/404` missing `noindex`, no security response headers, no `sameAs`
+social links) are open and unscheduled. Full detail on all 12, including what's already strong, is in the
+audit artifact linked from that session.
 
 ### Structured data: one `SoftwareApplication`, everything else is `Service`
 
