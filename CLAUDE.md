@@ -1301,11 +1301,32 @@ Of the remaining 9 findings, three P1s were picked up and fixed in later session
   specific ones, and the convention (`public/blog/diagrams/`, numbers matched to the post's own worked
   example, no fabricated screenshots) a future post should follow.
 
-The remaining 6 findings (P1-P3: no About/Team page, the other 37 blog posts still have no embedded image,
-`prefetchAll: true` now that the site has scaled past a handful of pages, the broader non-Astro npm audit
-findings, `/404` missing `noindex`, no security response headers, no `sameAs` social links) are open and
-unscheduled. Full detail on all 12, including what's already strong, is in the audit artifact linked from
-that session.
+Three more P2s were picked up in a later session, still 2026-10-04:
+
+- **`prefetchAll: true` replaced with `prefetch: { defaultStrategy: "hover" }`** in `astro.config.mjs`.
+  The site had grown to 154 built pages, each one eagerly firing a background prefetch request for every
+  link it contained on page load; hover-triggered prefetch (Astro's own normal default when `prefetch` is
+  enabled without `prefetchAll`) keeps the speed benefit for a link someone's actually about to click
+  without the blanket eager-fetch cost. No per-link `data-astro-prefetch` attributes were added anywhere,
+  so no page opted out of the new behavior by accident.
+- **`/404` now passes `noindex` to `BaseLayout`**, closing the one page that had `Seo.astro`'s existing
+  `noindex` prop available and simply never used it (see "Tag pages... noindex" under "Blog" above for the
+  other existing user of this same prop).
+- **`npm audit fix` (non-force) run**, clearing 7 of the then-14 findings (`baseline-browser-mapping`,
+  `browserslist`, `devalue`, `fast-uri`, `http-cache-semantics`, `nanoid`, `postcss`) via lockfile-only
+  patch bumps, no `package.json` version changes. `astro check`/`astro build` confirmed clean afterward
+  (0 errors/warnings/hints, still 154 pages). The remaining 7 (the `braces`/`chokidar`/`micromatch`/
+  `fast-glob` chain under `tailwindcss`, and `fflate` under `satori`) both only have a `--force` fix
+  available, each a real breaking version bump (`tailwindcss@4`, a `satori` downgrade to `0.32.0`) that
+  needs its own tested migration, not something to force through as part of a routine audit pass. Same
+  discipline as the original `satori`/`fflate` finding noted under "Blog" above: both packages are
+  build-time-only tooling (never shipped to the browser), so this is real debt worth a dedicated session,
+  not a live-site risk in the meantime.
+
+Of the 12 original findings, 3 P1s and these 3 P2s are now fixed. The remaining 6 (no About/Team page, the
+other 37 blog posts still have no embedded image, the `tailwindcss`/`satori` npm audit chains just
+described, no security response headers, no `sameAs` social links) are open and unscheduled. Full detail on
+all 12, including what's already strong, is in the audit artifact linked from that session.
 
 ### Structured data: one `SoftwareApplication`, everything else is `Service`
 
