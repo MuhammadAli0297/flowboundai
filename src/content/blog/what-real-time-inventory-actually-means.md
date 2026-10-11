@@ -1,6 +1,7 @@
 ---
 title: "Inventory Tracking: The Complete Guide"
 description: "What inventory tracking actually means, the methods that work at each stage, and the wholesale mistakes most retail-focused guides skip."
+excerpt: "What inventory tracking means at each stage of growth."
 publishDate: 2026-07-30
 author: "Muhammad Hassan"
 authorTitle: "CEO"

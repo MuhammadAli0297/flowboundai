@@ -1,6 +1,7 @@
 ---
 title: "How to Choose a Freight Carrier"
 description: "A practical carrier selection framework for small distributors picking between a few regional or national options per lane, no logistics team required."
+excerpt: "A practical framework for choosing between freight carriers."
 publishDate: 2026-08-03
 author: "Muhammad Ali"
 authorTitle: "CFO"

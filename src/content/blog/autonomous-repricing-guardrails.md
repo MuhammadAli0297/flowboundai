@@ -1,6 +1,7 @@
 ---
 title: "Repricing Guardrails: Floors, Ceilings, Caps"
 description: "How to set price floors, ceilings, and max-move limits for automated repricing, and how often to revisit them as your business changes."
+excerpt: "Price floors, ceilings, and move limits for automated repricing."
 publishDate: 2026-08-30
 author: "Muhammad Ali"
 authorTitle: "CFO"

@@ -1,6 +1,7 @@
 ---
 title: "Supply Chain KPIs Worth Tracking"
 description: "Six supply chain KPIs for small distributors, real benchmark ranges for each, and why tracking five metrics well beats tracking twenty poorly."
+excerpt: "Six supply chain KPIs worth tracking, with real benchmarks."
 publishDate: 2026-09-01
 author: "Ryo Shibata"
 authorTitle: "CTO"

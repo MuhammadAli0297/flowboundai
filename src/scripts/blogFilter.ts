@@ -1,6 +1,9 @@
 function initBlogFilter() {
   const searchInput = document.querySelector<HTMLInputElement>("[data-blog-search]")
-  const checkboxes = document.querySelectorAll<HTMLInputElement>("[data-category-filter]")
+  // Real toggle buttons (aria-pressed), not checkboxes, since the filter bar moved from a plain
+  // checkbox list to colored pills (see .category-pill in index.css); aria-pressed is both the
+  // a11y state and the CSS hook the pill's active-fill styling keys off.
+  const categoryButtons = document.querySelectorAll<HTMLButtonElement>("[data-category-filter]")
   const resetButton = document.querySelector<HTMLButtonElement>("[data-blog-reset]")
   // Every post on the site is present in the DOM (hidden if it's not on the current
   // paginated page), so search and category filters can match across all of them,
@@ -15,11 +18,14 @@ function initBlogFilter() {
   const total = cards.length
   const STORAGE_KEY = "blogListState"
 
+  const activeCategories = () =>
+    Array.from(categoryButtons)
+      .filter((b) => b.getAttribute("aria-pressed") === "true")
+      .map((b) => b.value)
+
   function applyFilters() {
     const query = (searchInput?.value ?? "").trim().toLowerCase()
-    const checked = Array.from(checkboxes)
-      .filter((c) => c.checked)
-      .map((c) => c.value)
+    const checked = activeCategories()
     const isFiltering = query !== "" || checked.length > 0
 
     let visible = 0
@@ -52,9 +58,7 @@ function initBlogFilter() {
     const state = {
       path: location.pathname,
       search: searchInput?.value ?? "",
-      categories: Array.from(checkboxes)
-        .filter((c) => c.checked)
-        .map((c) => c.value),
+      categories: activeCategories(),
       scrollY: window.scrollY,
     }
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state))
@@ -73,7 +77,7 @@ function initBlogFilter() {
     if (state.path !== location.pathname) return
 
     if (searchInput) searchInput.value = state.search
-    checkboxes.forEach((c) => (c.checked = state.categories.includes(c.value)))
+    categoryButtons.forEach((b) => b.setAttribute("aria-pressed", state.categories.includes(b.value) ? "true" : "false"))
     applyFilters()
     requestAnimationFrame(() => window.scrollTo(0, state.scrollY))
   }
@@ -82,15 +86,16 @@ function initBlogFilter() {
     applyFilters()
     saveState()
   })
-  checkboxes.forEach((c) =>
-    c.addEventListener("change", () => {
+  categoryButtons.forEach((b) =>
+    b.addEventListener("click", () => {
+      b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true")
       applyFilters()
       saveState()
     }),
   )
   resetButton?.addEventListener("click", () => {
     if (searchInput) searchInput.value = ""
-    checkboxes.forEach((c) => (c.checked = false))
+    categoryButtons.forEach((b) => b.setAttribute("aria-pressed", "false"))
     applyFilters()
     saveState()
   })

@@ -1,6 +1,7 @@
 ---
 title: "How to Calculate Defect Rate (and Benchmarks)"
 description: "The defect rate formula explained, plus realistic benchmark ranges by product type and when a rising rate on one SKU or supplier needs action."
+excerpt: "The defect rate formula, plus realistic benchmarks by product."
 publishDate: 2026-08-16
 author: "Muhammad Hassan"
 authorTitle: "CEO"

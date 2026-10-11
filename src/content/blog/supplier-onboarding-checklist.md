@@ -1,6 +1,7 @@
 ---
 title: "Supplier Onboarding Checklist for New Vendors"
 description: "What to collect and verify before the first purchase order with a new supplier, the red flags that predict trouble, and how to structure a trial order."
+excerpt: "What to verify before the first order with a new supplier."
 publishDate: 2026-08-10
 author: "Muhammad Hassan"
 authorTitle: "CEO"

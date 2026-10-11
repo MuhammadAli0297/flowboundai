@@ -1,6 +1,7 @@
 ---
 title: "How to Reduce Shipping Damage Claims"
 description: "Why freight arrives damaged, how to build a packaging standard by weight and fragility, and how to file claims fast when damage still happens."
+excerpt: "A packaging standard by weight and fragility, built to last."
 publishDate: 2026-08-24
 author: "Muhammad Ali"
 authorTitle: "CFO"

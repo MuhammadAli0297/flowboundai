@@ -1,6 +1,7 @@
 ---
 title: "Economic Order Quantity (EOQ), Explained"
 description: "The EOQ formula, a worked example, and why it's a useful starting point for order sizing but a poor fit for demand that actually moves around."
+excerpt: "The EOQ formula, a worked example, and where it falls short."
 publishDate: 2026-09-26
 author: "Ryo Shibata"
 authorTitle: "CTO"

@@ -1,6 +1,7 @@
 ---
 title: "What Is Wholesale Account Management?"
 description: "Wholesale account management means keeping every buyer's pricing tier, order minimums, and terms current and enforced. Here's what that actually takes."
+excerpt: "What wholesale account management actually takes to run."
 publishDate: 2026-08-03
 author: "Ryo Shibata"
 authorTitle: "CTO"

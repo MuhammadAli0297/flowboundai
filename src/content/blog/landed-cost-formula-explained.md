@@ -1,6 +1,7 @@
 ---
 title: "Landed Cost: The Full Formula"
 description: "What landed cost actually includes beyond the supplier invoice, the formula for calculating it, and why skipping it quietly erodes margin."
+excerpt: "What landed cost includes beyond the supplier invoice."
 publishDate: 2026-09-30
 author: "Muhammad Ali"
 authorTitle: "CFO"

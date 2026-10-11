@@ -1,6 +1,7 @@
 ---
 title: "Do You Need SAP? A Distributor's Guide"
 description: "Do you need SAP for a small distribution business? What it costs, what it's actually for, and how to get the same visibility without the consultant."
+excerpt: "Do you actually need SAP, or just better visibility?"
 publishDate: 2026-07-20
 author: "Ryo Shibata"
 authorTitle: "CTO"

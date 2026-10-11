@@ -1,6 +1,7 @@
 ---
 title: "The CAPA Process for Supplier Quality Issues"
 description: "What a CAPA process is, when a supplier issue needs one instead of a one-off fix, and how to run it without a dedicated quality team."
+excerpt: "When a supplier issue needs a real CAPA, not a one-off fix."
 publishDate: 2026-09-13
 author: "Ryo Shibata"
 authorTitle: "CTO"

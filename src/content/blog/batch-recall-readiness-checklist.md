@@ -1,6 +1,7 @@
 ---
 title: "Batch Recall Readiness Checklist"
 description: "The records a small distributor needs before a supplier recall hits: lot numbers tied to POs, which customers got a batch, and who to call first."
+excerpt: "The records you need ready before a supplier recall hits."
 publishDate: 2026-08-28
 author: "Muhammad Hassan"
 authorTitle: "CEO"

@@ -1,6 +1,7 @@
 ---
 title: "Safety Stock: How Much Buffer You Actually Need"
 description: "How to calculate safety stock without a statistics degree: the practical formula, how lead time and demand variability change it, and common mistakes."
+excerpt: "A safety stock formula that skips the statistics degree."
 publishDate: 2026-09-07
 author: "Ryo Shibata"
 authorTitle: "CTO"

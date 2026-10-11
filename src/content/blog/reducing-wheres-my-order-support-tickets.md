@@ -1,6 +1,7 @@
 ---
 title: "Reducing Where's My Order Support Tickets"
 description: "Why order-status questions make up most support volume for a wholesale operation, and the concrete steps that cut ticket volume without adding staff."
+excerpt: "What cuts order-status tickets without adding support staff."
 publishDate: 2026-09-28
 author: "Muhammad Hassan"
 authorTitle: "CEO"
