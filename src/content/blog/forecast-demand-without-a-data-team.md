@@ -1,6 +1,7 @@
 ---
 title: "Demand Forecasting Without a Data Team"
 description: "A practical demand forecasting guide for small and mid-sized teams: the formula, the methods, and how often to redo it, no data scientist required."
+excerpt: "A demand forecasting formula for teams with no data scientist."
 publishDate: 2026-07-22
 author: "Muhammad Hassan"
 authorTitle: "CEO"

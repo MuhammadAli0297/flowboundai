@@ -1,6 +1,7 @@
 ---
 title: "Reorder Point: The Formula, With Real Numbers"
 description: "What a reorder point is, the formula to calculate it, and how to handle variable lead times, multiple suppliers, and brand new SKUs with no sales history."
+excerpt: "The reorder point formula, with real lead times and SKUs."
 publishDate: 2026-07-26
 author: "Ryo Shibata"
 authorTitle: "CTO"

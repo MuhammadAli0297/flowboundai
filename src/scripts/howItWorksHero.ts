@@ -8,12 +8,17 @@
 // passes it and fades back out if you scroll back up past it, reversible like every other
 // scroll-linked animation on the site, not a one-shot "play once" trigger. The four checkpoints
 // stay fixed in place, nothing rotates.
+//
+// Recolored to Bold for the Hot Sauce rebuild: SHADOW/BRIGHT were ocean-950/ocean-100, now
+// bold-ink (the glyph fill, dark enough to read against its own bright stroke) and bold-mint (the
+// stroke/glow/comet color, the palette's one accent reserved for icons/text on dark ink surfaces,
+// ~10.6:1 contrast there per the contrast rules in CLAUDE.md).
 
 import { watchScrollProgress } from "./scrollProgress"
 
 const CLIP_XF = 0.58
-const SHADOW = "#104866" // ocean-950
-const BRIGHT = "#DBE9EE" // ocean-100
+const SHADOW = "#2E1630" // bold-ink
+const BRIGHT = "#8FE3D3" // bold-mint
 
 type NodeKind = "connect" | "signal" | "decision" | "ask"
 
@@ -217,7 +222,7 @@ function initHowItWorksHero() {
     for (let i = 0; i < controls.length; i++) {
       ctx!.quadraticCurveTo(controls[i].x, controls[i].y, pts[i + 1].x, pts[i + 1].y)
     }
-    ctx!.strokeStyle = "rgba(219,233,238,0.22)"
+    ctx!.strokeStyle = "rgba(143,227,211,0.22)"
     ctx!.lineWidth = 1.4
     ctx!.setLineDash([3, 7])
     ctx!.lineDashOffset = reduceMotion ? 0 : -(t * 18)
@@ -235,8 +240,8 @@ function initHowItWorksHero() {
       const glowR = 22 + litLevel * 8 + flashSq * 16
       const grad = ctx!.createRadialGradient(pts[i].x, pts[i].y, 0, pts[i].x, pts[i].y, glowR)
       const glowAlpha = 0.1 + litLevel * 0.22 + flashSq * 0.35
-      grad.addColorStop(0, `rgba(219,233,238,${glowAlpha.toFixed(3)})`)
-      grad.addColorStop(1, "rgba(219,233,238,0)")
+      grad.addColorStop(0, `rgba(143,227,211,${glowAlpha.toFixed(3)})`)
+      grad.addColorStop(1, "rgba(143,227,211,0)")
       ctx!.beginPath()
       ctx!.arc(pts[i].x, pts[i].y, glowR, 0, Math.PI * 2)
       ctx!.fillStyle = grad
@@ -246,7 +251,7 @@ function initHowItWorksHero() {
       const ringR = 16 + pulse * 2.5
       ctx!.beginPath()
       ctx!.arc(pts[i].x, pts[i].y, ringR, 0, Math.PI * 2)
-      ctx!.strokeStyle = `rgba(219,233,238,${(0.16 + pulse * 0.12 + litLevel * 0.15).toFixed(3)})`
+      ctx!.strokeStyle = `rgba(143,227,211,${(0.16 + pulse * 0.12 + litLevel * 0.15).toFixed(3)})`
       ctx!.lineWidth = 1.2
       ctx!.stroke()
 
@@ -270,8 +275,8 @@ function initHowItWorksHero() {
 
     const head = pathPoint(scrollT, pts, controls)
     const headGrad = ctx!.createRadialGradient(head.x, head.y, 0, head.x, head.y, 14)
-    headGrad.addColorStop(0, "rgba(219,233,238,0.65)")
-    headGrad.addColorStop(1, "rgba(219,233,238,0)")
+    headGrad.addColorStop(0, "rgba(143,227,211,0.65)")
+    headGrad.addColorStop(1, "rgba(143,227,211,0)")
     ctx!.beginPath()
     ctx!.arc(head.x, head.y, 14, 0, Math.PI * 2)
     ctx!.fillStyle = headGrad

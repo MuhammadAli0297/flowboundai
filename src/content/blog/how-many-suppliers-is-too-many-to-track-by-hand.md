@@ -1,6 +1,7 @@
 ---
 title: "What Is Supplier Coordination?"
 description: "A practical guide to supplier coordination: what to track, how many suppliers one person can realistically manage, and when to stop relying on memory."
+excerpt: "How many suppliers one person can track before memory fails."
 publishDate: 2026-08-02
 author: "Muhammad Hassan"
 authorTitle: "CEO"

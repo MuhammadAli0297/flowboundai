@@ -8,31 +8,28 @@ const menuServices = servicesMenu.map((entry) => ({
   service: services.find((s) => s.slug === entry.slug)!,
 }))
 
-// Nav (and Footer, and the logo) now use the homepage's ocean palette rather than the sitewide
-// fb-* one, at the user's explicit request, extending it beyond the homepage for the first time.
-// Link text is full-opacity ocean-950, not the /70 that fb-black used: at the smaller of the two
-// backgrounds this nav sits on (ocean-100), ocean-950 at 70% opacity measures out to roughly a
-// 3.8:1 contrast ratio, below the 4.5:1 AA text needs, confirmed with the actual blended-color
-// math rather than eyeballing it (same lesson as the homepage eyebrow-text bug this repo already
-// shipped once). Full opacity clears it comfortably.
-// font-medium here, font-normal (the default, unset) on panelLinkClass below: the flyout's
-// contents read a step lighter than the top-level nav items that open them, one of several
-// deliberate weight contrasts across Nav/Footer/the homepage now that Amulya's variable weight
-// axis (300 to 700) makes that easy, instead of everything sitting at the same default weight.
-const linkClass = "font-amulya text-[0.9rem] font-medium text-ocean-950 transition-colors hover:text-ocean-600"
+// Hot Sauce rebuild (see CLAUDE.md): Nav moves off ocean/Amulya onto the bold palette and Hanken
+// Grotesk. Link text stays bold-ink at full opacity always, never bold-mint-deep, because that
+// color is too dark relative to paper for a pleasant hover tint at this weight — it shows up as a
+// hover underline instead (a decorative affordance, not the only way the link is identifiable, so
+// it doesn't need to clear text-contrast thresholds the way a color change would).
+// font-medium here, font-normal on panelLinkClass below: the flyout's contents read a step lighter
+// than the top-level items that open them, continuing the weight-contrast habit Amulya's variable
+// axis started, Hanken Grotesk's variable axis (400-800) does the same job here.
+const linkClass = "font-hanken text-[0.9rem] font-medium text-bold-ink border-b-2 border-transparent pb-1 transition-colors hover:border-bold-mint-deep"
 // Leaf panels (no further nested flyout) can safely clip to their rounded corners.
-const panelClass = "w-64 overflow-hidden rounded-2xl border border-ocean-900/10 bg-fb-white shadow-xl"
+const panelClass = "w-64 overflow-hidden rounded-2xl border border-bold-ink/10 bg-bold-paper shadow-xl"
 // The top-level panel hosts nested flyouts that fly out past its own box, so it can't use
 // overflow-hidden (that would clip the flyouts). Round only the first/last row instead.
-const outerPanelClass = "w-64 rounded-2xl border border-ocean-900/10 bg-fb-white shadow-xl"
-const panelLinkClass = "font-amulya block px-4 py-3 text-[0.88rem] font-normal text-ocean-950 transition-colors hover:bg-ocean-100/60 hover:text-ocean-600"
+const outerPanelClass = "w-64 rounded-2xl border border-bold-ink/10 bg-bold-paper shadow-xl"
+const panelLinkClass = "font-hanken block px-4 py-3 text-[0.88rem] font-normal text-bold-ink transition-colors hover:bg-bold-mist/50"
 // Mobile menu: the same weight/hover language as the desktop flyout above (panelLinkClass-ish),
 // just full-width rows instead of a floating panel, since it's a dropdown under the header rather
 // than a hover flyout.
-const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] font-medium text-ocean-950 transition-colors hover:bg-ocean-200/60"
+const mobileLinkClass = "font-hanken block rounded-lg px-3 py-3 text-[0.95rem] font-medium text-bold-ink transition-colors hover:bg-bold-mist/50"
 ---
 
-<header class="sticky top-0 z-50 border-b border-ocean-700/15 bg-ocean-100/90 font-amulya backdrop-blur">
+<header class="sticky top-0 z-50 border-b border-bold-ink/10 bg-bold-paper/90 font-hanken backdrop-blur">
   <div class="container-fb flex h-16 items-center">
     <a href="/" class="shrink-0">
       <LogoLockup />
@@ -66,7 +63,7 @@ const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] f
                       <div class="group/item relative">
                         <a href={`/services/#${service.slug}`} class={`${panelLinkClass} flex items-center justify-between ${roundedLast}`}>
                           {service.name}
-                          <span class="font-mono text-xs text-ocean-950/30">&rsaquo;</span>
+                          <span class="font-mono text-xs text-bold-ink/30">&rsaquo;</span>
                         </a>
                         <div class="invisible absolute left-full top-0 pl-2 opacity-0 transition-all duration-150 group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100">
                           <div class={panelClass}>
@@ -92,11 +89,10 @@ const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] f
       </nav>
       <a
         href="/#cta"
-        class="group relative ml-6 hidden shrink-0 items-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-ocean-700 bg-ocean-700 px-3 py-2 font-amulya text-[0.8rem] font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-2.5 hover:shadow-[0_10px_22px_-8px_rgba(79,109,122,0.55)] sm:inline-flex sm:px-4 sm:text-[0.85rem] lg:ml-10"
+        class="bold-btn bold-btn-primary bold-btn-sm group ml-6 hidden shrink-0 font-hanken transition-transform duration-300 ease-out hover:-translate-y-0.5 sm:inline-flex lg:ml-10"
       >
-        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-        <span class="relative z-10">Request a pilot</span>
-        <span aria-hidden="true" class="relative z-10 hidden transition-transform duration-300 ease-out group-hover:translate-x-1 sm:inline">&rarr;</span>
+        <span>Request a pilot</span>
+        <span aria-hidden="true" class="hidden transition-transform duration-300 ease-out group-hover:translate-x-1 sm:inline">&rarr;</span>
       </a>
       <button
         type="button"
@@ -106,16 +102,16 @@ const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] f
         aria-label="Toggle menu"
         data-mobile-menu-toggle
       >
-        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 -translate-y-[7px] rounded-full bg-ocean-950 transition-transform duration-300 ease-out group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"></span>
-        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ocean-950 transition-opacity duration-200 ease-out group-aria-expanded:opacity-0"></span>
-        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 translate-y-[6px] rounded-full bg-ocean-950 transition-transform duration-300 ease-out group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"></span>
+        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 -translate-y-[7px] rounded-full bg-bold-ink transition-transform duration-300 ease-out group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"></span>
+        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-bold-ink transition-opacity duration-200 ease-out group-aria-expanded:opacity-0"></span>
+        <span aria-hidden="true" class="absolute left-1/2 top-1/2 h-0.5 w-6 -translate-x-1/2 translate-y-[6px] rounded-full bg-bold-ink transition-transform duration-300 ease-out group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"></span>
       </button>
     </div>
   </div>
 
   <div
     id="mobile-menu"
-    class="invisible absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] -translate-y-2 overflow-y-auto border-b border-ocean-700/15 bg-ocean-100 opacity-0 shadow-lg transition-all duration-200 ease-out data-[state=open]:visible data-[state=open]:translate-y-0 data-[state=open]:opacity-100 md:hidden"
+    class="invisible absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] -translate-y-2 overflow-y-auto border-b border-bold-ink/10 bg-bold-paper opacity-0 shadow-lg transition-all duration-200 ease-out data-[state=open]:visible data-[state=open]:translate-y-0 data-[state=open]:opacity-100 md:hidden"
     data-mobile-menu
     data-state="closed"
   >
@@ -186,7 +182,7 @@ const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] f
                           {service.capabilities.map((capability) => (
                             <a
                               href={capability.href ?? `/services/#${service.slug}`}
-                              class={`${mobileLinkClass} pl-9 text-[0.82rem] font-normal text-ocean-950/75`}
+                              class={`${mobileLinkClass} pl-9 text-[0.82rem] font-normal text-bold-ink/75`}
                             >
                               {capability.title}
                             </a>
@@ -210,12 +206,9 @@ const mobileLinkClass = "font-amulya block rounded-lg px-3 py-3 text-[0.95rem] f
         )
       )}
     </nav>
-    <div class="border-t border-ocean-700/15 px-6 py-4">
-      <a
-        href="/#cta"
-        class="flex w-full items-center justify-center rounded-full border border-ocean-700 bg-ocean-700 px-4 py-2.5 font-amulya text-[0.9rem] font-semibold text-fb-white transition-colors hover:bg-ocean-600"
-      >
-        Request a pilot
+    <div class="border-t border-bold-ink/10 px-6 py-4">
+      <a href="/#cta" class="bold-btn bold-btn-primary bold-btn-md group w-full font-hanken">
+        <span>Request a pilot</span>
       </a>
     </div>
   </div>

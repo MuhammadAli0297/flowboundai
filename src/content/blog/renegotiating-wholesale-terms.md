@@ -1,6 +1,7 @@
 ---
 title: "How to Renegotiate Wholesale Pricing Terms"
 description: "When to ask a supplier for better pricing tiers or order minimums, how to build the case with real order data, and mistakes that waste your leverage."
+excerpt: "How to build the case for better supplier pricing terms."
 publishDate: 2026-08-22
 author: "Muhammad Hassan"
 authorTitle: "CEO"

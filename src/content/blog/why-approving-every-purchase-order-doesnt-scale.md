@@ -1,6 +1,7 @@
 ---
 title: "Purchase Order Approval Workflow"
 description: "What a PO approval workflow actually is, what it's checking, and how a one-person approval chain can automate the routine calls safely."
+excerpt: "How a one-person approval chain can automate routine calls."
 publishDate: 2026-08-05
 author: "Muhammad Hassan"
 authorTitle: "CEO"

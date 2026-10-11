@@ -1,29 +1,22 @@
 ---
-// How It Works hero background: "Scroll-Driven Assembly", ocean-palette, canvas 2D (see
-// src/scripts/howItWorksHero.ts). A single path winds down the clipped strip through four
-// checkpoint nodes, connect, signal, decide, ask, the same four steps as the cards below the
-// fold. A faint dash pattern flows along the path continuously as ambient motion, but the real
-// story is scroll-linked: a bright comet travels the path in lockstep with how far the visitor
-// has scrolled through the hero, using the same watchScrollProgress helper the homepage hero's
-// fade/zoom uses, and each node lights up and stays lit once the comet has passed it, unlike
-// every other secondary hero on the site, which runs on its own clock. Scrolling back up
-// reverses it, nothing "plays once" and stays.
+// How It Works hero background: "Scroll-Driven Assembly", recolored to the Bold palette for the
+// Hot Sauce rebuild (checklist item 13), canvas 2D (see src/scripts/howItWorksHero.ts). A single
+// path winds down the clipped strip through four checkpoint nodes, connect, signal, decide, ask,
+// the same four steps as the cards below the fold. A faint dash pattern flows along the path
+// continuously as ambient motion, but the real story is scroll-linked: a bright comet travels the
+// path in lockstep with how far the visitor has scrolled through the hero, using the same
+// watchScrollProgress helper the homepage hero's fade/zoom uses, and each node lights up and
+// stays lit once the comet has passed it, unlike every other secondary hero on the site, which
+// runs on its own clock. Scrolling back up reverses it, nothing "plays once" and stays.
+//
+// The base gradient now reuses the exact .bold-depth-ink recipe (radial gradient + grain, one
+// background-image declaration) instead of an ocean-specific one-off gradient, the same shared
+// dark-section treatment every other dark moment on the site uses.
 ---
 
-<div class="hero-canvas-wrap absolute inset-0 overflow-hidden" aria-hidden="true">
-  <div class="hero-base-gradient absolute inset-0"></div>
+<div class="hero-canvas-wrap bold-depth-ink absolute inset-0 overflow-hidden" aria-hidden="true">
   <canvas id="how-it-works-hero" class="hero-canvas-chip" style="--hero-focal: 76% 50%"></canvas>
-  <div class="absolute inset-0 bg-grain opacity-20 mix-blend-overlay"></div>
 </div>
-
-<style>
-  .hero-base-gradient {
-    background:
-      radial-gradient(80% 65% at 76% 18%, rgba(74, 111, 165, 0.24), transparent 60%),
-      radial-gradient(75% 65% at 80% 88%, rgba(79, 109, 122, 0.22), transparent 60%),
-      #104866;
-  }
-</style>
 
 <script>
   import "../scripts/howItWorksHero"

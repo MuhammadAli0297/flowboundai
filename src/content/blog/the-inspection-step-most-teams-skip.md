@@ -1,6 +1,7 @@
 ---
 title: "Incoming Inspection Without a QA Team"
 description: "Incoming inspection doesn't need AQL tables or a QA department. Here's a lightweight version a small distributor can actually keep running."
+excerpt: "A lightweight incoming inspection process, no QA team needed."
 publishDate: 2026-08-05
 author: "Ryo Shibata"
 authorTitle: "CTO"

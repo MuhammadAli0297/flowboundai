@@ -8,17 +8,25 @@ interface Props {
 const { items } = Astro.props
 
 const trailPath = (path: string) => (path.endsWith("/") ? path : `${path}/`)
+
+// bold-taupe for the trail, bold-mint-deep for the current page: the "set the accent to work
+// immediately as a wayfinding color" idea from the capability-page hero mockup. Used to switch on
+// a `tone` prop ("dark" being the original ocean-100-on-dark-hero treatment every not-yet-converted
+// page used); removed once every page migrated to this light treatment, 2026-10-11.
+const trailClass = "text-bold-taupe"
+const currentClass = "text-bold-mint-deep"
+const hoverClass = "hover:text-bold-ink"
 ---
 
 <nav aria-label="Breadcrumb" class="mb-4">
-  <ol class="flex flex-wrap items-center gap-1.5 font-mono text-xs text-ocean-100/50">
+  <ol class={`flex flex-wrap items-center gap-1.5 font-mono text-xs ${trailClass}`}>
     {items.map((item, i) => (
       <li class="flex items-center gap-1.5">
         {i > 0 && <span aria-hidden="true">/</span>}
         {i === items.length - 1 ? (
-          <span class="text-ocean-100" aria-current="page">{item.name}</span>
+          <span class={currentClass} aria-current="page">{item.name}</span>
         ) : (
-          <a href={trailPath(item.path)} class="transition-colors hover:text-ocean-100 hover:underline">{item.name}</a>
+          <a href={trailPath(item.path)} class={`transition-colors hover:underline ${hoverClass}`}>{item.name}</a>
         )}
       </li>
     ))}

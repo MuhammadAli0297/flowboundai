@@ -1,6 +1,7 @@
 ---
 title: "Freight Class: What It Is and Why Rates Change"
 description: "What freight class is, the four factors that set it, and how to avoid the reclass fees that quietly inflate an LTL freight bill."
+excerpt: "The four factors that set freight class, and why rates change."
 publishDate: 2026-09-11
 author: "Muhammad Ali"
 authorTitle: "CFO"

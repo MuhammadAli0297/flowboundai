@@ -1,6 +1,7 @@
 ---
 title: "Inventory Cycle Counting: The ABC Method"
 description: "What cycle counting is, how the ABC method decides what to count and how often, and how to run counts without shutting the warehouse down."
+excerpt: "The ABC method for deciding what to count, and how often."
 publishDate: 2026-09-22
 author: "Muhammad Hassan"
 authorTitle: "CEO"

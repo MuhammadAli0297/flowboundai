@@ -1,6 +1,7 @@
 ---
 title: "Customer Service SLAs You Can Actually Hit"
 description: "How a small distributor should set response and resolution SLAs by channel, sized to what the team can hit every week, not an aspirational number."
+excerpt: "SLAs sized to what your team can actually hit every week."
 publishDate: 2026-08-26
 author: "Ryo Shibata"
 authorTitle: "CTO"

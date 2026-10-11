@@ -1,6 +1,7 @@
 ---
 title: "Three-Way Matching for Purchase Orders"
 description: "What three-way matching is, why it catches billing errors a busy team would otherwise miss, and how to run it without a dedicated AP department."
+excerpt: "The billing errors three-way matching catches before they ship."
 publishDate: 2026-09-24
 author: "Muhammad Ali"
 authorTitle: "CFO"

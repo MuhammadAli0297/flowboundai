@@ -35,22 +35,22 @@ const noindex = posts.length < MIN_POSTS_TO_INDEX
   path={`/blog/tags/${slugifyTag(tag)}`}
   noindex={noindex}
 >
-  <section class="bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
-    <div class="container-fb">
-      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">Tag</p>
-      <h1 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">#{tag}</h1>
+  <section class="relative overflow-hidden bg-bold-paper bg-grain py-20 font-hanken md:py-28">
+    <div class="container-fb relative">
+      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">Tag</p>
+      <h1 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">#{tag}</h1>
 
       <ul class="mt-14 grid grid-cols-1 gap-10 md:grid-cols-2">
         {posts.map((post, i) => (
-          <li data-reveal class="reveal-item border-t border-ocean-700/15 pt-6" style={`transition-delay: ${(i % 4) * 70}ms`}>
+          <li data-reveal class="reveal-item border-t border-bold-ink/10 pt-6" style={`transition-delay: ${(i % 4) * 70}ms`}>
             <a href={`/blog/${post.id}/`} class="group">
-              <p class="font-mono text-xs uppercase tracking-wider text-ocean-950/40">
+              <p class="font-mono text-xs uppercase tracking-wider text-bold-ink/40">
                 {post.data.publishDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}
               </p>
-              <h2 class="mt-2 font-amulya text-[1.2rem] font-medium leading-snug text-ocean-950 group-hover:text-ocean-600">
+              <h2 class="font-hanken mt-2 text-[1.2rem] font-medium leading-snug text-bold-ink group-hover:text-bold-mint-deep">
                 {post.data.title}
               </h2>
-              <p class="mt-2 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{post.data.description}</p>
+              <p class="mt-2 text-[0.95rem] font-normal leading-relaxed text-bold-ink/70">{post.data.description}</p>
             </a>
           </li>
         ))}

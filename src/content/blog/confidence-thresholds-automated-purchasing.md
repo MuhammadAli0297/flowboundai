@@ -1,6 +1,7 @@
 ---
 title: "Confidence Thresholds in Automated Purchasing"
 description: "How to set budget caps, per-SKU limits, and new-vendor exceptions so automated purchasing knows what to approve alone and what needs you."
+excerpt: "What automated purchasing can approve alone, and what needs you."
 publishDate: 2026-08-18
 author: "Muhammad Ali"
 authorTitle: "CFO"

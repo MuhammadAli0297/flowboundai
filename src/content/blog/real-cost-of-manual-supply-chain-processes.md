@@ -1,6 +1,7 @@
 ---
 title: "The Real Cost of Manual Supply Chain Processes"
 description: "A worked framework for pricing out what manual reordering, tracking, and supplier chasing really cost your team, in hours and in dollars."
+excerpt: "Pricing out what manual reordering really costs your team."
 publishDate: 2026-08-20
 author: "Ryo Shibata"
 authorTitle: "CTO"

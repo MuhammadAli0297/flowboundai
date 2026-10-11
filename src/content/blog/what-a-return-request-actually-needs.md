@@ -1,6 +1,7 @@
 ---
 title: "The RMA Process for a Wholesale Return"
 description: "Most RMA guides assume a 30-day retail return. Here's what a wholesale return request actually needs: the real order, shipment, and account terms."
+excerpt: "What a wholesale return request actually needs to process."
 publishDate: 2026-08-04
 author: "Muhammad Ali"
 authorTitle: "CFO"

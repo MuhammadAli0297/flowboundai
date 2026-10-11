@@ -1,6 +1,7 @@
 ---
 title: "Supply Chain Management for Small Businesses"
 description: "A practical overview of supply chain management for small wholesale and distribution teams, built for a business with no dedicated department."
+excerpt: "Supply chain management for teams with no dedicated department."
 publishDate: 2026-07-29
 author: "Muhammad Ali"
 authorTitle: "CFO"

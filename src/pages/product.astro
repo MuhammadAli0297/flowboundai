@@ -1,32 +1,50 @@
 ---
+// Hot Sauce rebuild, checklist item 15, the last of the three one-off pages (see CLAUDE.md's
+// "Signal Primitives II" concept lab and the /how-it-works + /services round-trips): hero drops
+// the WebGL "Convergent Signals" particle hero (ProductBackground.astro, left on disk unused,
+// same precedent as every other retired *Background.astro) for the standard light grain+orb +
+// bold-glass panel pattern every other converted page uses, per the standing decision made before
+// /services that both remaining WebGL heroes should switch for sitewide consistency. The approved
+// Pillar Spotlight widget (originally scoped for "inside or beside the four pillars") lives in
+// the hero glass panel instead, same "a whole-page-thesis widget belongs at the top" reasoning
+// already applied to Signal Relay on /services.
+//
+// Direct request this round: "I need this page to be eye catching, stunning and the best page to
+// be on visually to the site. Ensure all my tiles are the radiant tiles with the interactive
+// hover mode." A deliberate, explicit exception to the sitewide "exactly one featured lead tile
+// per grid" convention: every pillar tile (4) and every how-it-works step tile (3) gets the full
+// .bold-tile-feature gradient-ring + tilt treatment, not just one lead tile with a quiet grid
+// underneath, making this the one page on the site where the "featured" tile language is the
+// default rather than the exception, by direct request, to set it apart as the flagship page.
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Cta from "../components/Cta.astro"
-import ProductBackground from "../components/ProductBackground.astro"
 import SectionIcon from "../components/icons/SectionIcon.astro"
-
-const GLOW_SIZE = 420
 
 const pillars = [
   {
     tag: "Core",
+    icon: "bolt" as const,
     title: "Decision Engine",
     body:
       "Every signal that matters, watched around the clock, in one place. Flowbound tracks your inventory levels, supplier lead times, and open purchase orders continuously, and tells you what to do next: reorder, hold, or reroute, before a stockout or an overbuy catches you off guard. This is the part that runs whether or not anyone's looking at a dashboard.",
   },
   {
     tag: "Reasoning",
+    icon: "document" as const,
     title: "Consulting Wrapper",
     body:
       "Every recommendation comes with the reasoning attached, not just the answer. Which numbers it pulled, why this SKU and not another, what changes if you wait a week: the explanation you used to pay a consultant good money for is just there, in plain language, every time.",
   },
   {
     tag: "Interface",
+    icon: "spark" as const,
     title: "Ask Flowbound",
     body:
       "The same engine and the same reasoning, available the moment you have a question. Ask why a reorder happened, what a lead time slip would mean for next month, or which supplier is falling behind, and get a straight answer pulled from your live data instead of a help doc or a scheduled call.",
   },
   {
     tag: "Workspace",
+    icon: "network" as const,
     title: "Web App",
     body:
       "Everything above lives in one web app, whitelisted to your team the moment your trial starts. Agent status at a glance, a reorder queue you approve with a click, and Ask Flowbound sitting right alongside it, no separate login and nothing to stitch together yourself.",
@@ -57,55 +75,77 @@ const steps = [
   description="Flowbound is one supply chain decision engine reached four ways: a decision engine, a consulting layer, Ask Flowbound, and the web app your team uses."
   path="/product"
 >
-  <section id="top" class="relative min-h-screen-nav overflow-hidden bg-ocean-900">
-    <div class="hero-bg-fade absolute inset-0">
-      <ProductBackground />
-      <div class="absolute inset-0 bg-gradient-to-r from-ocean-900/90 from-0% via-ocean-900/55 via-55% to-ocean-900/10" />
-      <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
+  <section id="top" class="relative overflow-hidden bg-bold-paper py-24 pt-28 font-hanken md:py-32 md:pt-36">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="bold-orb" style="width:24rem;height:24rem;top:-8rem;right:-3rem;background:#8FE3D3;opacity:0.32;" />
+      <span class="bold-orb" style="width:18rem;height:18rem;top:5rem;right:15rem;background:#C998CD;opacity:0.26;" />
     </div>
 
-    <div class="hero-text-zoom container-fb relative flex min-h-screen-nav flex-col justify-start pb-20 pt-28 font-amulya md:pt-36">
-      <div class="mb-5 flex items-center gap-3">
-        <SectionIcon name="compass" class="h-6 w-6 text-ocean-100" />
-        <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Product</p>
-      </div>
-      <h1 class="max-w-2xl font-amulya text-[2.5rem] font-bold leading-[1.08] tracking-tighter text-fb-white md:text-[3.2rem]">
-        One decision engine. <span class="font-medium italic text-ocean-100">Four</span> ways to put it to work.
-      </h1>
-      <p class="mt-6 max-w-lg text-[1.05rem] font-light leading-relaxed text-fb-white/65">
-        Decision Engine, Consulting Wrapper, Ask Flowbound, and the web app aren't four separate products
-        bolted together. They're one system, reached four ways. Here's how they actually fit together.
-      </p>
-      <div class="mt-9 flex flex-wrap items-center gap-4">
-        <a
-          href="#cta"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
-        >
-          <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-900 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-          <span class="relative z-10">Request a pilot</span>
-          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
-        </a>
-        <a
-          href="#how"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
-        >
-          <span aria-hidden="true" class="absolute inset-0 bg-fb-white/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
-          <span class="relative z-10">See how it works</span>
-          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
-        </a>
+    <div class="container-fb relative">
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+        <div>
+          <div data-reveal class="reveal-item mb-5 flex items-center gap-3">
+            <SectionIcon name="compass" class="h-6 w-6 text-bold-mint-deep" />
+            <p class="font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">Product</p>
+          </div>
+          <h1 data-reveal class="font-hanken reveal-item max-w-2xl text-[2.5rem] font-bold leading-[1.08] tracking-tighter text-bold-ink md:text-[3.2rem]" style="transition-delay: 60ms">
+            One decision engine. <em class="font-instrument font-normal italic text-bold-mint-deep">Four</em> ways to put it to work.
+          </h1>
+          <p data-reveal class="reveal-item mt-6 max-w-lg text-[1.05rem] font-normal leading-relaxed text-bold-ink/70" style="transition-delay: 120ms">
+            Decision Engine, Consulting Wrapper, Ask Flowbound, and the web app aren't four separate products
+            bolted together. They're one system, reached four ways. Here's how they actually fit together.
+          </p>
+          <div data-reveal class="reveal-item mt-9 flex flex-wrap items-center gap-4" style="transition-delay: 180ms">
+            <a href="#cta" data-magnetic class="bold-btn bold-btn-primary bold-btn-md group">
+              <span>Request a pilot</span>
+              <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="#how" data-magnetic class="bold-btn bold-btn-secondary bold-btn-md group">
+              <span>See how it works</span>
+              <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <div data-reveal class="reveal-item bold-glass rounded-2xl p-5" style="transition-delay: 240ms">
+          <div class="mb-4 flex items-center justify-between font-mono text-xs uppercase tracking-[0.05em] text-bold-taupe">
+            <span class="flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-bold-mint-deep" aria-hidden="true" />
+              Live
+            </span>
+            <span>Pillar spotlight</span>
+          </div>
+          <div id="pillarSpotlightWidget" aria-hidden="true">
+            <div class="grid grid-cols-2 gap-2.5">
+              {pillars.map((pillar) => (
+                <div class="pillar-chip px-3 py-2.5">
+                  <span class="block font-mono text-[0.6rem] uppercase tracking-[0.1em] text-bold-taupe">{pillar.tag}</span>
+                  <span class="mt-0.5 block text-[0.82rem] font-semibold leading-tight text-bold-ink">{pillar.title}</span>
+                </div>
+              ))}
+            </div>
+            <div class="mt-4 border-t border-bold-ink/10 pt-4">
+              <div id="pillarReadoutTitle" class="min-h-[1.3em] text-[1.05rem] font-bold text-bold-ink"></div>
+              <div id="pillarReadoutBlurb" class="mt-1 min-h-[1.3em] text-[0.85rem] text-bold-ink/60"></div>
+            </div>
+            <div id="pillarDots" class="mt-4 flex gap-2"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="what" class="border-b border-ocean-700/15 bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="what" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="container-fb relative">
       <div class="flex items-start justify-between gap-8">
         <div class="reveal-item max-w-xl" data-reveal>
-          <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">What it is</p>
-          <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
+          <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">What it is</p>
+          <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
             One engine, working underneath everything else you see.
           </h2>
-          <p class="mt-5 text-[0.98rem] font-normal leading-relaxed text-ocean-950">
+          <p class="mt-5 text-[0.98rem] font-normal leading-relaxed text-bold-ink/70">
             It's easy to mistake Flowbound for a handful of separate tools: a dashboard here, a chatbot
             there, a reorder queue somewhere else. Underneath, it's one decision engine watching your
             operation, one reasoning layer explaining what it sees, and two ways to reach it, by asking a
@@ -114,82 +154,64 @@ const steps = [
           </p>
         </div>
         <div class="relative hidden shrink-0 md:block" data-icon-drift>
-          <span class="icon-pulse-ring absolute inset-0 rounded-full border border-ocean-950/10" aria-hidden="true"></span>
-          <SectionIcon name="compass" class="icon-spin relative h-[7.5rem] w-[7.5rem] text-ocean-950/[14%]" />
+          <span class="icon-pulse-ring absolute inset-0 rounded-full border border-bold-ink/15" aria-hidden="true"></span>
+          <SectionIcon name="compass" class="icon-spin relative h-[7.5rem] w-[7.5rem] text-bold-ink/20" />
         </div>
       </div>
     </div>
   </section>
 
-  <section id="pillars" class="border-b border-ocean-700/15 bg-ocean-200 bg-grain py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="pillars" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="container-fb relative">
       <div class="reveal-item max-w-xl" data-reveal>
-        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">The four pillars</p>
-        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">The four pillars</p>
+        <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
           Built as one system, not four separate tools.
         </h2>
       </div>
 
-      <div
-        data-glow-container
-        data-glow-size={GLOW_SIZE}
-        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-2"
-      >
+      <div class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
         {pillars.map((pillar, i) => (
           <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 90}ms`}>
-            <div
-              class="group relative z-10 h-full overflow-hidden border border-ocean-700/25 p-8 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-100/40"
-            >
-              <span class="font-mono text-sm text-ocean-950">{String(i + 1).padStart(2, "0")}</span>
-              <span class="ml-3 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-ocean-950">{pillar.tag}</span>
-              <h3 class="mt-3 font-amulya text-[1.15rem] font-medium leading-snug text-ocean-950">{pillar.title}</h3>
-              <p class="mt-3 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{pillar.body}</p>
+            <div data-tilt class="tilt-card bold-tile-feature bold-glass flex h-full flex-col rounded-2xl p-7 md:p-8">
+              <div class="flex items-start justify-between">
+                <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-bold-ink font-mono text-xs font-bold text-bold-paper">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <SectionIcon name={pillar.icon} class="h-5 w-5 text-bold-mint-deep" />
+              </div>
+              <p class="mt-4 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-bold-taupe">{pillar.tag}</p>
+              <h3 class="font-hanken mt-1 text-[1.2rem] font-semibold text-bold-ink">{pillar.title}</h3>
+              <p class="mt-3 text-[0.95rem] leading-relaxed text-bold-ink/70">{pillar.body}</p>
             </div>
           </div>
         ))}
-
-        <div
-          data-glow
-          aria-hidden="true"
-          class="glow-cursor z-20 rounded-full mix-blend-multiply"
-          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.15), transparent 70%);`}
-        />
       </div>
     </div>
   </section>
 
-  <section id="how" class="border-b border-ocean-700/15 bg-ocean-900 py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="how" class="bold-depth-ink relative overflow-hidden py-20 font-hanken md:py-28">
+    <div class="container-fb relative">
       <div class="reveal-item max-w-xl" data-reveal>
-        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">How it works</p>
-        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-fb-white md:text-[2.2rem]">
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-mint">How it works</p>
+        <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-paper md:text-[2.2rem]">
           From a signal in your data to an action your team took.
         </h2>
       </div>
 
-      <div
-        data-glow-container
-        data-glow-size={GLOW_SIZE}
-        class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
-      >
+      <div class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
         {steps.map((s, i) => (
           <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 90}ms`}>
-            <div
-              class="group relative z-10 h-full overflow-hidden border border-fb-white/15 p-8 transition-colors duration-300 hover:border-ocean-100/40 hover:bg-fb-white/10"
-            >
-              <span class="font-mono text-sm text-ocean-100">{s.n}</span>
-              <h3 class="relative z-30 mt-3 font-amulya text-[1.05rem] font-medium leading-snug text-fb-white">{s.title}</h3>
-              <p class="relative z-30 mt-3 text-[0.92rem] font-normal leading-relaxed text-fb-white/60">{s.body}</p>
+            <div data-tilt class="tilt-card bold-tile-feature flex h-full flex-col rounded-2xl border border-bold-paper/15 bg-bold-paper/8 p-7 md:p-8">
+              <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-bold-paper font-mono text-xs font-bold text-bold-ink">
+                {s.n}
+              </span>
+              <h3 class="font-hanken mt-3 text-[1.05rem] font-semibold text-bold-paper">{s.title}</h3>
+              <p class="mt-3 text-[0.92rem] leading-relaxed text-bold-paper/70">{s.body}</p>
             </div>
           </div>
         ))}
-
-        <div
-          data-glow
-          aria-hidden="true"
-          class="glow-cursor z-20 rounded-full"
-          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%);`}
-        />
       </div>
     </div>
   </section>
@@ -197,31 +219,10 @@ const steps = [
   <Cta />
 </BaseLayout>
 
-<style>
-  .hero-bg-fade {
-    opacity: calc(1 - var(--hero-scroll, 0) * 1.2);
-    will-change: opacity;
-  }
-
-  .hero-text-zoom {
-    transform: scale(calc(1 + var(--hero-scroll, 0) * 0.55));
-    opacity: calc(1 - var(--hero-scroll, 0) * 1.3);
-    transform-origin: left center;
-    will-change: transform, opacity;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .hero-bg-fade,
-    .hero-text-zoom {
-      transform: none;
-      opacity: 1;
-    }
-  }
-</style>
-
 <script>
-  import "../scripts/hoverGlow"
   import "../scripts/scrollReveal"
-  import "../scripts/heroScroll"
   import "../scripts/sectionIconDrift"
+  import "../scripts/magneticButton"
+  import "../scripts/cardTilt"
+  import "../scripts/pillarSpotlight"
 </script>

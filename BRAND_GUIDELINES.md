@@ -1,5 +1,29 @@
 # Flowbound Brand Guidelines (v1)
 
+## Status: a visual rebuild is in progress (read this before trusting anything below at face value)
+Everything in this file below this notice describes the **live, deployed** system (`ocean`/Amulya,
+pill buttons, thin-border cards) as of `main`. A full sitewide visual rebuild, codenamed "Hot Sauce"
+internally, is underway on the local branch `redesign/hot-sauce`, not yet pushed or merged. It replaces
+the palette (`bold`: plum/mint/taupe/teal, see `tailwind.config.js`'s `bold` color object), the display
+font (Hanken Grotesk plus an Instrument Serif editorial accent, replacing Amulya), and layers in a new
+motion/depth vocabulary ("Signal Primitives": featured glass+gradient-ring tiles, magnetic buttons, a
+per-page live-data widget in place of generic hero copy, a real animated FAQ accordion) that this file
+doesn't describe at all yet.
+
+**Don't rewrite this file to match Hot Sauce yet.** As of this note, 15 of 18 checklist items are built in
+Bold (shared chrome, homepage, all 7 dedicated capability pages, all 3 whole-service narrative pages,
+`/how-it-works`, `/services`, and `/product`); only the 3 blog items (index/pagination,
+the post template, and tag pages) plus `/404` (never in scope, see below) still run on everything described
+in this file. Items 13-15 (`/how-it-works`, `/services`, `/product`) have real pending follow-up work on top
+of their approved base builds that hasn't been explicitly re-approved yet, see `CLAUDE.md`'s checklist for
+exactly what's settled versus still in flight on each. A premature full rewrite here would still misdescribe
+the blog, so it hasn't happened yet: the full replacement of this file happens in one dedicated pass once
+every page has migrated, the same pattern this project followed when `ocean` itself replaced the original
+`fb` palette. Until then, **`CLAUDE.md`'s "Hot Sauce rebuild" section is the authoritative, current
+reference for the in-progress system** (full palette/token table, typography, button/tile/widget
+conventions, the merged per-page checklist with approval status). Check there first for any page this file
+lists as not-yet-converted, especially the blog, which is now the only real gap.
+
 ## Copy rules (read this first)
 No em dashes, ever, anywhere in this project. Not in headlines, body copy, button labels, code comments,
 or documentation, and not in Claude's own chat responses while working in this repo, written or spoken

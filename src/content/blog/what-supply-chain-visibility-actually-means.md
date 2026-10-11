@@ -1,6 +1,7 @@
 ---
 title: "What Supply Chain Visibility Actually Means"
 description: "What supply chain visibility actually means for a small distributor, why most have less of it than they think, and what changes once you have it."
+excerpt: "Why most distributors have less visibility than they think."
 publishDate: 2026-09-05
 author: "Muhammad Ali"
 authorTitle: "CFO"

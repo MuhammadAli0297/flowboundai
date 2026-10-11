@@ -1,6 +1,7 @@
 ---
 title: "LTL vs. Parcel Shipping: How to Decide"
 description: "The real weight, dimension, and freight class breakpoints for choosing LTL freight over parcel shipping, and the mistakes that cost you either way."
+excerpt: "The real breakpoints for choosing LTL freight over parcel."
 publishDate: 2026-08-12
 author: "Muhammad Ali"
 authorTitle: "CFO"

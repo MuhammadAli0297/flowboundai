@@ -26,15 +26,14 @@ const { title, description, path, ogImage, schema, noindex } = Astro.props
     <link rel="alternate" type="application/rss+xml" title="Flowbound Blog" href="/rss.xml" />
     <Seo title={title} description={description} path={path} ogImage={ogImage} schema={schema} noindex={noindex} />
 
+    <!-- Satoshi stays preloaded even though only /404 renders it now (the Hot Sauce rebuild's
+         standing exception): it's still the base-layer default (src/index.css's `h1-h4`/`body`
+         rules), so any page content that ever skips an explicit font-hanken override falls back to
+         it, and /404 itself needs it unconditionally. -->
     <link rel="preload" href="/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Amulya is the Nav/Footer font on every page (plus the homepage's body content), so it's
-         preloaded unconditionally like the two Satoshi weights above, not just on `/`. Only the
-         upright variant: the italic is a homepage accent used sparingly, not needed for first
-         paint anywhere, so it isn't worth a preload slot. -->
-    <link rel="preload" href="/fonts/amulya-variable.woff2" as="font" type="font/woff2" crossorigin />
   </head>
-  <body class="min-h-screen bg-fb-paper">
+  <body class="min-h-screen bg-bold-paper">
     <Nav />
     <main>
       <slot />

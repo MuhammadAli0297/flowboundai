@@ -1,6 +1,7 @@
 ---
 title: "Dead Stock vs. Slow-Moving Inventory"
 description: "Dead stock and slow-moving stock look identical on a shelf. Here's the actual test to tell them apart, and why a wholesale account changes the answer."
+excerpt: "The real test for telling dead stock from slow-moving stock."
 publishDate: 2026-08-02
 author: "Ryo Shibata"
 authorTitle: "CTO"

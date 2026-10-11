@@ -1,13 +1,26 @@
 ---
+// Hot Sauce rebuild, checklist item 16: the blog index + pagination moves off the dark ocean-900
+// canvas hero (BlogBackground.astro, "Insight Stream") onto the standard light grain+orb +
+// bold-glass hero every other converted page uses. BlogBackground.astro is left on disk unused,
+// same precedent as every other retired *Background.astro file. There's no dedicated Signal
+// Primitives widget assigned to the blog (it was never part of that lab's scope), so the hero
+// panel shows real, non-animated content instead: the actual latest post, pulled from the same
+// sorted `allPosts` array the rest of the page already uses, not an invented widget.
+//
+// Post cards drop the ocean-era hoverGlow/cardTilt mouse-glow+tilt mechanic (already removed from
+// every other converted page's grids, see CLAUDE.md's /services note). Card treatment itself is
+// "Duotone Wash + Big Label" (see CLAUDE.md), picked from three mocked options: a soft two-stop
+// gradient wash of the post's category color, a bold mono label with an underline rule, and a
+// large rotated watermark icon, all via the shared .bold-post-card class in index.css. The old
+// single-hex `accent` per category (muted, tuned for the pre-Bold ocean palette) is gone, replaced
+// by blogCategories.ts' recalculated `tint`/`deep` pair, each `deep` independently checked at
+// 4.5:1+ against bold-paper.
 import type { GetStaticPaths } from "astro"
 import { getCollection } from "astro:content"
 import BaseLayout from "../../layouts/BaseLayout.astro"
-import BlogBackground from "../../components/BlogBackground.astro"
 import SectionIcon from "../../components/icons/SectionIcon.astro"
 import Cta from "../../components/Cta.astro"
-import { blogCategories, categoryIcon, categoryAccent } from "../../data/blogCategories"
-
-const GLOW_SIZE = 380
+import { blogCategories, categoryIcon, categoryTint, categoryDeep } from "../../data/blogCategories"
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
@@ -25,6 +38,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 const { page, categoriesWithCounts, allPosts } = Astro.props
 
 const currentPageIds = new Set(page.data.map((p) => p.id))
+const latestPost = allPosts[0]
 
 const formatDate = (d: Date) =>
   d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
@@ -52,7 +66,12 @@ function paginationRange(current: number, last: number): (number | "…")[] {
   range.push(last)
   return range
 }
-const pageHref = (n: number) => (n === 1 ? "/blog/" : `/blog/${n}/`)
+// #posts anchors every pagination link at the filter bar/grid instead of the hero, so clicking a
+// page number or Newer/Older doesn't dump the reader back at the top of the page to re-scroll past
+// the hero every time, direct feedback: "dont go to the top of the blog page, go to the filters."
+// Native browser anchor-scroll on page load, no JS needed; #posts carries its own scroll-mt-20 (see
+// the section below) so the sticky nav doesn't cover the filter bar once it lands.
+const pageHref = (n: number) => (n === 1 ? "/blog/#posts" : `/blog/${n}/#posts`)
 ---
 
 <BaseLayout
@@ -60,58 +79,87 @@ const pageHref = (n: number) => (n === 1 ? "/blog/" : `/blog/${n}/`)
   description="Supply chain and inventory management insights for small and mid-sized businesses."
   path="/blog"
 >
-  <section id="top" class="relative min-h-[560px] overflow-hidden bg-ocean-900 md:min-h-[680px]">
-    <BlogBackground />
-    <div class="absolute inset-0 bg-gradient-to-r from-ocean-900/90 from-0% via-ocean-900/55 via-55% to-ocean-900/10" />
-    <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
+  <section id="top" class="relative overflow-hidden bg-bold-paper py-24 pt-28 font-hanken md:py-32 md:pt-36">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="bold-orb" style="width:20rem;height:20rem;top:-7rem;right:-4rem;background:#8FE3D3;opacity:0.31;" />
+      <span class="bold-orb" style="width:16rem;height:16rem;top:5rem;right:16rem;background:#C998CD;opacity:0.27;" />
+    </div>
 
-    <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 font-amulya md:min-h-[680px]">
-      <div class="mb-5 flex items-center gap-3">
-        <SectionIcon name="document" class="h-6 w-6 text-ocean-100" />
-        <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Blog</p>
-      </div>
-      <h1 class="max-w-2xl font-amulya text-[2.5rem] font-bold leading-[1.08] tracking-tighter text-fb-white md:text-[3.2rem]">
-        Supply chain insights for <span class="font-medium italic text-ocean-100">small business</span> teams.
-      </h1>
-      <p class="mt-6 max-w-lg text-[1.05rem] font-light leading-relaxed text-fb-white/65">
-        Practical, plain-language write-ups on inventory, suppliers, and the decisions that eat up an
-        operator's week. Written for people running the business, not for a procurement committee.
-      </p>
-      <div class="mt-9 flex flex-wrap items-center gap-4">
-        <a
-          href="#posts"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
-        >
-          <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-900 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-          <span class="relative z-10">Read the latest</span>
-          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
-        </a>
-        <a
-          href="#cta"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
-        >
-          <span aria-hidden="true" class="absolute inset-0 bg-fb-white/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
-          <span class="relative z-10">Request a pilot</span>
-          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
-        </a>
+    <div class="container-fb relative">
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+        <div>
+          <div data-reveal class="reveal-item mb-5 flex items-center gap-3">
+            <SectionIcon name="document" class="h-6 w-6 text-bold-mint-deep" />
+            <p class="font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">Blog</p>
+          </div>
+          <h1 data-reveal class="font-hanken reveal-item max-w-2xl text-[2.5rem] font-bold leading-[1.08] tracking-tighter text-bold-ink md:text-[3.2rem]" style="transition-delay: 60ms">
+            Supply chain insights for <em class="font-instrument font-normal italic text-bold-mint-deep">small business</em> teams.
+          </h1>
+          <p data-reveal class="reveal-item mt-6 max-w-lg text-[1.05rem] font-normal leading-relaxed text-bold-ink/70" style="transition-delay: 120ms">
+            Practical, plain-language write-ups on inventory, suppliers, and the decisions that eat up an
+            operator's week. Written for people running the business, not for a procurement committee.
+          </p>
+          <div data-reveal class="reveal-item mt-9 flex flex-wrap items-center gap-4" style="transition-delay: 180ms">
+            <a href="#posts" data-magnetic class="bold-btn bold-btn-primary bold-btn-md group">
+              <span class="relative z-10">Read the latest</span>
+              <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a href="#cta" data-magnetic class="bold-btn bold-btn-secondary bold-btn-md group">
+              <span class="relative z-10">Request a pilot</span>
+              <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        {latestPost && (
+          <a
+            href={`/blog/${latestPost.id}/`}
+            data-reveal
+            class="reveal-item bold-glass block rounded-2xl p-5 transition-transform duration-300 hover:-translate-y-0.5"
+            style="transition-delay: 240ms"
+          >
+            <div class="mb-3.5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.05em] text-bold-taupe">
+              <span class="flex items-center gap-2">
+                <span class="h-1.5 w-1.5 rounded-full bg-bold-mint-deep" aria-hidden="true" />
+                Latest post
+              </span>
+              <span>{latestPost.data.category}</span>
+            </div>
+            <h3 class="font-hanken text-[1.1rem] font-semibold leading-snug text-bold-ink">
+              {latestPost.data.title}
+            </h3>
+            <p class="mt-2 line-clamp-2 text-[0.85rem] leading-relaxed text-bold-ink/65">
+              {latestPost.data.excerpt}
+            </p>
+            <div class="mt-4 flex items-center justify-between border-t border-bold-ink/10 pt-3 font-mono text-[0.65rem] uppercase tracking-wider text-bold-ink/40">
+              <span>{formatDate(latestPost.data.publishDate)}</span>
+              <span>{readTime(latestPost)} min read</span>
+            </div>
+          </a>
+        )}
       </div>
     </div>
   </section>
 
-  <section id="posts" class="border-b border-ocean-700/15 bg-ocean-200 bg-grain py-20 font-amulya md:py-28">
-    <div class="container-fb grid grid-cols-1 gap-12 lg:grid-cols-[240px_1fr] lg:gap-10">
-      <aside class="lg:sticky lg:top-24 lg:self-start">
-        <label class="sr-only" for="blog-search">Search posts</label>
-        <div class="relative">
+  <section id="posts" class="relative scroll-mt-20 overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="posts-ambient-blob"></span>
+    </div>
+    <div class="container-fb relative">
+      <div class="mb-10 flex flex-col gap-5 border-b border-bold-ink/10 pb-8">
+        <div class="relative w-full max-w-xs">
+          <label class="sr-only" for="blog-search">Search posts</label>
           <input
             id="blog-search"
             type="text"
             placeholder="Search posts"
             data-blog-search
-            class="w-full border border-ocean-700/20 bg-ocean-100 px-4 py-2.5 pr-10 font-body text-sm text-ocean-950 placeholder:text-ocean-950/40 focus:border-ocean-500 focus:outline-none"
+            class="w-full rounded-full border border-bold-ink/15 bg-bold-paper px-4 py-2.5 pr-10 text-sm text-bold-ink placeholder:text-bold-ink/40 focus:border-bold-mint-deep focus:outline-none"
           />
           <svg
-            class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ocean-950/35"
+            class="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-bold-ink/35"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -123,51 +171,40 @@ const pageHref = (n: number) => (n === 1 ? "/blog/" : `/blog/${n}/`)
           </svg>
         </div>
 
-        <div class="mt-8">
-          <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">Categories</p>
-          <ul class="space-y-3">
-            {categoriesWithCounts.map((c) => (
-              <li>
-                <label class="flex cursor-pointer items-center justify-between gap-2 text-sm text-ocean-950/70 hover:text-ocean-950">
-                  <span class="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      value={c.name}
-                      data-category-filter
-                      class="h-3.5 w-3.5 shrink-0 accent-ocean-500"
-                    />
-                    <span class="h-1.5 w-1.5 shrink-0 rounded-full" style={`background: ${c.accent}`} />
-                    {c.name}
-                  </span>
-                  <span class="font-mono text-xs text-ocean-950/35">{c.count}</span>
-                </label>
-              </li>
-            ))}
-          </ul>
+        <div class="flex flex-wrap items-center gap-2">
+          {categoriesWithCounts.map((c) => (
+            <button
+              type="button"
+              data-category-filter
+              value={c.name}
+              aria-pressed="false"
+              class="category-pill inline-flex shrink-0 items-center gap-2 rounded-full border border-bold-ink/15 bg-bold-paper px-3.5 py-1.5 font-mono text-xs text-bold-ink/70 transition-colors duration-200 hover:border-bold-ink/35 hover:text-bold-ink"
+              style={`--cat-deep: ${c.deep};`}
+            >
+              <span class="pill-dot h-1.5 w-1.5 shrink-0 rounded-full" style={`background: ${c.deep}`} />
+              {c.name}
+              <span class="pill-count text-bold-ink/35">{c.count}</span>
+            </button>
+          ))}
+          <button
+            type="button"
+            data-blog-reset
+            class="inline-flex shrink-0 items-center gap-1.5 font-mono text-xs uppercase tracking-wider text-bold-mint-deep hover:underline"
+          >
+            Reset
+          </button>
         </div>
+      </div>
 
-        <button
-          type="button"
-          data-blog-reset
-          class="mt-8 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-ocean-600 hover:underline"
-        >
-          Reset all filters
-        </button>
-      </aside>
+      <p data-blog-results-count class="mb-8 font-mono text-xs uppercase tracking-wider text-bold-ink/40">
+        {page.data.length} of {allPosts.length} posts
+      </p>
 
-      <div>
-        <p data-blog-results-count class="mb-8 font-mono text-xs uppercase tracking-wider text-ocean-950/40">
-          {page.data.length} of {allPosts.length} posts
-        </p>
-
-        <ul
-          data-glow-container
-          data-glow-size={GLOW_SIZE}
-          class="relative grid grid-cols-1 gap-5 overflow-hidden sm:grid-cols-2 xl:grid-cols-3"
-        >
+      <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {allPosts.map((post, i) => {
             const isCurrentPage = currentPageIds.has(post.id)
-            const accent = categoryAccent(post.data.category)
+            const tint = categoryTint(post.data.category)
+            const deep = categoryDeep(post.data.category)
             return (
               <li
                 data-post-card
@@ -179,88 +216,85 @@ const pageHref = (n: number) => (n === 1 ? "/blog/" : `/blog/${n}/`)
                 <div data-reveal class="reveal-item h-full" style={`transition-delay: ${(i % 3) * 90}ms`}>
                   <a
                     href={`/blog/${post.id}/`}
-                    data-tilt
-                    class="tilt-card group relative z-10 flex h-full flex-col overflow-hidden border border-ocean-700/20 bg-ocean-100 p-5 transition-colors duration-500 ease-out hover:border-ocean-700/45"
+                    class="bold-post-card group relative flex h-full flex-col rounded-2xl p-5"
+                    style={`--cat-tint: ${tint}; --cat-deep: ${deep};`}
                   >
-                    <div class="absolute inset-x-0 top-0 h-[3px]" style={`background: ${accent}`} />
-                    <div class="flex items-start justify-between gap-3">
-                      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md" style={`background: ${accent}1f; color: ${accent}`}>
-                        <SectionIcon name={categoryIcon(post.data.category)} class="h-5 w-5" />
-                      </div>
-                      <span class="mt-1 flex shrink-0 items-center gap-1.5 border border-ocean-700/20 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-wider text-ocean-600">
-                        <span class="h-1.5 w-1.5 shrink-0 rounded-full" style={`background: ${accent}`} />
+                    <SectionIcon name={categoryIcon(post.data.category)} class="bold-post-watermark" />
+                    <span class="bold-post-label mb-3.5 inline-flex flex-col gap-1.5 font-mono text-[0.8rem] font-bold leading-none">
+                      <span class="flex items-center gap-1.5">
+                        <span class="h-1.5 w-1.5 shrink-0 rounded-full" style={`background: ${deep}`} />
                         {post.data.category}
                       </span>
-                    </div>
-                    <h2 class="mt-4 font-amulya text-[1.05rem] font-medium leading-snug text-ocean-950 group-hover:text-ocean-600">
+                      <span class="bold-post-rule ml-[13px] h-0.5 w-5 rounded-full opacity-60" />
+                    </span>
+                    <h2 class="font-hanken text-[1.05rem] font-medium leading-snug text-bold-ink group-hover:text-bold-mint-deep">
                       {post.data.title}
                     </h2>
-                    <p class="mt-2 line-clamp-2 flex-1 text-[0.85rem] leading-relaxed text-ocean-950/65">
-                      {post.data.description}
+                    <p class="mt-2 line-clamp-2 flex-1 text-[0.85rem] leading-relaxed text-bold-ink/65">
+                      {post.data.excerpt}
                     </p>
-                    <div class="mt-4 flex items-center gap-2 border-t border-ocean-700/15 pt-3 font-mono text-[0.65rem] uppercase tracking-wider text-ocean-950/35">
+                    <div class="bold-post-foot mt-4 flex items-center gap-2 border-t pt-3 font-mono text-[0.65rem] uppercase tracking-wider text-bold-ink/40">
                       <span>{formatDate(post.data.publishDate)}</span>
                       <span aria-hidden="true">&middot;</span>
+                      <svg class="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3.5 2" /></svg>
                       <span>{readTime(post)} min read</span>
                     </div>
-                    <div
-                      class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100"
-                      style={`background: ${accent}`}
-                    />
                   </a>
                 </div>
               </li>
             )
           })}
+      </ul>
 
-          <div
-            data-glow
-            aria-hidden="true"
-            class="glow-cursor z-20 rounded-full mix-blend-multiply"
-            style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.15), transparent 70%);`}
-          />
-        </ul>
+      <p data-blog-empty-state class="mt-14 hidden text-sm text-bold-ink/50">
+        No posts match your filters.
+      </p>
 
-        <p data-blog-empty-state class="mt-14 hidden text-sm text-ocean-950/50">
-          No posts match your filters.
-        </p>
+      {page.lastPage > 1 && (
+        <div data-blog-pagination class="mt-14 flex flex-col items-center gap-5 border-t border-bold-ink/10 pt-8 sm:flex-row sm:justify-between">
+          {page.url.prev ? (
+            <a href={`${page.url.prev}#posts`} class="pagination-pill group inline-flex shrink-0 items-center gap-2 rounded-full border border-bold-ink/15 bg-bold-paper px-4 py-2 font-mono text-xs uppercase tracking-wider text-bold-ink/70 transition-all duration-200 hover:border-bold-mint-deep hover:text-bold-mint-deep">
+              <span aria-hidden="true" class="transition-transform duration-200 group-hover:-translate-x-0.5">&larr;</span>
+              Newer
+            </a>
+          ) : (
+            <span class="inline-flex shrink-0 items-center gap-2 rounded-full border border-bold-ink/8 px-4 py-2 font-mono text-xs uppercase tracking-wider text-bold-ink/25">
+              &larr; Newer
+            </span>
+          )}
 
-        {page.lastPage > 1 && (
-          <div data-blog-pagination class="mt-14 flex flex-col items-center gap-5 border-t border-ocean-700/15 pt-6 sm:flex-row sm:justify-between">
-            {page.url.prev ? (
-              <a href={page.url.prev} class="text-sm text-ocean-600 hover:underline">&larr; Newer</a>
-            ) : (
-              <span class="text-sm text-ocean-950/25">&larr; Newer</span>
-            )}
-
-            <div class="flex items-center gap-1.5">
-              {paginationRange(page.currentPage, page.lastPage).map((p) =>
-                p === "…" ? (
-                  <span class="px-1 font-mono text-xs text-ocean-950/35">&hellip;</span>
-                ) : (
-                  <a
-                    href={pageHref(p)}
-                    aria-current={p === page.currentPage ? "page" : undefined}
-                    class={`flex h-7 w-7 items-center justify-center border font-mono text-xs transition-colors ${
-                      p === page.currentPage
-                        ? "border-ocean-500 bg-ocean-500 text-fb-white"
-                        : "border-ocean-700/20 text-ocean-600 hover:border-ocean-700/45"
-                    }`}
-                  >
-                    {p}
-                  </a>
-                ),
-              )}
-            </div>
-
-            {page.url.next ? (
-              <a href={page.url.next} class="text-sm text-ocean-600 hover:underline">Older &rarr;</a>
-            ) : (
-              <span class="text-sm text-ocean-950/25">Older &rarr;</span>
+          <div class="flex items-center gap-2">
+            {paginationRange(page.currentPage, page.lastPage).map((p) =>
+              p === "…" ? (
+                <span class="px-1 font-mono text-xs text-bold-ink/35">&hellip;</span>
+              ) : (
+                <a
+                  href={pageHref(p)}
+                  aria-current={p === page.currentPage ? "page" : undefined}
+                  class={`pagination-pill flex h-9 w-9 items-center justify-center rounded-full border font-mono text-xs transition-all duration-200 ${
+                    p === page.currentPage
+                      ? "border-bold-mint-deep bg-bold-mint-deep text-bold-paper"
+                      : "border-bold-ink/15 text-bold-taupe hover:border-bold-mint-deep hover:text-bold-mint-deep"
+                  }`}
+                >
+                  {p}
+                </a>
+              ),
             )}
           </div>
-        )}
-      </div>
+
+          {page.url.next ? (
+            <a href={`${page.url.next}#posts`} class="pagination-pill group inline-flex shrink-0 items-center gap-2 rounded-full border border-bold-ink/15 bg-bold-paper px-4 py-2 font-mono text-xs uppercase tracking-wider text-bold-ink/70 transition-all duration-200 hover:border-bold-mint-deep hover:text-bold-mint-deep">
+              Older
+              <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">&rarr;</span>
+            </a>
+          ) : (
+            <span class="inline-flex shrink-0 items-center gap-2 rounded-full border border-bold-ink/8 px-4 py-2 font-mono text-xs uppercase tracking-wider text-bold-ink/25">
+              Older &rarr;
+            </span>
+          )}
+        </div>
+      )}
     </div>
   </section>
 
@@ -269,7 +303,21 @@ const pageHref = (n: number) => (n === 1 ? "/blog/" : `/blog/${n}/`)
 
 <script>
   import "../../scripts/blogFilter"
-  import "../../scripts/hoverGlow"
-  import "../../scripts/cardTilt"
   import "../../scripts/scrollReveal"
+  import "../../scripts/magneticButton"
 </script>
+
+<style>
+  .posts-ambient-blob {
+    position: absolute;
+    top: -8%;
+    right: -6%;
+    width: 28vw;
+    height: 28vw;
+    max-width: 380px;
+    max-height: 380px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(110, 156, 163, 0.16) 0%, transparent 70%);
+  }
+</style>

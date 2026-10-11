@@ -1,8 +1,8 @@
 ---
-// Each token becomes its own scroll-scrubbed word: opacity ramps from dim to full as
-// --mission-scroll (set by missionScroll.ts) crosses that word's position in the line. "period."
-// is kept as one token (rather than splitting the trailing period into its own word) since a lone
-// punctuation mark fading in on its own beat would read as a stray flicker, not a word.
+// Each token becomes its own scroll-scrubbed word: color ramps from dim to full as --mission-scroll
+// (set by missionScroll.ts) crosses that word's position in the line. "period." is kept as one
+// token (rather than splitting the trailing period into its own word) since a lone punctuation mark
+// fading in on its own beat would read as a stray flicker, not a word.
 const statementWords: (string | { text: string; italic: true })[] = [
   "We're", "built", "for", "small", "and", "local", "businesses,",
   { text: "period.", italic: true },
@@ -11,28 +11,32 @@ const statementWords: (string | { text: string; italic: true })[] = [
 ]
 ---
 
-<section id="smb" class="relative overflow-hidden border-b border-ocean-700/15 bg-ocean-200 py-20 font-amulya md:py-28">
-  <!-- a single slow-drifting wash, quieter than ProductSystem's pair since this section is mostly
-       type: atmosphere behind the words, not something competing with them for attention -->
+<section id="smb" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+  <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+  <!-- a single slow-drifting wash, quieter than the bento grid's pair since this section is mostly
+       type: atmosphere behind the words, not something competing with them for attention. Teal, not
+       mint: this sits on bold-mist (a light surface), where mint is reserved for small
+       text/fills elsewhere, so a soft teal wash keeps the atmosphere without implying "this is a
+       clickable accent." -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
     <span class="mission-ambient-blob"></span>
   </div>
 
   <div class="container-fb relative max-w-2xl">
-    <p class="reveal-item mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950" data-reveal>Who we build for</p>
+    <p class="reveal-item mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe" data-reveal>Who we build for</p>
     <p
-      class="statement-line text-[1.3rem] font-light leading-snug tracking-tighter text-ocean-950 md:text-[1.5rem]"
+      class="statement-line text-[1.3rem] font-light leading-snug tracking-tighter text-bold-ink md:text-[1.5rem]"
       style={`--word-total: ${statementWords.length}; --reveal-span: 0.2`}
     >
       {statementWords.map((token, i) => {
         const text = typeof token === "string" ? token : token.text
         const italic = typeof token !== "string" && token.italic
         return (
-          <span class={`scrub-word${italic ? " font-medium italic" : ""}`} style={`--word-index: ${i}`}>{text} </span>
+          <span class={`scrub-word${italic ? " font-instrument font-normal italic" : ""}`} style={`--word-index: ${i}`}>{text} </span>
         )
       })}
     </p>
-    <p class="reveal-item mt-6 text-[1.02rem] font-normal leading-relaxed text-ocean-950" data-reveal style="transition-delay: 180ms">
+    <p class="reveal-item mt-6 text-[1.02rem] font-normal leading-relaxed text-bold-ink/75" data-reveal style="transition-delay: 180ms">
       We integrate with your tools, learn your numbers in a few weeks, then start making calls, tuning the whole
       way. This isn't a stepping stone for us. Small and local businesses are exactly who we're building for, and
       our goal is simple: help you run your operation with the same confidence and firepower as companies twice
@@ -52,7 +56,7 @@ const statementWords: (string | { text: string; italic: true })[] = [
     max-height: 520px;
     border-radius: 9999px;
     filter: blur(80px);
-    background: radial-gradient(circle, rgba(74, 111, 165, 0.14) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(110, 156, 163, 0.18) 0%, transparent 70%);
     animation: mission-ambient-drift 26s ease-in-out infinite;
   }
 
@@ -62,36 +66,27 @@ const statementWords: (string | { text: string; italic: true })[] = [
   }
 
   /* Each word's color is a function of how far --mission-scroll (0 to 1 across the section's
-     full height, set continuously by missionScroll.ts) has moved past that word's own position
-     in the line (--word-index / --word-total). The reveal has to finish early, not spread across
-     the section's whole scroll-through: the statement line sits near the section's top, so by
-     the time --mission-scroll gets much past ~0.18 the line has already scrolled up under the
-     sticky nav. --reveal-span compresses the full word sequence into just the first slice of the
-     section's scroll (0.2 by default), so --mission-scroll is rescaled to an effective 0-to-1
-     before comparing it to each word's threshold. --w-progress goes negative before a word's turn
-     and past 1 once it's fully revealed; color-mix() clamps out-of-range percentages on its own,
-     so there's no need to separately clamp --w-progress. No transition: progress is already
-     recomputed every scroll tick, so words track scroll position directly rather than lagging
-     behind it.
+     full height, set continuously by missionScroll.ts) has moved past that word's own position in
+     the line (--word-index / --word-total). The reveal has to finish early, not spread across the
+     section's whole scroll-through: the statement line sits near the section's top, so by the time
+     --mission-scroll gets much past ~0.18 the line has already scrolled up under the sticky nav.
+     --reveal-span compresses the full word sequence into just the first slice of the section's
+     scroll (0.2 by default). No transition: progress is already recomputed every scroll tick, so
+     words track scroll position directly rather than lagging behind it.
 
-     This was originally an opacity fade (dim = low opacity), reworked after a real legibility
-     bug: fading text opacity toward a LIGHT background necessarily tanks contrast, since the
-     blended pixel drifts toward the background color. At this section's ocean-200 background,
-     getting the dim state legible (WCAG AA 4.5:1) required opacity >= ~0.85, leaving almost no
-     room for a visible dim/bright difference; the actual shipped 0.22 minimum measured only
-     1.4:1, unreadable (confirmed with real contrast math, not eyeballed). Fixed by mixing between
-     two already-legible solid colors instead of fading toward the background: ocean-900 (#166088,
-     4.55:1 against ocean-200) for the dim/unrevealed state, ocean-950 (#104866, 6.50:1, the same
-     color the rest of the section's body text already uses) for revealed. Contrast now stays
-     above AA at every point along the transition, not just at the two ends. */
+     Colors are a real color-mix between two already-legible solids, not an opacity fade toward the
+     background (see CLAUDE.md's contrast-compliance notes, this exact bug shipped once on the
+     ocean version of this section): bold-taupe (#6E5A52, clears 4.5:1 against bold-mist on its
+     own) for the dim/unrevealed state, bold-ink (#2E1630, 14.5:1) for revealed. Contrast stays at
+     or above AA at every point along the transition, not just at the two endpoints. */
   .scrub-word {
     --w-progress: calc(((var(--mission-scroll, 0) / var(--reveal-span, 0.2)) - (var(--word-index, 0) / var(--word-total, 1))) / var(--reveal-window, 0.06));
-    color: color-mix(in srgb, #166088 calc((1 - var(--w-progress)) * 100%), #104866 calc(var(--w-progress) * 100%));
+    color: color-mix(in srgb, #6E5A52 calc((1 - var(--w-progress)) * 100%), #2E1630 calc(var(--w-progress) * 100%));
   }
 
   @media (prefers-reduced-motion: reduce) {
     .scrub-word {
-      color: #104866;
+      color: #2E1630;
     }
   }
 </style>

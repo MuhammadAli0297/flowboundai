@@ -1,6 +1,7 @@
 ---
 title: "First Contact Resolution for Wholesale Support"
 description: "What first contact resolution means for wholesale customer service, why it beats response time as a metric, and how to raise it without adding headcount."
+excerpt: "Why first contact resolution beats response time as a metric."
 publishDate: 2026-09-09
 author: "Muhammad Hassan"
 authorTitle: "CEO"

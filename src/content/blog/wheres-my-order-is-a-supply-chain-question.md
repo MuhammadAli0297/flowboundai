@@ -1,6 +1,7 @@
 ---
 title: "Order Tracking Is an Internal Data Problem"
 description: "Order tracking isn't a customer service problem. It's what happens when nobody has one place to check order, shipment, and inventory status."
+excerpt: "What happens when nobody has one place to check order status."
 publishDate: 2026-07-30
 author: "Muhammad Ali"
 authorTitle: "CFO"
