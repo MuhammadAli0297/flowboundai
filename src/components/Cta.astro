@@ -1,4 +1,4 @@
-<section id="cta" class="cta-depth relative overflow-hidden py-20 font-hanken md:py-24">
+<section id="cta" class="bold-depth-ink relative overflow-hidden py-20 font-hanken md:py-24">
   <!-- Ambient atmosphere, not a halo stuck behind the buttons: one large soft teal orb, same device
        as the hero's grain+orb pattern. Originally two orbs (mint + taupe); once the background
        became a real saturated plum rather than a neutral dark tone, mint read as a bold near-
@@ -12,7 +12,7 @@
   </div>
 
   <div class="container-fb relative text-center">
-    <h2 class="reveal-item mx-auto max-w-xl text-[1.9rem] font-bold leading-tight tracking-tighter text-bold-paper md:text-[2.3rem]" data-reveal>
+    <h2 class="font-hanken reveal-item mx-auto max-w-xl text-[1.9rem] font-bold leading-tight tracking-tighter text-bold-paper md:text-[2.3rem]" data-reveal>
       We're onboarding a small group of business pilots <em class="font-instrument font-normal italic text-bold-mint">right now</em>.
     </h2>
     <p class="reveal-item mx-auto mt-4 max-w-md text-[0.98rem] font-normal leading-relaxed text-bold-paper/75" data-reveal style="transition-delay: 90ms">
@@ -20,20 +20,13 @@
       real conversation about how we can help your team run tighter and smarter.
     </p>
     <div class="reveal-item mt-9 flex flex-wrap items-center justify-center gap-4" data-reveal style="transition-delay: 180ms">
-      <a
-        href="mailto:hello@flowbound.ai?subject=Pilot%20request"
-        class="group inline-flex items-center gap-2 rounded-full bg-bold-mint-deep px-6 py-3.5 font-semibold text-bold-paper transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_30px_-10px_rgba(26,122,100,0.5)]"
-      >
+      <a href="mailto:hello@flowbound.ai?subject=Pilot%20request" data-magnetic class="bold-btn bold-btn-primary bold-btn-md group">
         <span>Request a pilot</span>
         <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
-      <a
-        href="mailto:hello@flowbound.ai?subject=Question"
-        class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-bold-paper/30 px-6 py-3.5 font-medium text-bold-paper transition-all duration-300 ease-out hover:-translate-y-0.5"
-      >
-        <span aria-hidden="true" class="absolute inset-0 bg-bold-paper/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
-        <span class="relative z-10">Talk to us</span>
-        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+      <a href="mailto:hello@flowbound.ai?subject=Question" data-magnetic class="bold-btn bold-btn-secondary-dark bold-btn-md group">
+        <span>Talk to us</span>
+        <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
     </div>
     <p class="reveal-item mt-6 font-mono text-xs uppercase tracking-[0.15em] text-bold-paper/60" data-reveal style="transition-delay: 270ms">hello@flowbound.ai</p>
@@ -82,4 +75,5 @@
 
 <script>
   import "../scripts/scrollReveal"
+  import "../scripts/magneticButton"
 </script>

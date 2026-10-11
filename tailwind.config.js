@@ -26,29 +26,16 @@ export default {
           paper: "#F6F5F0",
           line: "#22261F",
         },
-        // Homepage-only palette (see palette source: coolors.co/4f6d7a-c0d6df-dbe9ee-4a6fa5-166088).
-        // Additive namespace so the rest of the site keeps using fb-*; only Hero/ProductSystem/
-        // HowItWorks/WhyUs/SapComparison/Mission/Cta reference these. 950 is a darkened derivative
-        // of Baltic Blue (900), not one of the five source colors: at full strength Baltic Blue only
-        // just clears 4.5:1 against Pale Sky (200), so body/heading text uses the darker 950 for a
-        // real safety margin instead of relying on opacity tricks that would drop below AA.
-        ocean: {
-          100: "#DBE9EE", // alice blue
-          200: "#C0D6DF", // pale sky
-          500: "#4A6FA5", // smart blue
-          600: "#4C6E92", // interpolated smart-blue -> blue-slate, button hover
-          700: "#4F6D7A", // blue slate
-          900: "#166088", // baltic blue
-          950: "#104866", // darkened baltic blue, body/heading text only
-        },
-        // Sitewide rebuild, in progress page by page (see CLAUDE.md "Hot Sauce" rebuild section,
-        // the project kept that name even after the palette moved on). Additive alongside fb/ocean
-        // so not-yet-converted pages are unaffected; fb/ocean get removed once every page is
-        // migrated. This is the SECOND palette used in that rebuild, "Bold": the first ("hot sauce",
-        // warm dark-green + orange) turned out to overlap with another site the user runs
-        // (gogreenlit.com) closely enough to require a repick, not just a retint, since the conflict
-        // was the hue family itself. Bold is a cool eggplant/mint direction with no hue overlap with
-        // that site. Full rationale + contrast math worked out in the approved mockup round.
+        // Hot Sauce rebuild (see CLAUDE.md), "Bold": the second palette that rebuild used, the
+        // first ("hot sauce", warm dark-green + orange) turned out to overlap with another site the
+        // user runs (gogreenlit.com) closely enough to require a repick, not just a retint, since
+        // the conflict was the hue family itself. Bold is a cool eggplant/mint direction with no hue
+        // overlap with that site. Full rationale + contrast math worked out in the approved mockup
+        // round. Now the sitewide default, used by every page except `/404`, which stays on `fb`/
+        // Satoshi by explicit, standing decision (never in scope for either rebuild). The
+        // intermediate `ocean` palette this one replaced (and `fb` carried, briefly, before that)
+        // was removed from this file once every page finished migrating, 2026-10-11, the same
+        // pattern this rebuild itself now follows for any future one.
         bold: {
           paper: "#EFF7F2", // pale mint-white, primary light background
           mist: "#C9EFE6", // derived pale mint tint, soft section/card fill, decorative only
@@ -69,13 +56,12 @@ export default {
         display: ["Satoshi", "sans-serif"],
         body: ["Satoshi", "sans-serif"],
         mono: ["IBM Plex Mono", "monospace"],
-        // Homepage + Nav + Footer + logo only, applied explicitly via `font-amulya`, see the
-        // @font-face comment in src/index.css. Everywhere else keeps `font-display`/`font-body`.
-        amulya: ["Amulya", "sans-serif"],
-        // Hot Sauce rebuild: Hanken Grotesk is the new display/body face, Instrument Serif is an
-        // editorial accent used sparingly (one emphasized word in a headline, pull-quotes). Applied
-        // explicitly via `font-hanken`/`font-instrument` on converted pages only, same scoped-rollout
-        // pattern Amulya used. IBM Plex Mono (`font-mono`) carries over unchanged.
+        // Hot Sauce rebuild: Hanken Grotesk is the display/body face for every page except `/404`
+        // (still `font-display`/`font-body`, Satoshi), Instrument Serif is an editorial accent used
+        // sparingly (one emphasized word in a headline, pull-quotes). Applied explicitly via
+        // `font-hanken`/`font-instrument`. Amulya, the previous rebuild's equivalent scoped display
+        // face, was removed from this file (and its font files, and its @font-face declarations in
+        // src/index.css) once every page that used it finished migrating to Hanken, 2026-10-11.
         hanken: ["Hanken Grotesk", "sans-serif"],
         instrument: ["Instrument Serif", "Georgia", "serif"],
       },

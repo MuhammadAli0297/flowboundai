@@ -1,7 +1,13 @@
 ---
+// Hot Sauce rebuild, checklist item 11: the second whole-service narrative page, following
+// /ask-flowbound's shape (see the "Data-driven pages vs. narrative pages" note in CLAUDE.md):
+// this page also has no FAQ section in its prior ocean-palette build, and keeps its own 5-section
+// shape (hero, what it is, what it does, "a few things customers ask," how it works). Same visual
+// grammar as every other converted page: grain+orb hero whose glass panel IS this page's assigned
+// widget, icon-drift watermark, featured glass+gradient-ring tile + quiet ink-tint grid, one
+// bold-depth-ink dark section, plain quiet-tile grid.
 import BaseLayout from "../layouts/BaseLayout.astro"
 import Cta from "../components/Cta.astro"
-import CustomerServiceBackground from "../components/CustomerServiceBackground.astro"
 import SectionIcon from "../components/icons/SectionIcon.astro"
 import Breadcrumbs from "../components/Breadcrumbs.astro"
 import { buildBreadcrumbSchema } from "../lib/breadcrumbs"
@@ -13,7 +19,14 @@ const breadcrumbItems = [
 ]
 const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems, Astro.site!)
 
-const GLOW_SIZE = 420
+// The hero's Ticket Flow widget: 4 tickets, 3 auto-answered and one routed to the team (marked
+// via its own isRouted flag in the markup below).
+const tickets = [
+  { id: "#4471", routed: false },
+  { id: "#4472", routed: false },
+  { id: "#4473", routed: true },
+  { id: "#4474", routed: false },
+]
 
 const capabilities = [
   {
@@ -98,54 +111,87 @@ const schema = {
   path="/customer-service"
   schema={[schema, breadcrumbSchema]}
 >
-  <section id="top" class="relative min-h-[560px] overflow-hidden bg-ocean-900 md:min-h-[680px]">
-    <CustomerServiceBackground />
-    <div class="absolute inset-0 bg-gradient-to-r from-ocean-900/90 from-0% via-ocean-900/55 via-55% to-ocean-900/10" />
-    <div class="absolute inset-0 bg-gradient-to-t from-ocean-900 via-transparent to-transparent" />
+  <section id="top" class="relative overflow-hidden bg-bold-paper py-24 pt-28 font-hanken md:py-32 md:pt-36">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="bold-orb" style="width:19rem;height:19rem;top:-7rem;right:-3rem;background:#8FE3D3;opacity:0.3;" />
+      <span class="bold-orb" style="width:14rem;height:14rem;top:4rem;right:9rem;background:#C998CD;opacity:0.24;" />
+    </div>
 
-    <div class="container-fb relative flex min-h-[560px] flex-col justify-center py-20 font-amulya md:min-h-[680px]">
+    <div class="container-fb relative">
       <Breadcrumbs items={breadcrumbItems} />
-      <div class="mb-5 flex items-center gap-3">
-        <SectionIcon name="chat" class="h-6 w-6 text-ocean-100" />
-        <p class="font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">Customer Service</p>
-      </div>
-      <h1 class="max-w-2xl font-amulya text-[2.5rem] font-bold leading-[1.08] tracking-tighter text-fb-white md:text-[3.2rem]">
-        The "where's my order" question, answered before it reaches your <span class="font-medium italic text-ocean-100">team</span>.
-      </h1>
-      <p class="mt-6 max-w-lg text-[1.05rem] font-light leading-relaxed text-fb-white/65">
-        Flowbound puts your live order, shipment, and inventory data behind a chat agent that answers
-        customers directly, and hands off to your team only when a real judgment call is needed.
-      </p>
-      <div class="mt-9 flex flex-wrap items-center gap-4">
-        <a
-          href="#cta"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-ocean-500 px-6 py-3.5 font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_14px_32px_-10px_rgba(74,111,165,0.55)]"
-        >
-          <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-900 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-          <span class="relative z-10">Request a pilot</span>
-          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
-        </a>
-        <a
-          href="#how"
-          class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-fb-white/25 px-6 py-3.5 font-medium text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-fb-white/50"
-        >
-          <span aria-hidden="true" class="absolute inset-0 bg-fb-white/10 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100" />
-          <span class="relative z-10">See how it works</span>
-          <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
-        </a>
+
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+        <div>
+          <div data-reveal class="reveal-item mb-5 flex items-center gap-3">
+            <SectionIcon name="chat" class="h-6 w-6 text-bold-mint-deep" />
+            <p class="font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">Customer Service</p>
+          </div>
+          <h1 data-reveal class="font-hanken reveal-item max-w-2xl text-[2.5rem] font-bold leading-[1.08] tracking-tighter text-bold-ink md:text-[3.2rem]" style="transition-delay: 60ms">
+            The "where's my order" question, answered before it reaches your <em class="font-instrument font-normal italic text-bold-mint-deep">team</em>.
+          </h1>
+          <p data-reveal class="reveal-item mt-6 max-w-lg text-[1.05rem] font-normal leading-relaxed text-bold-ink/70" style="transition-delay: 120ms">
+            Flowbound puts your live order, shipment, and inventory data behind a chat agent that answers
+            customers directly, and hands off to your team only when a real judgment call is needed.
+          </p>
+          <div data-reveal class="reveal-item mt-9 flex flex-wrap items-center gap-4" style="transition-delay: 180ms">
+            <a
+              href="#cta"
+              data-magnetic
+              class="bold-btn bold-btn-primary bold-btn-md group"
+            >
+              <span class="relative z-10">Request a pilot</span>
+              <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <a
+              href="#how"
+              data-magnetic
+              class="bold-btn bold-btn-secondary bold-btn-md group"
+            >
+              <span class="relative z-10">See how it works</span>
+              <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <div data-reveal class="reveal-item bold-glass rounded-2xl p-5" style="transition-delay: 240ms">
+          <div class="mb-3.5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.05em] text-bold-taupe">
+            <span class="flex items-center gap-2">
+              <span class="h-1.5 w-1.5 rounded-full bg-bold-mint-deep" aria-hidden="true" />
+              Live &middot; Support queue
+            </span>
+            <span>Ticket flow</span>
+          </div>
+          <div id="ticketFlowWidget" class="ticket-flow" aria-hidden="true">
+            {tickets.map((ticket, i) => (
+              <div class={`ticket-card ${ticket.routed ? "is-routed" : ""}`} style={`--step: ${i}`}>
+                <span class="font-mono text-[0.65rem] text-bold-taupe">{ticket.id}</span>
+                <span class="ticket-card-status">{ticket.routed ? "Routed" : "Answered"}</span>
+              </div>
+            ))}
+          </div>
+          <div class="mt-4 flex items-end justify-between">
+            <span class="text-[0.95rem] font-bold text-bold-ink">4 tickets today</span>
+            <span id="ticketFlowBadge" class="rounded-full bg-bold-mint-deep px-2.5 py-0.5 font-mono text-xs font-bold text-bold-paper opacity-0 transition-opacity duration-300">3 auto-answered</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="what" class="border-b border-ocean-700/15 bg-ocean-100 bg-grain py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="what" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="what-ambient-blob"></span>
+    </div>
+    <div class="container-fb relative">
       <div class="flex items-start justify-between gap-8">
         <div class="reveal-item max-w-xl" data-reveal>
-          <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">What it is</p>
-          <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
+          <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">What it is</p>
+          <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
             Every "where's my order" question is really a supply chain question.
           </h2>
-          <p class="mt-5 text-[0.98rem] font-normal leading-relaxed text-ocean-950">
+          <p class="mt-5 text-[0.98rem] font-normal leading-relaxed text-bold-ink/70">
             Most small teams end up answering the same handful of customer questions over and over by hand,
             and every one of those answers already lives somewhere in your operational data. Flowbound puts
             that live order, shipment, and inventory data behind a chat agent that answers customers
@@ -154,54 +200,53 @@ const schema = {
           </p>
         </div>
         <div class="relative hidden shrink-0 md:block" data-icon-drift>
-          <span class="icon-pulse-ring absolute inset-0 rounded-full border border-ocean-950/10" aria-hidden="true"></span>
-          <SectionIcon name="chat" class="icon-spin relative h-[7.5rem] w-[7.5rem] text-ocean-950/[14%]" />
+          <span class="icon-pulse-ring absolute inset-0 rounded-full border border-bold-ink/15" aria-hidden="true"></span>
+          <SectionIcon name="chat" class="icon-spin relative h-[7.5rem] w-[7.5rem] text-bold-ink/20" />
         </div>
       </div>
     </div>
   </section>
 
-  <section id="capabilities" class="border-b border-ocean-700/15 bg-ocean-200 bg-grain py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="capabilities" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="container-fb relative">
       <div class="reveal-item max-w-xl" data-reveal>
-        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">What it does</p>
-        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">What it does</p>
+        <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
           Built so your team only sees the questions that need them.
         </h2>
       </div>
 
-      <div
-        data-glow-container
-        data-glow-size={GLOW_SIZE}
-        class="relative mt-14 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
-      >
-        {capabilities.map((capability, i) => (
-          <div data-reveal class="reveal-item h-full" style={`transition-delay: ${(i % 3) * 90}ms`}>
-            <div
-              class="group relative z-10 h-full overflow-hidden border border-ocean-700/25 p-8 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-100/40"
-            >
-              <span class="font-mono text-sm text-ocean-950">{String(i + 1).padStart(2, "0")}</span>
-              <h3 class="mt-3 font-amulya text-[1.15rem] font-medium leading-snug text-ocean-950">{capability.title}</h3>
-              <p class="mt-3 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{capability.description}</p>
-            </div>
+      <div class="mt-12 grid grid-cols-1 gap-3.5">
+        <div data-reveal class="reveal-item">
+          <div data-tilt class="tilt-card bold-tile-feature bold-glass rounded-2xl p-7 md:p-8">
+            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-bold-ink font-mono text-[0.65rem] font-bold text-bold-paper">01</span>
+            <h3 class="font-hanken mt-3 text-[1.15rem] font-semibold text-bold-ink">{capabilities[0].title}</h3>
+            <p class="mt-2 max-w-2xl text-[0.92rem] leading-relaxed text-bold-ink/65">{capabilities[0].description}</p>
           </div>
-        ))}
-
-        <div
-          data-glow
-          aria-hidden="true"
-          class="glow-cursor z-20 rounded-full mix-blend-multiply"
-          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.15), transparent 70%);`}
-        />
+        </div>
+        <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 md:grid-cols-3">
+          {capabilities.slice(1).map((capability, i) => (
+            <div
+              data-reveal
+              class="reveal-item h-full rounded-2xl border border-bold-ink/8 bg-bold-paper p-6 transition-colors duration-300 hover:border-bold-ink/25 hover:bg-bold-ink/[0.04]"
+              style={`transition-delay: ${(i + 1) * 70}ms`}
+            >
+              <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-bold-ink font-mono text-[0.65rem] font-bold text-bold-paper">{String(i + 2).padStart(2, "0")}</span>
+              <h3 class="font-hanken mt-3 text-[0.95rem] font-semibold text-bold-ink">{capability.title}</h3>
+              <p class="mt-2 text-[0.85rem] leading-relaxed text-bold-ink/65">{capability.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="examples" class="border-b border-ocean-700/15 bg-ocean-900 py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="examples" class="bold-depth-ink relative overflow-hidden py-20 font-hanken md:py-28">
+    <div class="container-fb relative">
       <div class="reveal-item max-w-xl" data-reveal>
-        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-100">A few things customers ask</p>
-        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-fb-white md:text-[2.2rem]">
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-mint">A few things customers ask</p>
+        <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-paper md:text-[2.2rem]">
           No special phrasing required. Just the way they'd ask a person.
         </h2>
       </div>
@@ -210,49 +255,42 @@ const schema = {
         {sampleQuestions.map((question, i) => (
           <div
             data-reveal
-            class="reveal-item flex items-start gap-3 border border-fb-white/15 bg-fb-white/5 px-5 py-4"
+            class="reveal-item flex items-start gap-3 border border-bold-paper/15 bg-bold-paper/5 px-5 py-4"
             style={`transition-delay: ${(i % 4) * 70}ms`}
           >
-            <SectionIcon name="chat" class="mt-0.5 h-5 w-5 shrink-0 text-ocean-100" />
-            <span class="text-[0.98rem] leading-snug text-fb-white/80">{question}</span>
+            <span class="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-bold-mint" aria-hidden="true" />
+            <span class="text-[0.98rem] leading-snug text-bold-paper/80">{question}</span>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <section id="how" class="border-b border-ocean-700/15 bg-ocean-100 py-20 font-amulya md:py-28">
-    <div class="container-fb">
+  <section id="how" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+    <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <span class="how-ambient-blob"></span>
+    </div>
+    <div class="container-fb relative">
       <div class="reveal-item max-w-xl" data-reveal>
-        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">How it works</p>
-        <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
+        <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">How it works</p>
+        <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
           From a customer's question to an answer they can trust.
         </h2>
       </div>
 
-      <div
-        data-glow-container
-        data-glow-size={GLOW_SIZE}
-        class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-3"
-      >
+      <div class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
         {steps.map((s, i) => (
-          <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 90}ms`}>
-            <div
-              class="group relative z-10 h-full overflow-hidden border border-ocean-700/25 p-8 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-200/40"
-            >
-              <span class="font-mono text-sm text-ocean-950">{s.n}</span>
-              <h3 class="relative z-30 mt-3 font-amulya text-[1.05rem] font-medium leading-snug text-ocean-950">{s.title}</h3>
-              <p class="relative z-30 mt-3 text-[0.92rem] font-normal leading-relaxed text-ocean-950">{s.body}</p>
-            </div>
+          <div
+            data-reveal
+            class="reveal-item h-full rounded-2xl border border-bold-ink/10 bg-bold-paper p-7 transition-colors duration-300 hover:border-bold-ink/25 hover:bg-bold-ink/[0.04]"
+            style={`transition-delay: ${i * 90}ms`}
+          >
+            <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-bold-ink font-mono text-xs font-bold text-bold-paper">{s.n}</span>
+            <h3 class="font-hanken mt-3 text-[1.05rem] font-medium leading-snug text-bold-ink">{s.title}</h3>
+            <p class="mt-3 text-[0.92rem] font-normal leading-relaxed text-bold-ink/65">{s.body}</p>
           </div>
         ))}
-
-        <div
-          data-glow
-          aria-hidden="true"
-          class="glow-cursor z-20 rounded-full"
-          style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.4) 0%, rgba(74,111,165,0.14) 45%, transparent 75%);`}
-        />
       </div>
     </div>
   </section>
@@ -260,8 +298,38 @@ const schema = {
   <Cta />
 </BaseLayout>
 
+<style>
+  .what-ambient-blob {
+    position: absolute;
+    top: -10%;
+    right: -6%;
+    width: 28vw;
+    height: 28vw;
+    max-width: 380px;
+    max-height: 380px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(110, 156, 163, 0.16) 0%, transparent 70%);
+  }
+
+  .how-ambient-blob {
+    position: absolute;
+    bottom: -15%;
+    left: -6%;
+    width: 28vw;
+    height: 28vw;
+    max-width: 380px;
+    max-height: 380px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(110, 156, 163, 0.14) 0%, transparent 70%);
+  }
+</style>
+
 <script>
-  import "../scripts/hoverGlow"
   import "../scripts/scrollReveal"
   import "../scripts/sectionIconDrift"
+  import "../scripts/cardTilt"
+  import "../scripts/magneticButton"
+  import "../scripts/ticketFlow"
 </script>

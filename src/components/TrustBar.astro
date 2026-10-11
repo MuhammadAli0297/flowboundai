@@ -1,34 +1,32 @@
 ---
-// Homepage plan item #5 (stat tiles) reworked as a non-numeric trust strip: Flowbound is
-// pre-launch (Cta.astro: "onboarding a small group of business pilots right now"), so there are
-// no real client-count/years-in-business numbers to feature yet, and this project's accuracy
-// rule (check before a capability or company claim, same discipline as the blog's EEAT pass)
-// applies just as much to stats as it does to product claims. Every phrase here is already
-// backed by existing copy elsewhere on the page, not a new claim: "Free pilot" mirrors Hero's
-// "Start free pilot", "Days, not months" mirrors WhyUs's "No SI required. You're connected in
-// days, not months", "Reasoning included" mirrors ProductSystem's Consulting Wrapper tile.
-// Revisit with real numbers once there are pilots to report on.
+// Hot Sauce rebuild: the "proof strip" from the approved mockup (still 02), the homepage's one
+// dark bookend between the light hero and the light bento grid below it. Flowbound is pre-launch
+// (Cta.astro: "onboarding a small group of business pilots right now"), so there are no real
+// client-count/years-in-business numbers to feature yet, and this project's accuracy rule (check
+// before a capability or company claim) applies just as much to stats as it does to product
+// claims. Every phrase here is already backed by existing copy elsewhere on the page, not a new
+// claim: "Free pilot" mirrors Hero's "Start free pilot", "Days, not months" mirrors WhyUs's "No SI
+// required...", "Reasoning included" mirrors the bento grid's Consulting Wrapper tile. Revisit with
+// real numbers once there are pilots to report on.
 const signals = [
-  { headline: "Free pilot", detail: "No cost, no contract to start." },
-  { headline: "Days, not months", detail: "Connected without an SI or a rollout project." },
-  { headline: "Reasoning included", detail: "Every recommendation explained in plain language." },
+  { tag: "01", headline: "Free pilot", detail: "No cost, no contract to start." },
+  { tag: "02", headline: "Days, not months", detail: "Connected without an SI or a rollout project." },
+  { tag: "03", headline: "Reasoning included", detail: "Every recommendation explained in plain language." },
 ]
 ---
 
-<section class="border-b border-fb-white/10 bg-ocean-900 py-14 font-amulya md:py-16">
-  <div class="container-fb">
-    <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-      {signals.map((s, i) => (
-        <div
-          data-reveal
-          class="reveal-item border border-fb-white/15 p-6 text-center transition-colors duration-300 hover:border-fb-white/35 hover:bg-fb-white/5"
-          style={`transition-delay: ${i * 90}ms`}
-        >
-          <p class="text-[1.15rem] font-semibold text-fb-white">{s.headline}</p>
-          <p class="mt-1.5 text-[0.85rem] font-normal text-fb-white/80">{s.detail}</p>
-        </div>
-      ))}
-    </div>
+<section class="bold-depth-ink relative overflow-hidden py-0 font-hanken">
+  <div class="container-fb relative grid grid-cols-1 divide-y divide-bold-paper/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+    {signals.map((s, i) => (
+      <div data-reveal class="reveal-item px-0 py-10 sm:px-8" style={`transition-delay: ${i * 90}ms`}>
+        <span class="flex items-center gap-2 font-mono text-[0.68rem] uppercase tracking-[0.1em] text-bold-mint">
+          <span class="h-1.5 w-1.5 rounded-full bg-bold-mint" aria-hidden="true" />
+          {s.tag}
+        </span>
+        <p class="mt-3 text-[1.35rem] font-semibold text-bold-paper">{s.headline}</p>
+        <p class="mt-1.5 text-[0.88rem] font-normal text-bold-paper/65">{s.detail}</p>
+      </div>
+    ))}
   </div>
 </section>
 

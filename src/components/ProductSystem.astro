@@ -1,86 +1,105 @@
 ---
-import SectionIcon from "./icons/SectionIcon.astro"
-
-const modules = [
+// Hot Sauce rebuild: the "bento capability grid" from the approved mockup (still 03). One tile
+// gets real weight (with an actual sparkline, not a decorative icon) while five smaller ones sit
+// around it, the asymmetric module-grid pattern instead of a uniform card row. Content mirrors the
+// same five capabilities the mockup used, pulled from src/data/services.ts so the claims stay
+// accurate to what each capability page actually says.
+//
+// Signal Primitives merge: the flat per-tile tone colors (bg-bold-mist / bg-bold-paper alternating)
+// are gone, replaced by the two tile treatments approved in the Signal Primitives lab. The lead
+// tile gets the featured glass + ink-to-mint gradient ring treatment (.bold-tile-feature, reserved
+// for the one tile worth remembering, paired with cardTilt.ts via [data-tilt]); the five small
+// tiles switch to the ink-tint + numbered-badge treatment /reorder already established
+// (border-bold-ink/8 bg-bold-paper, hover:bg-bold-ink/[0.04], a small solid bg-bold-ink circle
+// badge), closing a consistency gap between the homepage and the one capability page already built
+// this way, rather than inventing a third pattern.
+const tiles = [
   {
-    tag: "Core",
-    title: "Decision Engine",
-    body:
-      "Keeps an eye on your inventory, lead times, and open purchase orders around the clock, and tells you what to do next. Reorder, hold, or reroute, before a stockout or an overbuy catches you off guard.",
+    big: true,
+    title: "Demand Forecasting",
+    body: "Per-SKU, per-season demand curves instead of one flat average, so a slow mover never gets ordered like a bestseller.",
+    icon: "M3 17l5-6 4 3 5-8 4 5",
+    sparkline: "M0 36 L40 30 L80 34 L120 20 L160 24 L200 10 L240 16 L300 4",
   },
   {
-    tag: "Reasoning",
-    title: "Consulting Wrapper",
-    body:
-      "Every recommendation comes with the reasoning behind it, explained in plain language. It's the part you used to pay a consultant good money to walk you through.",
+    title: "Inventory Tracking",
+    body: "Live on-hand counts, never yesterday's numbers.",
+    icon: "M3.5 8l8.5-5 8.5 5M3.5 8v11h17V8",
   },
   {
-    tag: "Interface",
-    title: "Ask Flowbound",
-    body:
-      "A chatbot that actually knows your supply chain. Ask why a reorder happened, or what a lead time slip would mean for next month, and get a real answer instead of a help doc.",
+    title: "Reorder",
+    body: "Thresholds that move with real demand.",
+    icon: "M4 19V8l8-4 8 4v11M4 19h16M12 19v-7",
   },
   {
-    tag: "Workspace",
-    title: "Web App",
-    body:
-      "The web app your team actually works in: agent status at a glance, a reorder queue you approve with one click, and Ask Flowbound sitting right alongside it. Whitelisted to your team the moment your trial starts, no extra login and nothing to stitch together yourself.",
+    title: "Pricing",
+    body: "Repricing as cost signals shift.",
+    icon: "M20 12l-7 7-9-9V4h6l10 10z",
+  },
+  {
+    title: "Supplier Coordination",
+    body: "One view of every supplier's terms.",
+    icon: "M12 4a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8ZM6 14.6a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8ZM18 14.6a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8Z",
   },
 ]
-
-const GLOW_SIZE = 420
 ---
 
-<section id="product" class="relative overflow-hidden border-b border-ocean-700/15 bg-ocean-100 py-20 font-amulya md:py-28">
-  <!-- ambient drift, echoing the hero's wave without competing with it: two soft blurred washes,
-       slow enough to read as atmosphere rather than motion you consciously track -->
+<section id="product" class="relative overflow-hidden bg-bold-paper py-20 font-hanken md:py-28">
+  <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-    <span class="product-ambient-blob product-ambient-blob-a"></span>
-    <span class="product-ambient-blob product-ambient-blob-b"></span>
+    <span class="product-ambient-blob"></span>
   </div>
-
   <div class="container-fb relative">
-    <div class="reveal-item max-w-xl" data-reveal>
-      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">What Flowbound does</p>
-      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
-        One supply chain decision engine. Four ways to use it.
+    <div data-reveal class="reveal-item max-w-xl">
+      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">What runs underneath</p>
+      <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
+        One engine, the whole floor.
       </h2>
     </div>
 
-    <!-- mouse tracking is scoped to just this grid, so the glow can never
-         wander off into the section's padding and look disconnected -->
-    <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-6 overflow-hidden md:grid-cols-2">
-      {modules.map((m, i) => (
-        <div data-reveal class="reveal-item h-full" style={`transition-delay: ${i * 90}ms`}>
-          <div
-            class="group relative z-10 h-full overflow-hidden border border-ocean-700/25 p-8 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-200/40"
-          >
-            <span class="font-mono text-[0.7rem] uppercase tracking-[0.15em] text-ocean-950">{m.tag}</span>
-            <h3 class="mt-3 font-amulya text-[1.2rem] font-medium leading-snug text-ocean-950">{m.title}</h3>
-            <p class="mt-3 text-[0.95rem] font-normal leading-relaxed text-ocean-950">{m.body}</p>
-          </div>
+    <div class="mt-12 grid grid-cols-2 auto-rows-[12.5rem] gap-3.5 md:grid-cols-4 md:auto-rows-[9.5rem]">
+      {tiles.map((t, i) => (
+        <div
+          data-reveal
+          class={`reveal-item ${t.big ? "col-span-2 row-span-2" : ""}`}
+          style={`transition-delay: ${i * 70}ms`}
+        >
+          {t.big ? (
+            <div data-tilt class="tilt-card bold-tile-feature bold-glass relative h-full overflow-hidden rounded-2xl p-5 md:p-6">
+              <div class="flex items-center justify-between">
+                <svg class="h-5 w-5 text-bold-mint-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d={t.icon} />
+                </svg>
+                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-bold-ink font-mono text-[0.65rem] font-bold text-bold-paper">01</span>
+              </div>
+              <h3 class="font-hanken mt-3 text-[1.15rem] font-semibold text-bold-ink md:mt-4">{t.title}</h3>
+              <p class="mt-1.5 max-w-[22rem] text-[0.88rem] leading-relaxed text-bold-ink/65">{t.body}</p>
+              {t.sparkline && (
+                <svg class="absolute inset-x-5 bottom-5 h-11 md:inset-x-6 md:bottom-6" viewBox="0 0 300 46" preserveAspectRatio="none" aria-hidden="true">
+                  <path d={t.sparkline} fill="none" stroke="#1A7A64" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              )}
+            </div>
+          ) : (
+            <div class="h-full rounded-2xl border border-bold-ink/8 bg-bold-paper p-5 transition-colors duration-300 hover:border-bold-ink/25 hover:bg-bold-ink/[0.04] md:p-6">
+              <div class="flex items-center justify-between">
+                <svg class="h-5 w-5 text-bold-mint-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d={t.icon} />
+                </svg>
+                <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-bold-ink font-mono text-[0.65rem] font-bold text-bold-paper">{String(i + 1).padStart(2, "0")}</span>
+              </div>
+              <h3 class="font-hanken mt-3 text-[0.95rem] font-semibold text-bold-ink">{t.title}</h3>
+              <p class="mt-1.5 text-[0.82rem] leading-relaxed text-bold-ink/65">{t.body}</p>
+            </div>
+          )}
         </div>
       ))}
-
-      <!-- rendered last so it paints on top of the cards; multiply blend darkens
-           the light card surface toward blue under the cursor -->
-      <div
-        data-glow
-        aria-hidden="true"
-        class="glow-cursor z-20 rounded-full mix-blend-multiply"
-        style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.15), transparent 70%);`}
-      />
     </div>
 
-    <div class="reveal-item mt-12 flex justify-center" data-reveal style="transition-delay: 380ms">
-      <a
-        href="/product/"
-        class="group relative inline-flex min-w-[19rem] items-center justify-center gap-3 overflow-hidden rounded-full bg-ocean-700 px-10 py-4 font-amulya font-semibold text-fb-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:gap-4 hover:shadow-[0_12px_30px_-10px_rgba(79,109,122,0.45)]"
-      >
-        <span aria-hidden="true" class="absolute inset-0 origin-left scale-x-0 bg-ocean-600 transition-transform duration-500 ease-out group-hover:scale-x-100" />
-        <SectionIcon name="spark" class="relative z-10 h-5 w-5 shrink-0 text-fb-white transition-transform duration-500 ease-out group-hover:rotate-45" />
-        <span class="relative z-10">See the full product</span>
-        <span aria-hidden="true" class="relative z-10 transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
+    <div data-reveal class="reveal-item mt-12 flex justify-center" style="transition-delay: 420ms">
+      <a href="/product/" data-magnetic class="bold-btn bold-btn-ink bold-btn-lg group">
+        <span>See the full product</span>
+        <span aria-hidden="true" class="transition-transform duration-300 ease-out group-hover:translate-x-1">&rarr;</span>
       </a>
     </div>
   </div>
@@ -89,51 +108,32 @@ const GLOW_SIZE = 420
 <style>
   .product-ambient-blob {
     position: absolute;
-    border-radius: 9999px;
-    filter: blur(70px);
-  }
-
-  .product-ambient-blob-a {
-    top: -15%;
-    right: -8%;
-    width: 32vw;
-    height: 32vw;
+    top: -10%;
+    left: -8%;
+    width: 30vw;
+    height: 30vw;
     max-width: 420px;
     max-height: 420px;
-    background: radial-gradient(circle, rgba(74, 111, 165, 0.16) 0%, transparent 70%);
-    animation: product-ambient-drift-a 24s ease-in-out infinite;
+    border-radius: 9999px;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(110, 156, 163, 0.16) 0%, transparent 70%);
+    animation: product-ambient-drift 24s ease-in-out infinite;
   }
 
-  .product-ambient-blob-b {
-    bottom: -20%;
-    left: 8%;
-    width: 26vw;
-    height: 26vw;
-    max-width: 340px;
-    max-height: 340px;
-    background: radial-gradient(circle, rgba(192, 214, 223, 0.4) 0%, transparent 70%);
-    animation: product-ambient-drift-b 20s ease-in-out infinite;
-  }
-
-  @keyframes product-ambient-drift-a {
+  @keyframes product-ambient-drift {
     0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(-4vw, 3vh); }
-  }
-
-  @keyframes product-ambient-drift-b {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(3vw, -3vh); }
+    50% { transform: translate(3vw, 3vh); }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .product-ambient-blob-a,
-    .product-ambient-blob-b {
+    .product-ambient-blob {
       animation: none;
     }
   }
 </style>
 
 <script>
-  import "../scripts/hoverGlow"
   import "../scripts/scrollReveal"
+  import "../scripts/cardTilt"
+  import "../scripts/magneticButton"
 </script>

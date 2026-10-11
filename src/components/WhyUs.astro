@@ -10,49 +10,66 @@ const reasons: { icon: SectionIconName; text: string }[] = [
   { icon: "bolt", text: "Built for teams without a dedicated ops analyst on staff." },
   { icon: "document", text: "Every recommendation comes with its reasoning attached." },
 ]
-
-const GLOW_SIZE = 340
 ---
 
-<section id="why" class="border-b border-ocean-700/15 bg-ocean-100 py-20 font-amulya md:py-28">
-  <div class="container-fb">
-    <div class="reveal-item max-w-xl" data-reveal>
-      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-ocean-950">Why small business teams choose Flowbound</p>
-      <h2 class="font-amulya text-[1.9rem] font-semibold leading-tight tracking-tighter text-ocean-950 md:text-[2.2rem]">
+<section id="why" class="relative overflow-hidden border-t border-bold-ink/8 bg-bold-paper py-20 font-hanken md:py-28">
+  <div class="pointer-events-none absolute inset-0 bg-grain" aria-hidden="true" />
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <span class="whyus-ambient-blob"></span>
+  </div>
+  <div class="container-fb relative">
+    <div data-reveal class="reveal-item max-w-xl">
+      <p class="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-bold-taupe">Why small business teams choose Flowbound</p>
+      <h2 class="font-hanken text-[1.9rem] font-semibold leading-tight tracking-tighter text-bold-ink md:text-[2.2rem]">
         Built for the team that doesn't have an SAP budget.
       </h2>
     </div>
 
-    <!-- thin-border card trial (see BRAND_GUIDELINES.md / homepage plan): no tilt, no solid fill,
-         just a 1px border sitting directly on the section background, closer to a restrained/
-         "engineered" reference feel than the tinted, tilting cards ProductSystem and HowItWorks
-         use. reveal-item lives directly on each card rather than a separate wrapper, since
-         there's no tilt-card transition on it to conflict with. -->
-    <div data-glow-container data-glow-size={GLOW_SIZE} class="relative mt-12 grid grid-cols-1 gap-5 overflow-hidden sm:grid-cols-2 md:grid-cols-3">
+    <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
       {reasons.map((r, i) => (
         <div
           data-reveal
-          class="reveal-item group relative z-10 h-full border border-ocean-700/25 p-6 transition-colors duration-300 hover:border-ocean-700/60 hover:bg-ocean-200/40"
+          class="reveal-item h-full rounded-2xl border border-bold-ink/8 bg-bold-paper p-6 transition-colors duration-300 hover:border-bold-ink/25 hover:bg-bold-ink/[0.04]"
           style={`transition-delay: ${i * 80}ms`}
         >
-          <SectionIcon name={r.icon} class="h-7 w-7 shrink-0 text-ocean-500" />
-          <p class="mt-4 text-[0.98rem] font-normal leading-relaxed text-ocean-950">{r.text}</p>
+          <div class="flex items-center justify-between">
+            <SectionIcon name={r.icon} class="h-7 w-7 shrink-0 text-bold-mint-deep" />
+            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-bold-ink font-mono text-[0.65rem] font-bold text-bold-paper">{String(i + 1).padStart(2, "0")}</span>
+          </div>
+          <p class="mt-4 text-[0.98rem] font-normal leading-relaxed text-bold-ink/75">{r.text}</p>
         </div>
       ))}
-
-      <!-- rendered last so it paints on top of the tiles; multiply blend darkens
-           the light tile surface toward blue under the cursor -->
-      <div
-        data-glow
-        aria-hidden="true"
-        class="glow-cursor z-20 rounded-full mix-blend-multiply"
-        style={`width: ${GLOW_SIZE}px; height: ${GLOW_SIZE}px; background: radial-gradient(circle, rgba(74,111,165,0.15), transparent 70%);`}
-      />
     </div>
   </div>
 </section>
 
+<style>
+  .whyus-ambient-blob {
+    position: absolute;
+    bottom: -15%;
+    right: -6%;
+    width: 28vw;
+    height: 28vw;
+    max-width: 380px;
+    max-height: 380px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    background: radial-gradient(circle, rgba(110, 156, 163, 0.14) 0%, transparent 70%);
+    animation: whyus-ambient-drift 24s ease-in-out infinite;
+  }
+
+  @keyframes whyus-ambient-drift {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-3vw, -3vh); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .whyus-ambient-blob {
+      animation: none;
+    }
+  }
+</style>
+
 <script>
-  import "../scripts/hoverGlow"
   import "../scripts/scrollReveal"
 </script>
