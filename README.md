@@ -12,6 +12,10 @@ the fast alternative to an SAP implementation. Live at
 
 ![Flowbound.ai homepage](.github/screenshot.png)
 
+> **Currently in progress:** a full sitewide visual rebuild (new palette, typography, and a richer
+> motion/interaction system) is underway on a feature branch and not yet part of this deployed site.
+> Everything below describes what's actually live at [www.flowbound.ai](https://www.flowbound.ai) today.
+
 ## What this is
 
 A static, server-render-free marketing site (Astro, `output: "static"`) covering a homepage, a

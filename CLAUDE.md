@@ -36,14 +36,19 @@ JS framework by default: no React or any JS framework ships on most of this site
 scoped/lazy-loaded/single-page pattern rather than defaulting to zero JS if a future page genuinely needs
 something heavier, don't add a framework or a heavy library site-wide.
 
-### Hot Sauce rebuild (sitewide, in progress, started 2026-10-04)
+### Hot Sauce rebuild (sitewide, complete as of 2026-10-11, started 2026-10-04)
 
-**The whole site is being rebuilt onto a new visual system, page by page, on a local branch
-(`redesign/hot-sauce`), never pushed or merged until the user explicitly says so.** The project kept
-the branch/internal name "Hot Sauce" even after the palette itself moved on (see below), the same way
-code sometimes keeps an original codename after a pivot. If you're picking this up in a fresh session:
-check `git branch --show-current` and `git log` on that branch before assuming the live `ocean`/`fb`
-system described elsewhere in this file is still current anywhere except pages not yet migrated.
+**The whole site was rebuilt onto a new visual system, page by page, on a local branch
+(`redesign/hot-sauce`), never pushed or merged until the user explicitly says so — that instruction
+is still in force even though the rebuild itself is done.** The project kept the branch/internal name
+"Hot Sauce" even after the palette itself moved on (see below), the same way code sometimes keeps an
+original codename after a pivot. All 18 checklist items are approved and the promised cleanup pass
+(old `ocean` tokens, old Amulya font) is done, see "Rollout discipline" below. The only page on the
+whole site still describable as "not yet migrated" is `/404`, which was never in scope for this
+rebuild (or the `ocean` one before it) by explicit, standing user decision, not an oversight. If
+you're picking this up in a fresh session: check `git branch --show-current` and `git log` on that
+branch before assuming this file is current, but as of this writing the `bold` system described here
+is live everywhere except `/404`, and nothing has been pushed or merged to `main`.
 
 **Why:** the user felt the existing `ocean`/Amulya system (see "Homepage" below) had gone "dull and
 bland" and wanted something "dynamic, fresh, and bold" that makes content "jump off the screen," a
@@ -161,11 +166,44 @@ rather than re-deriving the system from scratch.
   white as the third color just because it's convenient, use a real color from the current palette and
   actually check its contrast in both the light (nav) and dark (footer) placements.
 
-**Rollout discipline:** every addition (colors, fonts, primitives) is additive alongside the existing
-`fb`/`ocean` system; nothing is removed or renamed out from under not-yet-converted pages. Cleanup
-(deleting the old tokens, old font-faces, and this whole section's "in progress" framing) happens in
-one dedicated pass only once literally every page is migrated, the same pattern `ocean` itself followed
-when it replaced `fb`.
+**Rollout discipline (historical) and cleanup (done 2026-10-11):** every addition (colors, fonts,
+primitives) was additive alongside the existing `fb`/`ocean` system while the rebuild was in
+progress; nothing was removed or renamed out from under a not-yet-converted page. Once all 18
+checklist items were approved, the promised cleanup pass ran: the `ocean` Tailwind color palette
+(`tailwind.config.js`) and the `amulya` font family token were both deleted outright (every real,
+non-comment usage of either was gone, confirmed by grep across `src/` before touching anything, not
+assumed); Amulya's two `@font-face` declarations (`src/index.css`) and its unconditional preload
+(`BaseLayout.astro`) were removed, and the two actual font files
+(`public/fonts/amulya-variable{,-italic}.woff2`) deleted from disk, the same pattern `ocean` itself
+set when it replaced `fb`. `Breadcrumbs.astro`'s `tone` prop (a `"dark"`/ocean branch alongside the
+`"light"`/Bold one, added specifically to distinguish converted from not-yet-converted pages) was
+simplified away too, since every one of its 10 call sites had been passing `tone="light"` for a
+while, leaving the "dark" branch dead; the prop and its now-redundant `tone="light"` argument were
+removed from all 10 pages via a verified scripted replace (every file's exact expected string
+confirmed present before the substitution ran, not a blind find-and-replace).
+
+**`fb`/Satoshi are not part of this cleanup and were deliberately left untouched**, including the
+full `fb` color palette (not trimmed down to just the handful `/404` uses) and every Satoshi
+`@font-face`/preload: `/404` is still explicitly out of scope for either rebuild (`ocean` or
+`Bold`), a standing decision repeated at every past redesign pass on this project, and it depends on
+`fb-black`/`fb-white`/`fb-green-400`/`fb-green-500`/`.eyebrow` plus `font-display`/`font-body`
+(Satoshi) directly. Satoshi also stays as the sitewide base-layer default (`src/index.css`'s
+`h1-h4`/`body` rules) regardless of `/404`, the same safety-net role it's always had.
+
+**What was deliberately left alone, and why, so a future pass doesn't "fix" it by mistake:** every
+retired `*Background.astro` hero component and its matching `*Hero.ts`/`heroWave.ts`/
+`productHeroWave.ts` script (`ReorderBackground.astro`/`reorderHero.ts`, `BlogBackground.astro`/
+`blogHero.ts`, etc.) is still on disk, unused, and several still contain raw hex color values
+commented `// ocean-950` etc. That's intentional and unrelated to the Tailwind token removal above
+(they never referenced the `ocean-*` Tailwind classes, just literal hex matching those colors at
+the time): the established, repeated precedent on this project (`FlowBackground.astro`,
+`HeroBackground.astro`, and every capability page's own retired hero before it) is to keep a retired
+*whole hero composition* on disk as a reference, only a page-specific script with zero other purpose
+once orphaned (`servicesHeroWave.ts` was the one example of that) gets deleted outright.
+`LogoMark.astro`'s unused `"fb"`/`"ocean"` palette branches were also left alone: unlike
+`Breadcrumbs.astro`, they use independent hex literals, not the `ocean-*` Tailwind classes being
+removed, so there was nothing actually broken by leaving them, and the component is small, well
+commented, and still arguably useful if a future page ever wants a differently-toned mark.
 
 **Verification gotcha specific to this rebuild, likely to resurface:** after editing `tailwind.config.js`
 mid-session, a `npm run dev` restart can *appear* to not pick up new theme colors (new utility classes
@@ -178,39 +216,1227 @@ browser tab loaded before an in-progress restart had finished, not a real compil
 comparing the actual served CSS bytes rather than trusting what a screenshot from an already-open tab
 showed.
 
-**Checklist** (22 items; update the checkbox state here as items land, this is the actual tracker, not
-a chat message that will scroll away):
+**Checklist** (18 items, all complete and approved as of 2026-10-11, cleanup pass done; kept here as
+the historical build record, not a chat message that scrolled away):
 - [x] 1. Shared system: fonts, `bold` tokens, Nav, Footer, Cta, logo. Built, then revised across several
       rounds of direct feedback (button-fill text contrast, glow brightness, logo gradient muddiness,
       ink richness, glow color harmony), all fixes described above. Not yet committed.
-- [ ] 2. Homepage (`/`) — grain+orb hero (replacing the three.js WebGL hero per explicit user decision,
-      see "Homepage" below, this will make that section's three.js description stale once it ships),
-      proof strip, bento capability grid, comparison band. Use `.cta-depth`'s gradient+grain recipe for
-      any dark section here.
-- [ ] 3. `/reorder` — first capability-template page (already mocked in the artifact)
-- [ ] 4. `/demand-forecasting`
-- [ ] 5. `/inventory-tracking`
-- [ ] 6. `/shipping-optimization`
-- [ ] 7. `/supplier-coordination`
-- [ ] 8. `/wholesale-account-management`
-- [ ] 9. `/pricing`
-- [ ] 10. `/ask-flowbound`
-- [ ] 11. `/customer-service`
-- [ ] 12. `/quality-monitoring`
-- [ ] 13. `/how-it-works`
-- [ ] 14. `/services`
-- [ ] 15. `/product`
-- [ ] 16. Blog index + pagination (`/blog`)
-- [ ] 17. Blog post template (`[slug].astro`, one template change, applies to all published posts)
-- [ ] 18. Blog tag pages (`/blog/tags/[tag]`)
+- [x] 2. Homepage (`/`) — base Bold build (grain+orb hero, proof strip, bento capability grid,
+      annotated-diagram "how it works", comparison band, see "Checkpoint 2 (homepage) detail" below),
+      then the Signal Primitives merge on top (bento's featured/quiet tiles, magnetic buttons, the "how
+      it works" diagram's real scroll-linked line, WhyUs brought up to the same tile language after the
+      user flagged it still read flat next to the bento grid). User-approved 2026-10-07. Not committed.
+- [x] 3. `/reorder` — base build done (see "Checkpoint 3" below for the template decisions items 4-9
+      should reuse; it already originated the ink-tint + numbered-badge tile pattern the homepage's
+      Signal Primitives pass then reused). Signal Primitives now applied: hero buttons are magnetic, the
+      "what it does" lead capability tile upgraded to the featured glass + gradient-ring + tilt
+      treatment (matching the homepage bento's lead tile), and the Stock Gauge widget sits beside the
+      "what it watches" heading (drains 92% to 14%, crosses the 20% reorder threshold, reveals the same
+      "Triggered" mint-deep badge the homepage hero panel uses, replays on scroll re-entry). The hero
+      itself was then flagged directly as "just so plain": it was the one deliberate sitewide exception
+      to the glass-panel-with-real-UI hero convention (explain one capability, don't showcase the whole
+      product), which left its whole right side empty. Rather than contradict that reasoning outright,
+      it got a glass panel showing the *other half* of the Stock Gauge's story, the order placed as a
+      result of the threshold crossing (reorder point, quantity, supplier, an "Order placed" badge), so
+      the two widgets read as one narrative (trigger math down in "what it watches", outcome up in the
+      hero) instead of two unrelated add-ons. Every other capability page's hero should revisit this same
+      "deliberately no glass panel" call the same way once it's that page's turn, not keep it by default.
+      Locally verified: astro check/build clean, no console errors, no mobile overflow, gauge animation
+      confirmed end-to-end via Playwright.
+
+      One more revision after approval: the hero's glass panel first reused the homepage's generic
+      live-data-rows template verbatim (different copy, identical structure), which was then flagged
+      directly as reading like the same image as the homepage hero at a glance. The real fix wasn't
+      different copy, it was making the hero panel BE the page's own Stock Gauge widget instead of a
+      list, moved up from "what it watches" (which went back to a plain signal list so the widget isn't
+      shown twice on one page). **Standing rule now: every capability page's hero panel should be built
+      around that page's own assigned widget from the merged checklist, never the homepage's rows
+      template**, a gauge and a chart have genuinely different silhouettes, which is what actually solves
+      "every hero looks the same," not swapping the numbers inside an identical layout. Light-surface
+      widget CSS (`.gauge-track`/`.gauge-fill`/`.gauge-threshold`, `.spark-history`/`.spark-projected`/
+      `.spark-comet`) now lives in `src/index.css` for exactly this purpose.
+
+      One more round on the "what it does" quiet-tile grid, caught from a user screenshot after both
+      pages were already built: 5 items in `sm:grid-cols-2 md:grid-cols-3` leaves an empty gap in the
+      trailing row (a 3+2 split at `md`), since 5 doesn't divide evenly into either column count.
+      First fix spanned the LAST tile across the remainder to close the gap, but that made it visibly
+      wider than the other four, flagged directly ("have the bottom 2 tiles be the same size as the
+      top 3 so its all even"), uniform tile size mattered more than filling the space. Reverted on
+      both `/reorder` and `/demand-forecasting` back to the plain grid with no span classes: five
+      equal-width tiles (confirmed 357px each at desktop width), a trailing row with one empty cell
+      on the right instead of a stretched tile. **Every remaining capability page (5-9) should default
+      to this plain uniform grid**, not the span-based gap-fill, unless asked for the fill specifically.
+
+      The FAQ accordion (`.bold-faq-row`/`.bold-faq-panel`, `src/scripts/faqAccordion.ts`) was also
+      redone after direct feedback that it didn't feel "luxurious": the old version toggled the answer's
+      `[hidden]` attribute directly, which snaps instantly with no animation (`display:none` has no
+      transitionable intermediate state) and used a flat full-row grey fill for the open state with no
+      shadow/elevation anywhere. Fixed with a CSS `grid-template-rows: 0fr -> 1fr` trick keyed off the
+      button's `aria-expanded` (a sibling selector, so the panel itself can carry `aria-hidden`
+      independently for assistive tech rather than `[hidden]`, which would block the animation); a subtle
+      `inset` box-shadow accent bar on the open row instead of a flat tint, so it doesn't shift layout the
+      way a real border would; a circular ring behind the chevron that tints when open; and a soft outer
+      shadow on the whole FAQ card for real elevation. One real bug caught measuring this, not eyeballing
+      it: the first attempt still left a ~30px gap under every CLOSED row, because padding on the
+      animated child adds to its rendered height regardless of the grid track's computed size (a
+      content-box height of 0 plus padding still renders the padding). Fixed by moving the vertical
+      padding onto the same `aria-expanded`-gated selector as the height, confirmed with a scripted
+      height sample during the transition (0 at rest, smooth growth to 78px open, back to a true 0 on
+      close, not the former 30px floor). **Any future accordion on this site should reuse this same
+      `.bold-faq-row`/`.bold-faq-panel` pair**, including the gated-padding detail, rather than a fresh
+      `[hidden]`-based toggle.
+
+      User-approved 2026-10-07. Not committed.
+- [x] 4. `/demand-forecasting` (+ Forecast Spark widget) — built following `/reorder`'s approved
+      template exactly: grain+orb hero whose glass panel IS the Forecast Spark widget (history line
+      plus a dashed projected line with a traveling comet, pure CSS offset-path, no script), featured
+      glass+gradient-ring lead tile in "what it does," plain signal list in "what it watches" (no
+      duplicate widget there, see the hero-widget rule above), plain quiet-tile grid in "how it works,"
+      and the luxurious FAQ accordion. All copy/schema carried over unchanged from the prior
+      ocean-palette build. Locally verified: astro check/build clean, no console errors, no mobile
+      overflow. User-approved 2026-10-07. Not committed.
+- [x] 5. `/inventory-tracking` (+ Inventory Scan widget) — built following `/demand-forecasting`'s
+      template exactly: grain+orb hero whose glass panel IS the new Inventory Scan widget (a 24-cell,
+      8x3 stock grid; a sweep bar crosses it once per scroll-entry, each column lighting mint-deep as
+      the sweep passes, 3 pre-flagged cells settle taupe instead of mint for "low," then a "3 flagged"
+      badge reveals once the sweep finishes, replaying on every scroll re-entry, same shape as
+      `reorderGauge.ts`), featured glass+gradient-ring lead tile in "what it does," plain signal list
+      in "what it watches," plain quiet-tile grid in "how it works," and the luxurious FAQ accordion.
+      New files: `src/scripts/inventoryScan.ts` (the widget driver) and the `.scan-grid`/`.scan-cell`/
+      `.scan-sweep` CSS block in `src/index.css`, right after the Forecast Spark block. All copy/
+      schema carried over unchanged from the prior ocean-palette build (already accurate). Locally
+      verified: astro check/build clean (0 errors/warnings/hints, 154 pages), no console errors,
+      scan widget confirmed mid-sweep and fully-settled via Playwright screenshots, FAQ accordion
+      click-tested, no mobile overflow at 390px. User-approved 2026-10-07. Not committed.
+- [x] 6. `/shipping-optimization` (+ Route Pick widget) — built following `/inventory-tracking`'s
+      template exactly: grain+orb hero whose glass panel IS the new Route Pick widget (four carrier
+      lanes, each a horizontal track; on scroll-entry a dot races down every lane to its own quoted
+      distance, three stop short and dim to 35% opacity, the winning lane runs the full track and
+      stays lit mint-deep, then a "Selected" badge reveals, replaying on every scroll re-entry, same
+      IntersectionObserver/replay shape as `reorderGauge.ts`/`inventoryScan.ts`), featured
+      glass+gradient-ring lead tile in "what it does," plain signal list in "what it watches," plain
+      quiet-tile grid in "how it works," and the luxurious FAQ accordion. New files:
+      `src/scripts/routePick.ts` (the widget driver) and the `.route-lanes`/`.route-lane`/
+      `.route-track`/`.route-fill`/`.route-dot` CSS block in `src/index.css`, right after the
+      Inventory Scan block; the winning lane is marked via each lane's own `data-winner` attribute in
+      the markup, so the drawn result, the readout text, and the script's `LANE_ENDS` array can't
+      silently drift apart. All copy/schema carried over unchanged from the prior ocean-palette build
+      (already accurate). Locally verified: astro check/build clean (0 errors/warnings/hints, 154
+      pages), no console errors, widget confirmed settled (winner lit, losers dimmed, badge revealed)
+      via a zoomed Playwright screenshot plus a DOM-state dump, no mobile overflow at 390px.
+      User-approved 2026-10-07. Not committed.
+- [x] 7. `/supplier-coordination` (+ Supplier Ping widget) — built following
+      `/shipping-optimization`'s template exactly: grain+orb hero whose glass panel IS the new
+      Supplier Ping widget (a small hub-and-spokes diagram, four supplier nodes breathing calmly
+      around a central hub via a continuous pure-CSS animation; on scroll-entry one node escalates
+      and sends a pulse dot along its line into the hub via `offset-path`, the same technique
+      `.spark-comet` uses, then that node stays flagged taupe/enlarged and a "1 flagged" badge
+      reveals, replaying on every scroll re-entry, same IntersectionObserver/replay shape as the
+      other three widgets), featured glass+gradient-ring lead tile in "what it does," plain signal
+      list in "what it watches," plain quiet-tile grid in "how it works," and the luxurious FAQ
+      accordion. New files: `src/scripts/supplierPing.ts` (the widget driver) and the
+      `.ping-line`/`.ping-hub`/`.ping-node`/`.ping-pulse` CSS block in `src/index.css`, right after
+      the Route Pick block. All copy/schema carried over unchanged from the prior ocean-palette build
+      (already accurate). Locally verified: astro check/build clean (0 errors/warnings/hints, 154
+      pages), no console errors, widget confirmed settled via a zoomed screenshot plus a DOM-state
+      dump, replay-on-scroll-reentry specifically confirmed (flagged state clears when scrolled away,
+      correctly replays when scrolled back), no mobile overflow at 390px. User-approved 2026-10-07.
+      Not committed.
+- [x] 8. `/wholesale-account-management` (+ Account Ladder widget) — built following
+      `/supplier-coordination`'s template exactly: grain+orb hero whose glass panel IS the new
+      Account Ladder widget (a 4-rung vertical pricing-tier stepper; on scroll-entry a fill line
+      climbs from Tier 1 to the account's actual tier, Tier 3, each passed rung's dot lighting
+      mint-deep in sequence via a per-rung `--step` stagger, same technique `.scan-cell`'s `--col`
+      uses, then a "Terms applied" badge reveals, replaying on every scroll re-entry, same
+      IntersectionObserver/replay shape as the other four widgets). The fill's target height is
+      measured from the real rendered dot positions via `getBoundingClientRect` rather than guessed
+      pixel math, since rung spacing comes from flex layout. Featured glass+gradient-ring lead tile
+      in "what it does," plain signal list in "what it watches," plain quiet-tile grid in "how it
+      works," and the luxurious FAQ accordion. New files: `src/scripts/accountLadder.ts` (the widget
+      driver) and the `.ladder-widget`/`.ladder-track`/`.ladder-fill`/`.ladder-rung`/`.ladder-dot`
+      CSS block in `src/index.css`, right after the Supplier Ping block. All copy/schema carried
+      over unchanged from the prior ocean-palette build (already accurate). Locally verified: astro
+      check/build clean (0 errors/warnings/hints, 154 pages), no console errors, widget confirmed
+      settled (Tier 1-3 lit, Tier 3 marked current, Tier 4 dim, fill height correct, badge revealed)
+      via a zoomed screenshot plus a DOM-state dump, replay-on-scroll-reentry specifically confirmed,
+      no mobile overflow at 390px. User-approved 2026-10-07. Not committed.
+- [x] 9. `/pricing` (+ Price Delta widget) — built following `/wholesale-account-management`'s
+      template exactly: grain+orb hero whose glass panel IS the new Price Delta widget (a bounded
+      horizontal track between a price floor and ceiling; on scroll-entry a marker slides from the
+      old price position to the new one, a highlighted range segment growing to span the move,
+      then a "+2.4%" badge reveals, replaying on every scroll re-entry, same
+      IntersectionObserver/replay shape as the other six widgets). A single bounded line with a
+      sliding marker is a deliberately different silhouette from the gauge arc, multi-lane race,
+      radial hub, grid, and vertical ladder already used on the other six capability pages, so all
+      seven capability-page widgets now read as genuinely distinct at a glance. Featured
+      glass+gradient-ring lead tile in "what it does," plain signal list in "what it watches,"
+      plain quiet-tile grid in "how it works," and the luxurious FAQ accordion. New files:
+      `src/scripts/priceDelta.ts` (the widget driver) and the `.delta-track`/`.delta-tick`/
+      `.delta-range`/`.delta-marker` CSS block in `src/index.css`, right after the Account Ladder
+      block. All copy/schema carried over unchanged from the prior ocean-palette build (already
+      accurate, including the FAQ's existing "is this what Flowbound costs" disambiguation
+      question, see the "FAQ section added" note under "Data-driven pages" above). Locally
+      verified: astro check/build clean (0 errors/warnings/hints, 154 pages), no console errors,
+      widget confirmed settled via a zoomed screenshot plus a DOM-state dump, replay-on-reentry
+      confirmed, no mobile overflow at 390px. User-approved 2026-10-07. Not committed. **This was
+      the 7th and final dedicated capability page (items 3-9); remaining items 10-12 are the
+      whole-service narrative pages (`/ask-flowbound`, `/customer-service`, `/quality-monitoring`),
+      which have inline, non-`services.ts`-driven content per the existing "Data-driven pages vs.
+      narrative pages" convention, so each build started from a fresh read of that page's current
+      content rather than assuming the exact same six-section shape carries over unchanged.**
+- [x] 10. `/ask-flowbound` (+ Decision Feed widget) — built from a fresh read of the page's prior
+      content: unlike the 7 capability pages, this whole-service narrative page has no FAQ section
+      (none existed in the prior ocean-palette build either) and its own 5-section shape (hero,
+      what it is, what it does, "a few things teams ask," how it works), not the 6-section
+      capability template. Followed the same visual grammar as every other page converted so far:
+      grain+orb hero whose glass panel IS the new Decision Feed widget (a short feed of
+      question/answer rows that reveal in sequence on scroll-entry, each row staggered via its own
+      `--step` custom property, same technique as `.scan-cell`'s `--col`/`.ladder-rung`'s `--step`,
+      taupe "Q" dots vs. mint-deep "A" dots, the third row left as an unanswered question so the
+      feed reads as live/ongoing rather than a finished log, then an "Answered in 1.4s" badge
+      reveals, replaying on every scroll re-entry, same IntersectionObserver/replay shape as the
+      other eight widgets), icon-drift watermark in "what it is," featured glass+gradient-ring lead
+      tile plus quiet ink-tint grid in "what it does," the sample-questions section kept as this
+      page's one dark bookend (`.bold-depth-ink`, mint dot bullets replacing the old repeated chat
+      icon for consistency with the other pages' signal lists), plain quiet-tile grid in "how it
+      works." New files: `src/scripts/decisionFeed.ts` (the widget driver) and the `.feed-row`/
+      `.feed-dot` CSS block in `src/index.css`, right after the Price Delta block. All copy/schema
+      carried over unchanged from the prior ocean-palette build (already accurate; no FAQ was
+      invented since none existed before). Locally verified: astro check/build clean (0
+      errors/warnings/hints, 154 pages), no console errors, widget confirmed settled via a zoomed
+      screenshot, replay-on-reentry confirmed, no mobile overflow at 390px. User-approved
+      2026-10-07. Not committed.
+- [x] 11. `/customer-service` (+ Ticket Flow widget) — built following `/ask-flowbound`'s
+      narrative-page shape exactly: no FAQ (none existed in the prior build), the same 5-section
+      layout (hero, what it is, what it does, "a few things customers ask," how it works). Hero's
+      glass panel IS the new Ticket Flow widget (four small ticket cards in a row; on scroll-entry
+      each card's status label reveals in sequence, staggered via its own `--step` custom property,
+      same technique as the other staggered widgets; three settle "Answered" in mint-deep, the one
+      marked `.is-routed` in the markup settles "Routed" in taupe instead, then a "3
+      auto-answered" badge reveals, replaying on every scroll re-entry, same
+      IntersectionObserver/replay shape as the other nine widgets), icon-drift watermark in "what
+      it is," featured glass+gradient-ring lead tile plus quiet ink-tint grid in "what it does,"
+      the sample-questions section as this page's one dark bookend (mint dot bullets, same
+      treatment as `/ask-flowbound`), plain quiet-tile grid in "how it works." New files:
+      `src/scripts/ticketFlow.ts` (the widget driver) and the `.ticket-flow`/`.ticket-card`/
+      `.ticket-card-status` CSS block in `src/index.css`, right after the Decision Feed block.
+
+      **Real build error, same class the "two TypeScript gotchas" note under "Capability,
+      narrative, and blog pages" already warned about, just resurfacing here for widget scripts
+      instead of hero scripts**: `decisionFeed.ts` and `ticketFlow.ts` both declared a top-level
+      `const SETTLE_MS` with no top-level `import`/`export` in either file, so both were ambient
+      *scripts* to TypeScript, not modules, and their `SETTLE_MS` consts collided in shared global
+      scope the moment `astro check` type-checked the whole project (`ts(2451)`), exactly like the
+      hero-script `CLAUDE`/`SHADOW` collisions described in that earlier note. Fixed the same way:
+      added `export {}` to the top of both files. **Any new widget script should probably just
+      start with `export {}` by default** rather than waiting for a name collision to surface one,
+      since these widget scripts increasingly reuse the same few constant names (`SETTLE_MS`,
+      `RUN_MS`, etc.) across files. All copy/schema carried over unchanged from the prior
+      ocean-palette build (already accurate). Locally verified: astro check/build clean (0
+      errors/warnings/hints, 154 pages, after the `export {}` fix), no console errors, widget
+      confirmed settled (3 answered, 1 routed, badge revealed) via a zoomed screenshot,
+      replay-on-reentry confirmed, no mobile overflow at 390px. User-approved 2026-10-07. Not
+      committed.
+- [x] 12. `/quality-monitoring` (+ Inspection Line widget) — the third and final whole-service
+      narrative page. Unlike `/ask-flowbound`/`/customer-service`, this page's prior build used
+      "what it watches" (signals, a dark bookend) rather than "a few things X ask" as its examples
+      section, so it kept that shape instead: hero, what it is, what it does, what it watches, how
+      it works, no FAQ (none existed before). Hero's glass panel IS the new Inspection Line widget
+      (five units travel a horizontal conveyor through a fixed checkpoint gate, marked with a small
+      shield-check glyph, on scroll-entry; four settle past the gate on the main line, mint-deep,
+      passed; the one marked `FLAGGED_INDEX` in the script drops below the line as it clears the
+      gate, taupe, flagged, then a "1 flagged" badge reveals, replaying on every scroll re-entry,
+      same IntersectionObserver/replay shape as the other ten widgets). A perpendicular diversion
+      off a single horizontal line is a deliberately different silhouette from every other
+      horizontal-track widget (`.route-track`'s parallel lanes, `.delta-track`'s single bounded
+      line with no branch). Real build note: `SectionIcon.astro`'s `Props` interface only accepts
+      `name`/`class`, no `style`, so the small shield-check glyph positioned above the checkpoint
+      gate had to be wrapped in a plain `<span style="left: calc(58% - 7px)">` rather than passing
+      `style` to the component directly (`ts(2322)`, caught by `astro check`). Icon-drift watermark
+      in "what it is," featured glass+gradient-ring lead tile plus quiet ink-tint grid in "what it
+      does," plain signal list in "what it watches," plain quiet-tile grid in "how it works." New
+      files: `src/scripts/inspectionLine.ts` (the widget driver, `export {}` from the start per the
+      note above) and the `.inspect-line`/`.inspect-track`/`.inspect-gate`/`.inspect-unit` CSS
+      block in `src/index.css`, right after the Ticket Flow block. All copy/schema carried over
+      unchanged from the prior ocean-palette build (already accurate). Locally verified: astro
+      check/build clean (0 errors/warnings/hints, 154 pages), no console errors, widget confirmed
+      settled (4 passed on the line, 1 flagged and dropped below, badge revealed) via a zoomed
+      screenshot plus a DOM-state dump, replay-on-reentry confirmed, no mobile overflow at 390px.
+      User-approved 2026-10-07. Not committed. **This completed all three whole-service narrative
+      pages (items 10-12) and all ten Signal Primitives widgets (Stock Gauge, Forecast Spark,
+      Route Pick, Inventory Scan, Supplier Ping, Account Ladder, Price Delta, Decision Feed, Ticket
+      Flow, Inspection Line), each a genuinely distinct silhouette, none reused across pages.**
+
+**"Signal Primitives II" concept lab (2026-10-07).** Before starting items 13-15, the user asked to
+invent new widgets for the three remaining one-off pages rather than leave them without one. Unlike
+the ten capability/narrative widgets, none of these three pages (`/how-it-works`, `/services`,
+`/product`) uses the small glass-panel hero pattern, each already has its own full-bleed canvas/WebGL
+hero, so a widget here has to live inside page content instead, not the hero. Three concepts were
+built as a live interactive artifact (same mockup-first discipline as every prior round) grounded in
+each page's real copy, not generic placeholder content:
+- **Plate Clear** (`/how-it-works`): replaces the static "what comes off your plate" checklist with
+  one that visibly auto-clears item by item (checkmark + strikethrough), same 7 real items.
+- **Signal Relay** (`/services`): a rotating ticker sampling one real capability + a live-sounding
+  readout from each of the 5 real services in turn.
+- **Core Convergence** (`/product`), first draft: four pillar nodes pulsing into a central hub.
+  **Explicitly rejected**: "I need something that fits the new aesthetic of my site." The real
+  problem wasn't execution, it was the shape itself, a radial hub-and-spokes diagram is already
+  Supplier Ping's silhouette, and reads as a generic network graphic rather than anything distinctly
+  this site. Replaced with **Pillar Spotlight**: no new shape at all, just the site's own already-
+  shipped tile system (the ink-tint quiet tile and the glass + ink-to-mint gradient-ring featured
+  tile, the exact recipe every bento/capability lead tile already uses) animated so one of the four
+  real pillars (Decision Engine, Consulting Wrapper, Ask Flowbound, Web App) is "featured" at a time,
+  opening to its real body copy on its turn. Approved as the `/product` concept.
+
+All three approved 2026-10-07. **Lesson worth repeating for any future widget**: when a page already
+has an established visual system (tiles, badges, gradient rings), a new widget should animate that
+system rather than introduce an unrelated diagram shape, even a well-built one, or it reads as
+generic/AI-templated rather than belonging to this specific site.
+
+- [x] 13. `/how-it-works` (+ Plate Clear, + Step Trace) — two-round build, worth reading both
+      rounds since the first one was flagged directly and reversed.
+
+      **Round 1 (reversed)**: kept the page's old bespoke dark canvas hero ("Scroll-Driven
+      Assembly") recolored to Bold (`HowItWorksBackground.astro`'s gradient swapped to the shared
+      `.bold-depth-ink` recipe, `howItWorksHero.ts`'s `SHADOW`/`BRIGHT` constants and every
+      hardcoded `rgba(219,233,238,...)` glow/line color swapped to bold-ink/bold-mint), reasoning
+      that its scroll-tied comet through four checkpoints already mirrored this page's own
+      four-step structure. **Flagged directly**: "the how it works page looks nothing like the
+      other pages that were redone, and the hero section widget is also not the right one." Asked
+      the user to choose explicitly rather than guess again: match every other converted page's
+      light grain+orb + glass-panel hero exactly (chosen, recommended) vs. keep a dark hero with
+      different contents. **Lesson: recoloring an old structural choice to the new palette doesn't
+      make it "converted" if the structure itself reads as inconsistent with the rest of the
+      rebuild** — this whole rebuild's throughline is the shared hero grammar, not just the color
+      tokens, and a page that keeps a bespoke dark hero (even a well-crafted, content-accurate one)
+      breaks that throughline the same way a leftover `ocean-*` class would.
+
+      **Round 2 (current)**: hero switched to the standard light grain+orb + `bold-glass` panel
+      pattern, same as every capability/narrative page. `HowItWorksBackground.astro`/
+      `howItWorksHero.ts` left on disk unused (same precedent as every other retired
+      `*Background.astro` file, not deleted). Built a new widget for the now-empty glass panel,
+      **Step Trace**: a comet travels once along a straight 4-node path (Connect, Signal, Decide,
+      Ask, the same four step names as the page's own steps section) on scroll-entry, using the
+      same `offset-path` technique as `.spark-comet` but one-shot (`animation-fill-mode: forwards`)
+      rather than a continuous loop; each node lights mint-deep in sequence as the comet reaches
+      it, staggered via its own `--step` custom property (same technique as every other staggered
+      widget); then a "Decision ready" badge reveals next to a real readout line ("Reorder 400
+      units · Supplier B," pulled from the page's own step-03 example copy). New files:
+      `src/scripts/stepTrace.ts` and the `.trace-track`/`.trace-node`/`.trace-comet` CSS block in
+      `src/index.css`, right after the Plate Clear block. Rest of the page unchanged from round 1:
+      magnetic buttons, numbered-badge quiet-tile grid for "the four steps" (no featured/lead tile,
+      there's no 6-item list here), and the approved Plate Clear widget still replacing the static
+      "what comes off your plate" checklist (each row gets a mint-deep checkmark + strikethrough on
+      scroll-entry, staggered via `--step`, sitting directly on the `.bold-depth-ink` section
+      background like every other dark-section signal list on the site). New files from round 1:
+      `src/scripts/plateClear.ts` and the `.plate-check`/`.plate-text` CSS block in
+      `src/index.css`, right after the Inspection Line block.
+
+      Real build error (round 1): `plateClear.ts` initially declared `const list/tally/badge` from
+      `getElementById`, guarded with an early-return null check, then referenced them (unguarded)
+      inside nested closures (`settle`/`reset`/`play`); TypeScript doesn't carry that narrowing into
+      a closure defined later in the same function (`ts(18047)`, 6 instances). Fixed by assigning
+      the narrowed values to new `const`s (`list`/`tally`/`badge`, shadowing the original
+      `*El`-suffixed names) immediately after the guard, which **does** carry the non-null type into
+      every closure, cleaner than sprinkling `!` assertions at every call site.
+
+      Locally verified (round 2): astro check/build clean (0 errors/warnings/hints, 154 pages), no
+      console errors, hero now visually matches the capability-page template exactly, Step Trace
+      confirmed settled (all 4 nodes lit, badge revealed) and replay-on-reentry confirmed, Plate
+      Clear unaffected and still confirmed working, no mobile overflow at 390px. User-approved
+      2026-10-07. Not committed.
+
+      **Follow-up, later session**: direct feedback on revisiting the page: "why are these crossed
+      out all the time... can we have like a moving workflow of these being crossed out at
+      different times like a time lapse? And have it restart by clicking on the all clear button."
+      Two real findings, not just a pacing preference:
+      1. The original stagger was 110ms per row; with 7 rows the whole sequence finished in about a
+         second, fast enough that a visitor almost always scrolled in on the already-settled end
+         state and never caught a visible sequence, reading as "just crossed out" rather than an
+         animation at all.
+      2. A genuine bug, found by screenshotting mid-sequence rather than trusting the description:
+         `text-decoration-line` (the "line-through" keyword itself) is not an animatable CSS
+         property, only `text-decoration-color` is. Toggling `text-decoration: line-through` on
+         `.plate-row.is-done .plate-text` made the line snap onto ALL 7 rows instantly the moment
+         the `is-done` class was added to every row at once (which plateClear.ts does in a single
+         `requestAnimationFrame`, relying entirely on each row's own `--step`-keyed
+         `transition-delay` for the stagger), completely ignoring that delay, even though the
+         color fade right next to it respected it correctly. A screenshot at the 1.8s mark with the
+         old 110ms pacing would have shown this too, it just wasn't visible at that speed; slowing
+         the pacing down to actually look at a mid-sequence frame is what surfaced it. **This, not
+         just the pacing, was the real cause of "these are crossed out all the time": the
+         strikethrough itself was never staggered.**
+
+         Fixed by keeping the line permanently present but transparent at rest
+         (`text-decoration-line: line-through; text-decoration-color: transparent;` as the base
+         state) so only its color, which genuinely interpolates including from/to transparent, ever
+         animates, which DOES respect `transition-delay`. **Any future CSS reveal that toggles
+         `text-decoration`, `display`, or another non-animatable property via a class added to
+         several elements at once should keep the property's "shape" constant and only animate a
+         genuinely interpolable sub-value (color, opacity, transform) instead**, the same lesson
+         this file already has for `clip-path`/`IntersectionObserver` geometry, just a different
+         discrete-property trap.
+
+         Pacing: per-row delay raised from 110ms to 480ms (`.plate-check`/`.plate-text` in
+         `src/index.css`, `STEP_MS` in `plateClear.ts`, no shared source, keep both in sync by
+         hand), stretching the 7-row sequence to roughly 3.5s. The `0 of 7 automated` tally now
+         counts up in lockstep with each row (new per-row `setTimeout`s in `plateClear.ts`, timed to
+         land the instant each row's CSS transition completes) instead of jumping straight from 0 to
+         7 at the very end, so the counter itself reads as part of the time-lapse rather than a
+         static label.
+
+         `#plateBadge` ("All clear") changed from a plain `<span>` to a real `<button>`: clicking it
+         calls the same `play()` the `IntersectionObserver` already uses, resetting every row and
+         replaying the full time-lapse on demand, the user's explicit second ask. A small inline
+         restart-icon SVG (generic two-arc circular-arrow shape, not any specific icon library)
+         spins 180° on hover via `.plate-badge-icon`; the button's `pointer-events` is toggled
+         inline in lockstep with its opacity (`none` while hidden/mid-sequence, `auto` once
+         settled) so it can't be clicked or tabbed to before there's anything to replay.
+
+         **Real near-miss, caught before screenshotting**: the button's hover/active treatment was
+         first written as a separate `transition-opacity duration-300` Tailwind utility (for the
+         show/hide fade) alongside a new `.plate-badge` custom class's `transition: background-color
+         0.3s ease, transform 0.2s ease` shorthand. The `transition` shorthand fully REPLACES
+         `transition-property` rather than merging with whatever another class already set for it,
+         exactly the documented `tilt-card`/`reveal-item` trap elsewhere in this file, just with
+         Tailwind's own `transition-opacity` utility as the victim instead of another custom class:
+         the opacity fade would have silently stopped transitioning (snapping instantly) the moment
+         `.plate-badge`'s shorthand won the cascade. Fixed by folding `opacity` into `.plate-badge`'s
+         own transition list instead of splitting it across two classes. **Any time a new custom
+         class's `transition` shorthand will sit on the same element as a Tailwind
+         `transition-{property}` utility, fold that property into the custom class's own list
+         instead of leaving the two to fight over `transition-property`.**
+
+         Verified: astro check/build clean (154 pages, 0 errors), a scripted Playwright run sampling
+         DOM state at six points across the sequence confirmed the tally counts up 0→2→4→6→7 in
+         sync with each row's checkmark, a screenshot at the 1.8s mark confirmed exactly 4 of 7 rows
+         visibly struck through (not all 7, the bug above), clicking `#plateBadge` after completion
+         confirmed an immediate reset to "0 of 7" followed by a full replay to "7 of 7," no console
+         errors, no mobile overflow at 390px. Not yet explicitly re-approved by the user; not
+         committed.
+
+         **Real bug, second round, same day**: user reported "i dont see it working after clicking
+         all clear," directly contradicting the Playwright verification just above. Root cause:
+         that verification ran with `page.emulateMedia({ reducedMotion: "no-preference" })`, the
+         explicit override this file's own "Verification gotcha" note says to use so a real
+         animation loop is actually visible, since this dev machine runs with OS-level Reduce
+         Motion on and default screenshots otherwise silently show the static fallback frame. The
+         click handler itself was never tested under the OS's actual (reduced) setting. Reproduced
+         directly with `reducedMotion: "reduce"` emulation: clicking the badge called `play()`,
+         which under `reduced` just calls `reset()` then `settle()` synchronously in the same tick,
+         so the state (tally text, row classes) starts and ends identical with no visible change in
+         between, meaning the click genuinely did nothing for a reduced-motion visitor, confirmed
+         by a scripted click that read the tally as "7 of 7 automated" before, immediately after,
+         and 2 full seconds after clicking.
+
+         Fixed by splitting the automatic path from the click path instead of routing both through
+         the same `reduced`-gated `play()`. A new `runSequence()` holds the actual staggered logic
+         unconditionally (the per-row CSS transitions it drives still separately respect reduced
+         motion via index.css's own `@media (prefers-reduced-motion: reduce)` rule, forcing them to
+         `transition: none`, so a reduced-motion visitor still gets no per-row motion); `play()`
+         (used only by the `IntersectionObserver`'s automatic scroll-triggered entry) still skips
+         straight to `settle()` under `reduced`, same as before, since an autoplaying scroll-
+         triggered effect is exactly what that preference is meant to suppress. The badge's click
+         handler now calls `runSequence()` directly, bypassing the reduced check entirely, since a
+         user's own deliberate click on a button labeled to replay something is a requested action,
+         not ambient motion, the same reasoning a system accessibility setting's own "preview"
+         button uses to still animate on click regardless of the user's reduced-motion preference.
+         Even with the CSS-level checkmark/strikethrough transitions suppressed under reduced
+         motion, the tally counter (plain text updates) and the badge's hide-then-reappear (a plain
+         opacity/pointer-events toggle, not a CSS transition) still tick visibly over the same
+         ~3.5s, which is what actually confirms to a reduced-motion visitor that their click did
+         something, rather than the totally-silent no-op it was before. **Any future click-to-
+         replay or similar explicit user-triggered animation on this site should follow this same
+         split**: gate the automatic/scroll-triggered entry point on `prefers-reduced-motion`, but
+         never gate a direct user-initiated replay action the same way, or a reduced-motion visitor
+         (confirmed to include this dev machine, and apparently the user's own machine too) gets a
+         button that silently does nothing. Also worth remembering for next time: **a Playwright
+         verification pass that only uses `reducedMotion: "no-preference"` is not sufficient for
+         anything with a click-triggered or otherwise user-initiated animation path**, since that
+         path can have its own separate (and separately broken) relationship with the OS's actual
+         reduced-motion setting; test both media states for those, not just the one needed to see
+         the passive/autoplay animation at all.
+
+         Re-verified: astro check/build clean (154 pages, 0 errors), reproduced the bug under
+         `reducedMotion: "reduce"` emulation before fixing (confirmed via the flat "7 of 7"-the-
+         whole-time reading above), then confirmed the fix under both `"reduce"` (click now reads
+         "0 of 7" at 100ms, progresses to "4 of 7" by 2s, reaches "7 of 7 automated" by 4s) and
+         `"no-preference"` (same end-to-end replay, unaffected), no console errors in either mode.
+         User-approved 2026-10-11 (re-verified build/screenshots, no new issues raised). Not committed.
+
+**Standing rule from the /how-it-works round-trip, applies to `/services` and `/product` too**:
+before starting either, asked the user directly whether their existing full-screen WebGL heroes
+(`ServicesOrbit`'s pill links, `ProductBackground`'s particle convergence, both real, previously-
+approved work) should also switch to the light grain+orb + glass-panel pattern. Answer: **yes,
+switch both**, discarding the WebGL heroes for sitewide consistency. Unlike `/how-it-works`'
+canvas hero (kept once, then reversed), this was decided up front for both remaining pages, so
+each needs its own new hero widget designed fresh, same as Step Trace was for `/how-it-works`;
+the previously-approved Signal Relay/Pillar Spotlight concepts (originally scoped for a content
+section, "near the hero or above the service sections" / "inside or beside the four pillars")
+move into the hero glass panel instead, since a widget that visualizes a whole page's thesis
+belongs at the top, not partway down. Each page therefore gets exactly one of its approved
+widgets, in the hero, not duplicated into the content section it was originally scoped for.
+
+- [x] 14. `/services` (+ Signal Relay, in the hero) — hero switched to the standard light
+      grain+orb + `bold-glass` panel pattern, dropping `ServicesOrbit` (the WebGL particle hero)
+      and the six floating pill-links scattered over it entirely (`ServicesOrbit.astro`/
+      `servicesHeroWave.ts`'s already-deleted predecessor note still applies: `ServicesOrbit.astro`
+      itself is left on disk unused, same precedent as every other retired `*Background.astro`).
+      The approved Signal Relay widget now lives in the glass panel: a continuous ticker (not a
+      settle-once animation like every other widget, the one widget on the site that loops
+      rather than resetting) cycling through all 5 real services, each showing one real capability
+      and the *same canonical readout number its own dedicated capability page already shows*
+      (Forecast Spark's "+18%", Supplier Ping's "1 flagged," Stock Gauge's "Order placed," Ticket
+      Flow's "3 of 4 answered," Inspection Line's "1 flagged this batch"), a deliberate cross-site
+      continuity touch. `signalRelay.ts` pauses the interval on scroll-away and resumes on
+      re-entry (play/pause, not reset/replay, since there's no "settled" end state to return to).
+
+      Content below the hero: the old three-tone system (`paper`/`white`/`dark` from
+      `services.ts`) collapsed to two Bold treatments, light (former paper+white, which were only
+      subtly different ocean shades) and dark (the one service marked `dark`, Autonomous), keeping
+      the page's real rhythm (4 light sections + 1 dark bookend) and matching the "exactly one
+      dark bookend per page" convention every other Bold page follows, rather than inventing a
+      second light shade or multiple dark sections. The page's own distinctive slide/scale/clip
+      reveal-variety rotation (`revealCycle`, see the original "Services page" note above) carried
+      over unchanged, including the `.reveal-clip-mask` wrapper discipline, since those CSS classes
+      were never ocean-specific. Numbered circle badges follow the established light/dark-safe
+      pairing (`bg-bold-ink`/paper digits on light sections, inverted `bg-bold-paper`/ink digits on
+      the dark one, since a plain ink badge would blend into an ink background). `hoverGlow.ts`/
+      `data-glow-container` (the cursor-follow glow, an ocean-system mechanic already dropped by
+      every other converted page) removed; `cardTilt` was never used here either. All per-capability
+      and per-service "Explore X" pills gained `data-magnetic`.
+
+      Real near-miss, caught before shipping: the dark tone's pill button was first given a
+      `bg-bold-mint` hover-sweep fill with the pill's existing `text-bold-paper` label, which would
+      have repeated the exact class of contrast bug CLAUDE.md already warns about (`mint`, not
+      `mint-deep`, only clears ~1.4:1 against `paper`, safe as text/icons on dark ink, not as a
+      *fill* paired with paper text). Fixed before verification by reusing the exact same
+      `bg-bold-mint-deep` text-`bold-paper` fill, sweep-to-`bg-bold-ink`, pairing already proven
+      safe everywhere else on the site, rather than inventing an unverified mint-on-dark variant.
+      **Any new pill/badge color pairing should default to an already-proven pairing from this
+      list rather than a new one, unless there's a specific reason to check fresh contrast math.**
+
+      New files: `src/scripts/signalRelay.ts` and the `.relay-track`/`.relay-fill`/`.relay-dot`
+      CSS block in `src/index.css`, right after the Step Trace block. All copy/schema carried over
+      unchanged from the prior ocean-palette build (already accurate). Locally verified: astro
+      check/build clean (0 errors/warnings/hints, 154 pages), no console errors, Signal Relay
+      confirmed advancing through items with the dot indicator and fill bar in sync, the Autonomous
+      dark bookend confirmed rendering correctly among 4 light sections, reveal-variety rotation
+      confirmed across sections, no mobile overflow at 390px.
+
+      **Follow-up, same day**: direct feedback after reviewing the built page: "I want the first
+      style of tiles on this page. Where we have the radiant [sic, gradient] border. I feel like
+      it would look better here." Asked whether the gradient-ring treatment should go on one
+      featured lead tile per section (matching the capability pages' bento pattern) or every
+      tile; the user chose one lead tile per section. Every capability grid on the page (the
+      "Ask Flowbound" teaser's 3 and each of the 5 services' 2-3) now stacks a featured
+      `bold-tile-feature` lead tile (capability index 0) above a quiet grid of the rest, same
+      `[data-reveal]` wrapper / `[data-tilt]` inner-element split every other featured tile on the
+      site uses. The dark Autonomous section needed its own `featureCard` variant, since
+      `.bold-glass`'s light frosted fill is built for sitting over imagery (the hero), not a dark
+      content section: same gradient ring, but a plain `border-bold-paper/15 bg-bold-paper/8` fill
+      instead (slightly stronger than the quiet tile's `/5`, to read as "the featured one" without
+      `.bold-glass`). Per-capability "Explore X" pills that used to sit under every tile now only
+      apply to the lead tile and the (possibly empty) quiet grid, same `capability.href` logic as
+      before, just redistributed. Re-verified: astro check/build clean (154 pages, 0 errors), no
+      console errors, gradient ring confirmed rendering on both light and dark sections (including
+      the Autonomous one, where the mint half of the ring reads clearly against the dark
+      background), no mobile overflow.
+
+      **Second follow-up, same day**: a screenshot of the built page was flagged directly as not
+      looking good: "I need a better way to display these tiles on the page that look high quality
+      and professional." The real defect, visible once pointed at: each per-capability "Explore X"
+      CTA was a large pill living OUTSIDE its card (`mt-5 flex justify-center`, `min-w-[19rem]`),
+      separated from the card by a dead gap and centered independently of it, so a card and its
+      button read as two unrelated objects, not one tile, and a long label wrapping to two lines
+      (e.g. "Explore Demand Forecasting") made that pill a different height than a short one on the
+      same row (e.g. "Explore Inventory Tracking"). Root cause wasn't the gradient ring or the
+      palette, it was this card/button split, the same kind of "separate floating action" shape the
+      Linear/Stripe/Attio bento convention this whole rebuild is modeled on explicitly avoids (see
+      the mockup-process note at the top of this section).
+
+      Fixed by moving the action INSIDE the card: every lead and quiet tile is now a single
+      `flex h-full flex-col` box, the "Explore X" action is a plain text link (icon + label + arrow,
+      not another filled pill) behind a hairline `border-t` divider, pinned to the card's bottom
+      edge via `mt-auto` rather than following directly after the description. Two effects of this:
+      (1) a card with no href just ends after its description, no dead space, since there's no
+      detached button reserving room below it; (2) in the quiet-tile grid, where sibling cards
+      stretch to match row height (`h-full` on a CSS Grid item defaults to `align-items: stretch`),
+      two cards with different description lengths now still land their footer links at the exact
+      same baseline, confirmed in a side-by-side screenshot, instead of each sitting at a different
+      height below its own paragraph. New shared CSS: `.bold-tile-link` in `src/index.css` (a bare
+      `transition: color` marker, the actual link styling is Tailwind utilities in markup), plus two
+      new `toneStyles` fields (`footerBorder`, `link`) for the light/dark divider and link-text
+      colors, reusing the same mint-deep-on-light / mint-on-dark pairing already proven elsewhere on
+      this page rather than inventing a new one. `.bold-tile-feature`'s gradient ring was also
+      nudged from 1.5px/0.6 opacity to 2px/0.8 opacity while in here, since the original was faint
+      enough at 1x scale to read as a plain thin border rather than the "radiant border" effect the
+      user had asked for ten days earlier (see the first follow-up above), not something caught by
+      an oversampled or zoomed-in screenshot.
+
+      This only touched the per-service capability grids (the ones with real `href`s): the "Ask
+      Flowbound" teaser's 3 tiles have no `href` field in their data at all, so they had no
+      detached-pill bug to begin with and weren't restructured. Re-verified: astro check/build clean
+      (154 pages, 0 errors), the Inventory section (light) and Autonomous section (dark) both
+      screenshotted at the card level confirming the footer link now sits inside the card behind a
+      visible divider, quiet-tile footer-baseline alignment confirmed across two cards with
+      different copy lengths, no mobile overflow at 390px. User-approved 2026-10-11. Not committed.
+
+**Premium pill button system, sitewide (same day).** Direct feedback after seeing the tile-footer-
+link fix above: "I like this way much better... can we apply this update site wide? ... any button
+on the site let's enhance to fit this new design language." Two separate asks, handled together:
+
+1. The tile-footer-link pattern itself only needed spreading to `/services`' own capability grids,
+   since a grep confirmed `capability.href`/`capabilities[0].href` is only ever read in
+   `services.astro`, every other page's featured/quiet tiles describe sub-features of that SAME
+   page (no cross-page link), so they never had the detached-pill bug to begin with. Nothing further
+   to change there.
+2. "Any button on the site" was real scope: roughly 15 files (`Hero.astro`, `Cta.astro`, `Nav.astro`
+   desktop + mobile CTAs, `HowItWorks.astro`/`ProductSystem.astro`'s homepage pill, `services.astro`'s
+   hero + Ask Flowbound teaser + per-service closing pills, and all 11 already-converted capability/
+   narrative pages' hero buttons) each repeated their own ad hoc Tailwind class string (a mint-deep
+   fill, an ink outline, or a third ink-filled variant used for the homepage's two "See X" pills) plus
+   a hand-copied `group-hover` sweep `<span>`, so the same pill idea looked and behaved subtly
+   differently depending on which file last touched it. `/product` and `/blog` were deliberately
+   EXCLUDED: both are still on the old `ocean`/`fb` system (checklist items 15 and 16-18, not yet
+   built), so their buttons will pick up this system automatically when their own turn comes rather
+   than being touched out of order while the rest of those pages isn't Bold yet.
+
+   Replaced with one shared system in `src/index.css`: `.bold-btn` (base layout/motion, wrapped in
+   `@layer components`, see the real bug below) plus one tone class (`-primary` / `-ink` /
+   `-secondary` / `-secondary-dark`) plus one size class (`-lg` / `-md` / `-sm`). "Premium" here
+   means a layered, color-tinted shadow (a tight contact shadow plus a wider glow matching the fill
+   color) and a faint inset top highlight, replacing the old single flat `hover:shadow-[...]` value
+   that read as a generic template pill rather than something considered. The hover sweep-fill is
+   now a CSS `::before` pseudo-element (clipped automatically by the parent's existing
+   `overflow-hidden` + rounded corners) instead of a hand-rolled `<span>` at every call site, so a
+   button's markup only needs its label/icon/arrow content; those children get
+   `position: relative; z-index: 1` for free via `.bold-btn > *`, so old `relative z-10` classes
+   left on spans from the pre-existing markup are redundant but harmless. Primary is ground-agnostic
+   (the mint-deep fill / paper text pairing already proven safe on both light and dark sections) so
+   it needs no dark variant; only the outline secondary does, since its border/text color has to
+   invert to stay legible on a dark section like `Cta.astro`'s `.bold-depth-ink` ground. The 11
+   capability/narrative pages' hero buttons (identical markup across all of them, confirmed with
+   grep before touching anything) were converted with a scripted literal-string replace rather than
+   11 manual edits, verified `assert`-style (the script fails loudly if any file doesn't contain the
+   exact expected old string) rather than trusting a blind find-and-replace.
+
+   **Real bug, caught from a mobile screenshot, not anticipated in advance**: Nav's desktop CTA
+   (`hidden sm:inline-flex` on the same element as the new `bold-btn` classes) stayed visible at a
+   390px mobile width after the conversion. Root cause: `src/index.css` is plain CSS written after
+   `@tailwind utilities` (line 3), so a bare `.bold-btn { display: inline-flex }` sits LATER in the
+   compiled stylesheet than Tailwind's own `.hidden`/`.sm\:inline-flex` utilities; at equal
+   single-class specificity, later source position wins, so `.bold-btn`'s unconditional
+   `display: inline-flex` silently beat `hidden` at every breakpoint instead of only at `sm`+.
+   This is the first custom class in this file to set `display` and also get combined with a
+   Tailwind responsive-display utility on the same element, every other custom class so far
+   happened to avoid this exact collision, so it hadn't surfaced before. Fixed by wrapping the whole
+   `.bold-btn` block in `@layer components`, which tells Tailwind to splice it in at the
+   components-layer position (before utilities) regardless of its physical position in the file, so
+   `hidden`/`sm:inline-flex`/`w-full`/every other Tailwind utility reliably overrides it, matching
+   what Tailwind's layering model already assumes for any custom component class. **Any future
+   custom CSS class in this file that will ever be combined with a Tailwind utility on the same
+   element (especially a responsive display/visibility one) should go in `@layer components` from
+   the start**, not plain top-level CSS, this bug class is easy to miss until the one page/viewport
+   combination that actually exercises the conflict gets screenshotted.
+
+   Verified: `astro check`/`astro build` clean (154 pages, 0 errors/warnings/hints), zero console
+   errors across `/`, `/services`, `/reorder`, `/how-it-works`. Screenshotted: homepage hero at rest
+   and on primary-button hover (sweep-to-ink + layered shadow confirmed), the dark `Cta.astro`
+   section (both the primary and the new `secondary-dark` outline read correctly against
+   `.bold-depth-ink`), `/services`' Ask Flowbound teaser pill and the dark Autonomous section's
+   capability tiles, `/reorder`'s hero (confirms the 11-page scripted batch rendered correctly), the
+   homepage mobile nav (confirms the `@layer components` fix: desktop CTA now correctly hidden below
+   `sm`, hamburger menu's own full-width "Request a pilot" button renders and centers correctly).
+   User-approved 2026-10-11. Not committed.
+- [x] 15. `/product` (+ Pillar Spotlight, in the hero) — hero switched to the standard light
+      grain+orb + `bold-glass` panel pattern, dropping the "Convergent Signals" WebGL particle hero
+      (`ProductBackground.astro`, left on disk unused, same precedent as every other retired
+      `*Background.astro`) per the standing decision made before `/services` that both remaining
+      WebGL heroes should go. The approved Pillar Spotlight widget lives in the hero glass panel: a
+      2x2 grid of the page's own four real pillars (Decision Engine, Consulting Wrapper, Ask
+      Flowbound, Web App), one highlighted at a time on a continuous loop (play/pause, not
+      reset/replay, same shape as Signal Relay, since there's no single "done" pillar, the rotation
+      itself is the thesis), with a readout line below showing the current pillar's real title and
+      a one-line blurb condensed from its own body copy. The highlight reuses `.bold-tile-feature`'s
+      own gradient ring directly, toggled onto the active `.pillar-chip` by index via
+      `pillarSpotlight.ts`, "no new shape, just the site's tile system animated," per the originally
+      approved Signal Primitives II concept.
+
+      Direct request this round, not just "convert to Bold": "I need this page to be eye catching,
+      stunning and the best page to be on visually to the site. Ensure all my tiles are the radiant
+      tiles with the interactive hover mode." A deliberate, explicit exception to the sitewide
+      "exactly one featured lead tile per grid" convention every other page follows: all 4 pillar
+      tiles AND all 3 how-it-works step tiles get the full `.bold-tile-feature` gradient-ring +
+      `[data-tilt]` treatment, not one lead tile with a quiet grid underneath. Light pillar tiles
+      reuse the exact `tilt-card bold-tile-feature bold-glass` recipe (plus a per-pillar icon,
+      bolt/document/spark/network, alongside the existing numbered-badge convention, for extra
+      visual richness specific to this one flagship page); dark step tiles (the page's one
+      `.bold-depth-ink` bookend) reuse the dark `featureCard` variant from `/services`' Autonomous
+      section (`border-bold-paper/15 bg-bold-paper/8`, no `.bold-glass`). This makes `/product` the
+      one page on the site where "featured" is the default tile treatment rather than the
+      exception, by explicit request, to set it apart as the flagship page. `hoverGlow.ts`/
+      `data-glow-container` (the old mouse-glow mechanic this page used to drive its pillar/step
+      grids) and `heroScroll.ts` (no longer needed without the WebGL hero's scroll fade/zoom) were
+      both removed, same precedent as every other converted page.
+
+      New files: `src/scripts/pillarSpotlight.ts` and the `.pillar-chip`/`.pillar-dot` CSS block in
+      `src/index.css`, right after the Signal Relay block.
+
+      **Follow-up, same session: "Can we implement this [double-gradient orb hero] on all pages of
+      my site? Make each one slightly different... Have the Homepage and product page heros the
+      'best' of all the site."** A grep confirmed all 12 already-converted capability/narrative
+      pages (the 7 dedicated capability pages, 3 narrative pages, `/services`, `/how-it-works`)
+      shared one byte-for-byte identical single orb (`20rem`, same position, same `#C998CD` purple-
+      tint, same `0.32` opacity), literally the "redundant hero" problem implied by the request.
+      Gave each page a second orb: same established palette (`mint` `#8FE3D3`, `taupe` `#6E5A52`,
+      the derived purple-tint `#C998CD`), unique size/position/color combination per page, sized
+      and positioned to stay visibly quieter than the homepage's and `/product`'s large flagship
+      orbs (now the two intentionally "best"/richest hero treatments on the site, per the user's
+      explicit framing), preserving the existing "capability hero is deliberately quieter" rule
+      while still giving every page a real second glow instead of one shared, identical orb.
+
+      **Real finding, not just a tuning pass**: `teal` (`#6E9CA3`), used as the second orb's color
+      on 4 of the 12 pages, read as essentially invisible against `bg-bold-paper` even after
+      bumping its opacity well past what made mint/taupe/purple-tint clearly visible on the same
+      background. The math: teal's own lightness is already close to paper's, so blending it at any
+      reasonable "soft glow" opacity (where mint or taupe produce a clearly visible tinted blur)
+      interpolates to a near-imperceptible, barely-greyed version of the background rather than a
+      visible color statement, confirmed by computing the blended RGB at 30% opacity (lands within
+      a few units of paper's own RGB) rather than just eyeballing a screenshot. This is a new,
+      background-specific finding, not a contradiction of the existing CTA-band note that teal
+      "reads as atmosphere" there: that reasoning was specific to blending over a dark, saturated
+      `ink` ground, where teal's mid-lightness stands out; on a LIGHT `paper` ground the same
+      mid-lightness is the problem; the same color can be background-appropriate on one ground and
+      not the other. Fixed by swapping every second-orb use of `teal` for `mint` or `taupe` instead
+      (both already proven to read clearly on `bg-bold-paper`) rather than inventing a new derived
+      "teal but darker" glow color for a single use case. **Any future light-background glow should
+      stick to mint, taupe, or the derived purple-tint, not the sitewide `teal` token**, which is
+      safe as text/icon color on `ink` but not as a glow on `paper`, a distinct contrast failure
+      mode from the ones already documented (not a "too dark," `ink`-style failure, a "too close to
+      the background's own lightness" one).
+
+      A second pass also found the new orbs individually too faint even in their safe colors at the
+      original smaller size (13-16rem, scaled down from the homepage/product's 18-26rem on the
+      assumption that smaller = quieter): since `.bold-orb`'s blur radius is a fixed 60px regardless
+      of the orb's own diameter, a smaller circle devotes proportionally more of its area to the
+      blurred-away edge, reading noticeably fainter than the same opacity at a larger size. Fixed by
+      sizing every second orb to roughly `homepage/product orb size - 4rem to -8rem` (17-20rem, not
+      13-16rem) rather than scaling it down arbitrarily; the "quieter than the flagship pages" effect
+      now comes from a same-ballpark size paired with a smaller handful of total orbs (2 vs home's
+      and product's own 2, so actually equal in count, the quietness comes from the capability pages'
+      overall lower hero complexity: no two-line italic accent treatment variety, a narrower content
+      column, etc., not from an artificially shrunken orb).
+
+      Re-verified across all 12 affected pages plus `/`/`/product`: astro check/build clean (154
+      pages, 0 errors), a scripted sweep of all 14 Bold-converted pages at both desktop and 390px
+      mobile widths confirmed zero console errors and zero horizontal overflow anywhere, screenshots
+      confirmed every second orb now reads as a clearly visible, distinctly colored/positioned glow
+      relative to its neighbors.
+
+      **Second follow-up, same session**: direct correction on the rollout above: "the gradients
+      should all be in the top right corner like the product page. Also they should all be the
+      green and purple gradient. I just need them to not be 100% the same." The per-page color
+      variety (mint/taupe/purple-tint rotating, teal swapped out) and scattered positions
+      (bottom-left, top-left, etc.) from the prior pass were exactly the wrong kind of "different,"
+      not what was being asked for: the user wanted ONE consistent signature (mint-to-purple,
+      top-right, matching `/product`'s own combo, since that's the one they said they "really
+      like"), with only small enough variation that no two pages are pixel-identical, not a
+      different color story per page. Rewrote all 12 pages' two orbs (plus swapped the homepage's
+      own second orb from `taupe` to the same `#C998CD` purple-tint, since "they should all be"
+      was read as including the homepage, not just the 12 capability/narrative pages) to the same
+      `#8FE3D3` mint primary / `#C998CD` purple-tint secondary pairing `/product` uses, both
+      anchored to the top-right corner (negative-to-small `top`/`right` offsets for the primary,
+      a smaller inset `top`/`right` position for the secondary, same geometry `/product`'s own two
+      orbs use), with every page's exact size/position/opacity numbers hand-varied by a few units
+      so none are byte-for-byte identical to `/product`'s or to each other's, the literal reading
+      of "not 100% the same." Homepage and `/product` keep the largest sizes in the set (24-26rem
+      primary), every other page's primary sits around 18-21rem, preserving the already-established
+      "capability hero is deliberately quieter than the homepage/product flagship" hierarchy via
+      size while every page now shares the same two-color identity.
+
+      Re-verified: astro check/build clean (154 pages, 0 errors), a scripted sweep across `/`,
+      `/product`, and 6 of the 12 capability/narrative pages confirmed zero console errors and zero
+      mobile overflow at 390px, screenshots confirmed every hero now reads as the same mint-to-
+      purple top-right signature at a page-appropriate scale, distinct enough in exact size/position
+      to not look cloned next to its neighbors in the nav. User-approved 2026-10-11 (re-verified
+      build/screenshots this session, no new issues raised). Not committed.
+- [x] 16. Blog index + pagination (`/blog`) — moved off the dark `ocean-900` canvas hero
+      (`BlogBackground.astro`, "Insight Stream") onto the standard light grain+orb + `bold-glass`
+      hero every other converted page uses, same two-orb mint/purple-tint top-right signature
+      (`20rem`/`16rem`, hand-varied from its neighbors per the established rule). No Signal
+      Primitives widget was ever scoped for the blog, so rather than invent an unapproved animated
+      one, the hero's glass panel shows real, non-animated content: the actual latest post (title,
+      category, description, date, read time), pulled from the same sorted `allPosts` array the
+      rest of the page already uses. `BlogBackground.astro` left on disk unused, same precedent as
+      every other retired `*Background.astro`. Post cards dropped the ocean-era
+      `hoverGlow`/`cardTilt` mouse-glow+tilt mechanic (`data-glow-container`, `GLOW_SIZE`, the
+      cursor `<div data-glow>`, all removed). Sidebar search/category filters and pagination
+      controls restyled to Bold tokens, `blogFilter.ts`'s logic untouched (it only reads `data-*`
+      attributes, not classes). Added `magneticButton` to the hero's two CTAs, matching every other
+      page's hero buttons.
+
+      **Real sitewide bug found while verifying this page, not specific to the blog**: see the
+      "font-hanken on headings" note below, immediately following this checklist, fixed as part of
+      this same pass before moving on to items 17-18.
+
+      **Post card redesign, same day, before first approval.** The first pass restyled the cards to
+      the same plain ink-tint quiet-tile hover every capability page's grid uses, keeping the old
+      per-category `accent` system (a single muted hex per category, 3px top border, small icon
+      token) unchanged. Flagged directly on the post page's "Related reading" cards (same component
+      family): "the related reading posts are the old style not new," i.e. reskinned colors on an
+      unchanged shape doesn't read as converted. Separately, the user then asked for the card design
+      itself to be pushed further: "I also need each blog post preview tile to really stand out...
+      show the different categories in a better more eye catching way." Handled as a real mockup
+      round (same discipline as every structural decision in this rebuild, not improvised in code):
+      three options built as a live interactive artifact using real posts/categories, not invented
+      content — **A: Color Block Header** (a tinted masthead block with the icon and category name
+      inside it), **B: Gradient Ring, Every Tile** (the site's own `.bold-tile-feature` ring, reused
+      on every card, ring color tied to category), **C: Duotone Wash + Big Label** (a soft gradient
+      wash of the category color across the whole card, a bold mono label with an underline rule,
+      a large rotated watermark icon). Round 2 of the mockup added real two-stop gradients in place
+      of flat tints, colored hover shadows (reusing `.bold-btn`'s own tinted-shadow recipe), a
+      "pin hover" toggle so every card's hover state could be compared at once, and all 7
+      categories shown together instead of 4. **User picked C.**
+
+      Implementing C required replacing the category color system, not just the card markup: the
+      old `blogCategories.ts` `accent` (one muted hex per category, tuned for the pre-Bold ocean
+      palette, explicitly "no purple, no saturated/neon hues") read as flat and undersaturated once
+      applied as a full-card wash rather than a 3px line. Replaced with a `tint`/`deep` pair per
+      category, recalculated via real HSL rotation + sRGB contrast math (not eyeballed): seven hues
+      spread around the wheel at a consistent saturation/lightness recipe so they read as one family,
+      each `deep` value independently checked at 4.5:1 AA or better against `bold-paper` (Inventory
+      5.36:1, Supplier 4.69:1, Shipping 4.54:1, Customer Service 5.31:1, Quality 4.80:1, Autonomous
+      8.95:1, Industry Insights 6.17:1). `categoryAccent()` is gone; `categoryTint()`/`categoryDeep()`
+      replace it. New shared `.bold-post-card` class in `index.css` (gradient wash via `color-mix()`,
+      a large `.bold-post-watermark` icon bottom-right, `.bold-post-label` category label with a
+      small underline rule, colored hover border/shadow), applied to both the blog index grid
+      (`[...page].astro`) and the post page's related-reading cards (`[slug].astro`), the exact
+      component-reuse the mockup's own closing note promised ("whichever direction wins, the same
+      recipe would carry over... unchanged"). `BlogThumbnail.astro` (the old dark full-bleed
+      thumbnail banner related-reading used) is now fully unused anywhere in the codebase and was
+      deleted outright, not left on disk, since it's a small reusable component with no other
+      purpose once its one caller stopped using it, unlike a retired `*Background.astro` hero
+      composition (a whole alternate concept worth keeping for reference).
+
+      Locally verified: astro check/build clean (154 pages, 0 errors/warnings/hints), no console
+      errors, search/reset/pagination click-tested end to end (search "reorder" correctly narrowed
+      to 7 of 45, reset correctly restored 9 of 45, clicking "Older" correctly navigated to
+      `/blog/2/`), no mobile overflow at 390px, all 7 categories' wash/watermark/label/border
+      confirmed rendering correctly on the real grid via screenshot.
+
+      **Filter bar moved from a left sidebar to the top, same day.** The `lg:grid-cols-[240px_1fr]`
+      two-column layout (a sticky 240px sidebar plus a `sm:grid-cols-2 xl:grid-cols-3` grid) gave up
+      a whole column's worth of width to the sidebar, which is why the grid only reached 3 columns
+      at `xl`, not `lg`. Direct ask: "move the filters to the top so that we can have 3 tiles on
+      each row... change the filter part to a more interactive/better way to apply filters." Fixed
+      both at once: the search input and category list moved into a single horizontal bar above the
+      grid (search left, pills right, wrapping on narrow widths), freeing the full container width
+      for a plain `sm:grid-cols-2 lg:grid-cols-3`, three real columns from `lg` up instead of `xl`.
+      The category checkbox list became real toggle-button pills (`.category-pill` in `index.css`,
+      `aria-pressed` as both the a11y state and the CSS hook, not a hidden checkbox), each carrying
+      its own `--cat-deep` custom property so its pressed/active state fills with that category's
+      own color (the same per-category-identity idea `.bold-post-card` already uses for the grid
+      itself) rather than one generic active color. `blogFilter.ts` updated to match: `checkboxes`/
+      `.checked` became `categoryButtons`/`getAttribute("aria-pressed")`, `change` listeners became
+      `click` listeners that flip the attribute before re-applying filters; the actual filtering
+      logic, `sessionStorage` scroll/filter-state persistence, and `data-post-card`/`data-category`/
+      `data-search` attributes on the cards themselves were untouched, so the existing
+      back-navigation state restore still works unchanged. Re-verified: astro check/build clean, no
+      console errors, clicking two pills correctly narrowed to 12 of 45 (both show their own fill
+      color simultaneously), reset correctly restored 9 of 45 and cleared every pill's pressed
+      state, no mobile overflow at 390px (pills wrap to their own rows below the search input).
+
+      **Watermark icon fixes, two rounds, same day.** Round 1 feedback: the icon ("logo" in the
+      user's words) needed real cushion on every side at rest and shouldn't rotate, just bold on
+      hover. Fixed: `.bold-post-watermark` dropped its rotation entirely (rest and hover alike) and
+      moved from negative offsets bleeding past the card edge to positive ones (`bottom: 18px;
+      right: 18px`) fully inside the card. The "bolden on hover" effect reuses real SVG
+      `stroke-width`, not a scale transform: every `SectionIcon` glyph sets `stroke-width="1.5"` as
+      a presentation attribute on its own `<path>`/`<g>` (see `SectionIcon.astro`), and a CSS rule
+      targeting those same elements always wins over a presentation attribute regardless of
+      specificity, so `.bold-post-card:hover .bold-post-watermark path/g { stroke-width: 2.75 }`
+      overrides it directly with no change to the icon component itself.
+
+      Round 2, from a screenshot: at 64px the icon still reached up far enough to straddle the
+      footer's own `border-top` divider line, half above it in the body-copy area, half below it,
+      "the logo should not go above that line... shrunk to fit under that." Fixed by measuring the
+      real footer geometry on a live card rather than guessing a smaller size: the footer row plus
+      the card's own bottom padding leaves `~49.6px` of vertical room below that divider line,
+      consistent across cards regardless of title/description length (the description's `flex-1`
+      always pins the footer close to the card's bottom edge). Shrunk to 34px, `bottom: 8px`,
+      comfortably inside that band with clearance on both sides so it can never cross back above
+      the line. Re-verified with a cropped screenshot of a single card at rest and hovered: icon
+      fully contained below the divider, title turns `bold-mint-deep` on hover, no stray overlap
+      with the footer text.
+
+      **Post-card excerpt (SEO/UX fix), same day.** See "Every post needs an `excerpt`" under the
+      main "Blog" section above for the full story: a dedicated, schema-enforced `excerpt` field
+      (max 68 chars, empirically measured against the real card width) replaced `post.data.
+      description` as the card body text on the grid, the hero's "latest post" panel, and
+      "Related reading," fixing every post's description silently CSS-truncating mid-word with an
+      ellipsis. All 45 existing posts backfilled with a real excerpt; `astro build` now refuses to
+      compile a post missing one or over budget.
+
+      **Real dev-server gotcha hit while verifying this, same class already documented elsewhere in
+      this file**: right after adding the new required `excerpt` schema field, `/blog/` briefly
+      rendered "0 of 45 posts" with zero post cards in the DOM, no browser console error. Root
+      cause, found in the dev server's own terminal log (not the browser): a stale Vite SSR module
+      error from much earlier in the session (a `categoryAccent is not defined` reference, from a
+      mid-edit moment during the Option C card rework, long since fixed in the actual file) was
+      still cached in the 167-hour-old `astro dev` process and never cleared itself even after the
+      real source was correct again. Same root cause as the blog-content-layer-cache gotcha already
+      documented under "Data-driven pages" above, just a different symptom (silently empty
+      collection output instead of stale post content). Fixed by restarting the dev server (`astro
+      dev stop` + relaunch), confirmed immediately after: "9 of 45 posts," 45 real cards in the DOM.
+      **If a page ever renders an unexpectedly empty collection with no browser console error after
+      an edit, check the dev server's own terminal/log output before assuming the new code is
+      wrong**, a long-running `astro dev` process can hold a stale error from several edits ago.
+
+      **Real bug, caught from direct feedback after the mockup's hover lift didn't show up on the
+      live site**: "I also dont see the hover animation from the artifact. I need the tile to 'jump
+      up' and the shading to appear when I hover." Porting the mockup's `.card:hover` rule into the
+      real `.bold-post-card` only carried over the border-color and box-shadow declarations, the
+      actual `transform: translateY(-5px)` "jump" was dropped along the way even though `transform`
+      was still correctly listed in the `transition` property (so the transition was primed to
+      animate a transform, just never given one to animate to). An easy class of bug to miss
+      exactly because nothing looked wrong: no console error, no build error, the border/shadow
+      half of the hover state worked fine, so a quick glance could read it as "done." Fixed by
+      adding `transform: translateY(-5px)` back into `.bold-post-card:hover`; verified with a real
+      Playwright hover (not just reading the CSS) measuring the card's bounding box shift (5px lift
+      confirmed) and `getComputedStyle(...).boxShadow` (a real tinted shadow color confirmed, not
+      just present/absent). **When porting a hover/interaction state from a mockup into real code,
+      diff the full rule against the mockup's, don't just skim for "does it look similar," a
+      partially-ported effect can pass every automated check while still being visibly incomplete.**
+
+      **Pagination redesign + anchor-scroll fix, same day.** Two direct asks: "I need a bold page
+      changing system, this doesnt match my current design language," and "when I navigate the
+      pages, dont go to the top of the blog page, go to the filters." Pagination previously used
+      plain `rounded-md` number boxes and bare underline-on-hover text links ("← Newer"/"Older →"),
+      the pre-Bold convention, out of step with the `rounded-full` pill language the filter bar and
+      every card already use. Redone as `.pagination-pill` (new class in `index.css`): page numbers
+      are `h-9 w-9 rounded-full` circles (active state unchanged, `bold-mint-deep` fill), Newer/
+      Older are bordered pill buttons with an arrow that nudges on hover, and all of them share the
+      same small hover-lift + tinted shadow language `.bold-post-card`'s "jump up" already
+      established, so pagination now reads as part of the same interactive system instead of a
+      leftover component.
+
+      The scroll-position fix is native, no JS: every pagination href (`pageHref()`, plus
+      `page.url.prev`/`page.url.next`) now carries a `#posts` fragment, and `#posts` (the section
+      wrapping the filter bar and grid) got `scroll-mt-20` so the anchor lands below the sticky
+      `h-16` nav rather than tucked behind it. Clicking "Older"/"Newer"/a page number now lands the
+      reader directly at the filter bar on the new page, not back at the hero. Verified with a real
+      Playwright click-through (not just reading the markup): landing on `/blog/2/#posts` measured
+      `scrollY: 605` (not 0) and the `#posts` section's own top at `~80px` from the viewport top,
+      clear of the nav. No console errors, no mobile overflow (pills wrap to their own centered row
+      under 640px).
+
+      **Filter bar arrangement, same day.** Direct feedback on the pills themselves: "I like how
+      they look, but not how they are arranged" (a screenshot showed uneven row breaks, e.g. one
+      row with a single pill, the next with two). Root cause: the bar put search and category pills
+      in one row (`lg:flex-row lg:justify-between`), so the pills were squeezed into whatever width
+      was left beside the search box and right-justified, producing a ragged, unpredictable wrap
+      with no relationship to the pills' own content width. Fixed by always stacking two full-width
+      rows regardless of breakpoint: search on its own line (`max-w-xs`, not full-bleed), category
+      pills on a second line below with the full container width to wrap into, left-justified
+      (`flex flex-wrap`, no `justify-end`). Pills now break into even, predictable rows (6 then 1 at
+      desktop widths, one-per-row at 390px) instead of an uneven right-aligned scatter.
+
+      **Sitewide 768px horizontal-overflow bug, found here, fixed separately in `Footer.astro`
+      (not blog-specific).** First suspected the ambient `.bold-orb`/`.posts-ambient-blob`/
+      `.cta-orb` decorative elements (confirmed present at this width on the homepage and
+      `/reorder` too), but that was a false lead: hiding every orb/blob element via
+      `el.style.display = "none"` and re-measuring `document.documentElement.scrollWidth` showed
+      zero change, proving they were already being clipped correctly by their ancestors'
+      `overflow-hidden` and weren't the real cause. The actual culprit, found by scanning every
+      `<a>` on the page for a bounding rect wider than the viewport: `Footer.astro`'s
+      `hello@flowbound.ai` mailto link. The footer's three-column grid (`grid-cols-2 ...
+      sm:grid-cols-3`) sits beside the logo/blurb block in a `flex-row` layout from `md` (768px)
+      up, so right at 768px the "Contact" column measured only ~77px wide, 3 equal grid tracks
+      squeezed into whatever width was left after the logo block, while the email itself rendered
+      as an unbroken 123px-wide box (`overflow-wrap: normal` by default, and an email address has
+      no spaces to wrap on), overflowing its own column by 46px and the viewport by 6px of that.
+      168-1024px is a width range this project doesn't routinely check (the standard sweep is
+      390/1024/1280/1440), so this had likely been live since the footer was first built.
+
+      Fixed with `break-words` (`overflow-wrap: break-word`) on the email link, letting it wrap to
+      a second line within its narrow column instead of overflowing. Tried adding a `<wbr/>` after
+      `hello@` first, hoping for a cleaner `hello@` / `flowbound.ai` break instead of an arbitrary
+      mid-word split, but that made it worse, not better: the column is narrow enough that even
+      `flowbound.ai` alone doesn't fit one line at this font size, so forcing the first break at
+      the `<wbr/>` just pushed `break-word` to force a SECOND break inside `flowbound.ai`, producing
+      3 cramped lines instead of 2. Reverted to the plain `break-words` version (one mid-word break,
+      2 lines) since it reads better despite the less elegant break point. **When a forced-wrap fix
+      still has room to improve, verify the "improvement" by re-measuring rather than assuming a
+      more deliberate break point is strictly better, a narrow-enough container can make an
+      explicit break opportunity backfire into more wrapping, not less.**
+
+      Verified with a full sweep, not just the one originally-flagged width: 10 widths (640 through
+      1024px, plus 390px) across all three of `/`, `/reorder`, and `/blog`, zero horizontal overflow
+      on any of them, both before confirming the bug (orb-hiding test) and after the real fix.
+      `astro check`/`astro build` clean throughout.
+
+      User-approved 2026-10-11. Not committed.
+- [x] 17. Blog post template (`[slug].astro`, one template change, applies to all published posts)
+      — same hero/prose conversion to Bold tokens. `@tailwindcss/typography`'s CSS hooks repointed
+      from `.ocean-prose` to `.bold-prose` (`bold-ink` body/headings, `bold-mint-deep` links at
+      ~4.8:1 against `bold-paper`, the same light-surface accent pairing used sitewide). Related-
+      reading cards use the same `.bold-post-card` "Duotone Wash + Big Label" treatment as the blog
+      index grid, see item 16 above for the full redesign story; `BlogThumbnail.astro` is deleted,
+      not recolored. One muted ambient blob (`.related-ambient-blob`) added to the section,
+      matching the "every light section gets grain + one muted blob" rule. FAQ/BlogPosting/
+      BreadcrumbList JSON-LD schema, the named-author byline, and `parseFaqFromMarkdown` were
+      untouched, pure styling change. Locally verified: astro check/build clean, no console errors,
+      spot-checked on a real post (`what-real-time-inventory-actually-means`), no mobile overflow.
+      User-approved 2026-10-11. Not committed.
+- [x] 18. Blog tag pages (`/blog/tags/[tag]`) — same restyle to Bold tokens, structure (list of
+      post rows, `noindex` below `MIN_POSTS_TO_INDEX`) unchanged. Locally verified: astro
+      check/build clean, no console errors, spot-checked on a real tag (`pricing-strategy`), no
+      mobile overflow. User-approved 2026-10-11. Not committed.
+
+**Hot Sauce checklist complete as of 2026-10-11.** All 18 items approved. Every page on the site is
+now on the Bold system except `/404`, which was never in scope (an explicit, standing user decision,
+unchanged from every prior redesign pass on this project). Still nothing is committed or pushed:
+per the project's standing rule, work stays local until the user explicitly says to commit/push/
+deploy, independent of design approval. The only remaining work implied by the rebuild itself is the
+one dedicated cleanup pass documented under "Rollout discipline" above (deleting the now-fully-
+unused `fb-*`/`ocean-*` tokens, old font-faces, and this section's "in progress" framing), which was
+always scoped to happen only once every page was migrated and approved, i.e. now.
+
+Once 16-18 are approved, every page on the site will be on the Bold system except `/404`, which was
+never in scope (see below). Still nothing is committed or pushed.
+
+**Real sitewide bug found and fixed 2026-10-11, same class as the already-documented Amulya gotcha:
+every `font-hanken` on a Bold page was put on a section/wrapper element, never directly on the `h1`-`h4`
+tag itself.** `src/index.css`'s base layer still sets `h1, h2, h3, h4 { @apply font-display }` (Satoshi),
+and a direct element-selector rule in the base layer always beats an *inherited* value from an ancestor's
+class, regardless of layer order, exactly the mechanism CLAUDE.md's Amulya section already warns about.
+Confirmed empirically (not just by reading the CSS) with a Playwright computed-style check:
+`getComputedStyle(h1).fontFamily` read `"Satoshi, sans-serif"` on `/how-it-works/` before the fix. A repo-
+wide audit found **zero** of the ~104 heading tags across all 19 affected files (the homepage's
+`Hero.astro`/`ProductSystem.astro`/`WhyUs.astro`/`SapComparison.astro`/`HowItWorks.astro`/`Cta.astro`,
+plus all 13 then-converted capability/narrative/`/services`/`/product`/`/how-it-works` pages) had
+`font-hanken` on the tag itself, meaning **every heading on every Bold page built so far, including the
+already-approved homepage, was silently rendering in Satoshi instead of Hanken Grotesk** since the
+rebuild began. It went unnoticed this long because Satoshi and Hanken Grotesk are both modern grotesque
+sans-serifs, close enough at a glance in a screenshot review that the wrong face didn't read as obviously
+broken the way a missing color or layout bug would. Fixed with a scripted pass (not manual, given the
+file count) inserting `font-hanken` as the first class on every `h1`-`h4` tag, including the two
+dynamic `class={\`...\`}` headings in `services.astro` driven by `toneStyles`/`tone` objects. Re-verified
+with the same Playwright computed-style check post-fix across `/`, `/how-it-works/`, `/services/`,
+`/product/`, `/reorder/`: all five now read `"Hanken Grotesk", sans-serif`. `astro check`/`astro build`
+clean (154 pages, 0 errors/warnings/hints) after the fix. **Any new Bold heading must carry `font-hanken`
+directly on the tag, not just on an ancestor** — this is now the second time this exact mistake has
+happened on this project (first Amulya, now Hanken), so treat it as a standing checklist item when adding
+or reviewing any heading markup on a Bold page, not just a one-off fix.
 
 Items 3-9 (the 7 capability pages) share one template, so once item 3 is approved the rest should move
 fast. `/404` stays on the current `fb`/Satoshi system for now, per an explicit user decision, picked up
 later if ever, same as every past redesign pass in this project.
 
+**Signal Primitives merge (2026-10-07).** The user felt the live Bold pages, while the right palette,
+still "fall flat" next to a modern AI-era SaaS product: not enough motion, depth, or tactile feedback.
+Rather than design that blind, the missing layer was prototyped first as a standalone interactive
+artifact ("Signal Primitives," built and iterated live with the user, not a static mockup round this
+time since the ask was specifically about motion/interaction, which a still image can't demonstrate).
+Approved primitives, now the standing vocabulary for every remaining item on the checklist above, each
+used deliberately rather than stacked onto every element:
+- **Tiles**, three treatments, picked per job, not all three on one page: a featured glass + ink-to-mint
+  gradient-ring tile (`.bold-tile-feature` in `src/index.css`, reserved for the ONE tile per grid worth
+  remembering, paired with `[data-tilt]`/`cardTilt.ts`), the ink-tint + numbered-badge tile `/reorder`
+  already originated (`border-bold-ink/8 bg-bold-paper`, `hover:bg-bold-ink/[0.04]`, a solid `bg-bold-ink`
+  circle badge with `bold-paper` digits, no new CSS needed, just the existing utility combo), and the
+  plain hairline-border-that-lifts-on-hover treatment `WhyUs.astro` already uses, which was left as-is in
+  the first pass and then updated anyway after the user flagged that, sitting right below the now-livelier
+  bento grid, its old `hover:bg-bold-mist/20` and plain icons (no badges) read flat by comparison; it now
+  carries the same numbered-badge + `hover:bg-bold-ink/[0.04]` language as the bento's quiet tiles for
+  visual consistency, even though structurally it was already "option three."
+- **Buttons** get real tactile feedback: a `[data-magnetic]` attribute (`src/scripts/magneticButton.ts`,
+  generic, same desktop-only `(hover: hover) and (pointer: fine)` guard as `cardTilt.ts`/`hoverGlow.ts`)
+  nudges the button a few px toward the cursor on hover. A button that opts in drops Tailwind's
+  `hover:-translate-y-0.5` from its class list in markup: an inline `style.transform` (which is how the
+  magnetic pull is applied) always wins over a class-based one, so the two would silently fight otherwise.
+  The existing gradient-sweep fill and soft-wash secondary treatments are unchanged and still stack fine
+  with magnetism (they animate `background`/`opacity`, not `transform`).
+- **Depth** — the existing `.bold-depth-ink`/grain recipe was already validated and didn't need changes;
+  the primitives pass mainly confirmed it as the standing dark-section recipe rather than replacing it.
+- **Scroll** — a section's own scroll-linked progress (`watchScrollProgress` from `scrollProgress.ts`,
+  the same helper `heroScroll.ts`/`missionScroll.ts` already use) can drive more than a fade/zoom or a
+  word-by-word color scrub: `HowItWorks.astro`'s connecting line now fills in with real scroll position
+  (`src/scripts/howItWorksDiagram.ts`, sets `--diagram-progress` on the section) instead of a one-shot
+  reveal, and each node/label lights up as the fill reaches it, reversing cleanly on scroll-up like every
+  other scroll-linked effect on the site. Tuned empirically with a scripted Playwright scroll (not
+  guessed): a `1.5x` compression on the section's own progress makes the line finish drawing right as the
+  diagram scrolls off the top of the viewport (about 18px of margin, independent of viewport height),
+  rather than finishing early (looks done too soon) or late (finishes after it's already scrolled out of
+  view, so nobody sees the last bit complete). If a future page reuses this technique on a section where
+  the animated element sits at a different position within the section, re-tune and re-measure the same
+  way rather than reusing `1.5` blindly.
+- **Cursor** (a mouse-follow spotlight over a grid) and the **ten per-page widgets** (Stock Gauge,
+  Forecast Spark, Route Pick, Inventory Scan, Supplier Ping, Account Ladder, Price Delta, Decision Feed,
+  Ticket Flow, Inspection Line, one mapped to each of items 4-12 above plus `/reorder`) are approved but
+  not yet built into real pages; they land with their respective page's own checklist item, not retrofitted
+  onto the homepage, which has no widget of its own (its "real UI" moment is already the hero's
+  `bold-glass` panel plus the bento's sparkline).
+
+**Verification note specific to this pass**: a Playwright `fullPage: true` screenshot is unreliable for
+this site and should not be used to judge scroll-reveal content. Chromium's full-page capture expands the
+viewport virtually rather than performing a real scroll, so `[data-reveal]` elements below the first
+viewport never receive a real intersection/scroll event and render in their pre-reveal (invisible) state,
+making large stretches of an otherwise-correct page look blank or broken in the screenshot. This is not a
+site bug, it reproduces on pages untouched by this session too. Verify scroll-reveal-heavy pages by
+scrolling in real increments (`window.scrollTo` with `behavior: "instant"`, not the default: this project
+sets `html { scroll-behavior: smooth }`, which was itself a separate false alarm this session, mid-transit
+reads from a smooth scroll looked like missing content and washed-out text until the scroll was given time
+to finish or set to instant) and screenshotting each step, the same "tour" shape as a real visitor's
+scroll.
+
 **New files from checkpoint 1, for reference:** `public/fonts/hanken-grotesk-variable.woff2`,
 `public/fonts/instrument-serif-400.woff2`, `public/fonts/instrument-serif-400-italic.woff2`,
 `src/scripts/faqAccordion.ts`.
+
+**Checkpoint 2 (homepage) detail.** All seven homepage section components
+(`Hero`/`TrustBar`/`ProductSystem`/`HowItWorks`/`WhyUs`/`SapComparison`/`Mission`) were rewritten in
+place onto Bold/Hanken, matching the approved mockup's five homepage stills (hero, proof strip, bento,
+annotated diagram, close) plus two sections the checklist names but the mockup didn't render as stills
+(the bento-adjacent "how it works" diagram reuses the mockup's capability-page diagram pattern; the
+comparison band reuses the old ocean homepage's SAP-comparison content on the new dark depth treatment,
+since the mockup never produced a dedicated still for it). `BaseLayout.astro`'s body background moved to
+`bg-bold-paper` (previously `bg-fb-paper`) since Nav/Footer are already bold-paper-colored and most
+pages' own sections set explicit backgrounds anyway; its Amulya preload comment was updated since Amulya
+is no longer the homepage's font, just every other not-yet-converted page's.
+
+**"Depth" made a shared, universal rule, not a per-section judgment call.** The `Cta.astro` gradient+
+grain recipe (`.cta-depth`) was pulled out into a shared `.bold-depth-ink` utility in `index.css`; the
+proof strip, the comparison band, and `Cta.astro` itself all point at the one definition now rather than
+each declaring their own gradient+grain stack. This was a direct, explicit user instruction mid-build
+("I want depth to be universal on this redesign"), not an inferred preference, it applies to **every**
+future dark section in this rebuild. It was then also applied to light sections, after a round of direct
+feedback caught that the bento grid, the diagram, WhyUs, and Mission were flat single-color fills with no
+texture at all (only the hero and the dark bands had grain). Every one of those four sections now gets the
+same `bg-grain` overlay the hero uses, plus one soft, muted ambient blob (same `rgba(110, 156, 163, 0.14-
+0.18)` dusty-teal recipe Mission's own blob already used, ~24s drift, `prefers-reduced-motion` disables
+it) for real atmosphere. **Any future light section on this page, or a new page following this system,
+should get the same grain + one muted teal blob treatment by default**, not a flat fill.
+
+**One real color miscalibration, fixed by direct feedback, not by re-deriving contrast math.** The
+diagram and Mission sections originally used `bg-bold-mist/30` (a diluted pale-mint tint) to differentiate
+them from the plain-paper sections around them, mirroring how `ocean-100`/`ocean-200` used to alternate
+on the old homepage. Flagged directly as "too bright": `mist` is a cyan-leaning mint that, even diluted,
+reads as a saturated color statement next to the rest of the muted Bold palette, not a neutral section
+break. Fixed by dropping both back to plain `bg-bold-paper` (matching what the approved mockup's stills
+actually show, none of the five used a tinted section background) and relying on the hairline
+`border-t`, the grain, and the two dark bookends to carry section rhythm instead. **`bold-mist` is still a
+legitimate accent (the bento big-tile fill, card hover washes) but is not a safe default section
+background at this saturation** — don't reach for it as a "lighter alternate" to paper without checking
+how it actually reads next to the rest of the muted palette first.
+
+**Two real layout bugs, both caught by measuring rendered geometry, not by eyeballing a screenshot:**
+- The bento grid's small tiles (`ProductSystem.astro`) used a fixed `auto-rows` height sized for
+  one-line body copy; two-line descriptions (and, on mobile specifically, titles like "Inventory
+  Tracking" wrapping to two lines at the narrower column width) overflowed past the tile's own border.
+  Fixed by sizing the row height to the actual worst-case content height per breakpoint
+  (`auto-rows-[12.5rem]` mobile, `md:auto-rows-[9.5rem]` desktop) rather than guessing a round number.
+  **A fixed `auto-rows` grid like this needs headroom for the longest real copy at the narrowest column
+  width it'll render at, not just what looks right on one desktop screenshot.**
+- The diagram's `absolute`-positioned step labels (`HowItWorks.astro`) sit outside their parent
+  `.diagram-track`'s own fixed CSS height (an architectural necessity: the nodes need a defined height to
+  position against `top: 50%`), so the container's own box doesn't reflect how far the longest label
+  actually extends. The "See how it works in depth" button below it, spaced off that container's nominal
+  height, ended up overlapping the last line of the "01 Connect" description by a few pixels, confirmed
+  by measuring real `getBoundingClientRect()` values via Playwright rather than trusting a screenshot's
+  first impression. Fixed with a larger desktop-only top margin (`mt-14 md:mt-28`) sized to the measured
+  overflow plus a real gap, re-measured after the fix to confirm clearance. **When a reveal/label system
+  intentionally overflows its own positioned container, don't size the next element's spacing off the
+  container's CSS height, measure the actual rendered content extent, or the gap will be wrong in exactly
+  this way.**
+
+The diagram's connecting line was also bumped from the mockup's literal `rgba(...,0.12)` value to
+`bg-bold-ink/30` (and `h-px` to `h-[1.5px]`): the mockup's own static HTML rendered it finely, but at 12%
+opacity in a real browser over the `bold-paper`/grain background it was essentially invisible, caught from
+a user screenshot, not from re-inspecting the mockup. **A value copied directly from the static mockup
+isn't guaranteed to read the same once it's live in a real section with grain and ambient blobs layered
+in, verify it actually renders rather than trusting the source number.**
+
+**Checkpoint 3 (`/reorder`, the capability template) detail.** The existing six-section template (hero,
+what it is, what it does, what it watches, how it works, FAQ, then the shared `<Cta />`) carried over
+structurally unchanged; only the visual system moved to Bold/Hanken. Template decisions worth reusing
+for items 4-9 (the other six capability pages, which share this exact shape):
+- **Hero** follows the homepage's grain+orb grammar but deliberately quieter, per the approved mockup's
+  own capability-hero still: one orb instead of two, no glass panel, since a capability page explains one
+  thing well rather than showcasing the whole product. Breadcrumbs needed a real code change, not just a
+  recolor: `Breadcrumbs.astro` was hardcoded to `ocean-100` text for the old dark-hero pages, so it
+  gained a `tone?: "dark" | "light"` prop (`"dark"` stays the default, every not-yet-converted page is
+  unaffected), `tone="light"` uses `bold-taupe`/`bold-mint-deep` for a light hero background. **Every
+  remaining capability/narrative page's hero should pass `tone="light"`** once converted.
+- **"What it is"** stays a plain paper section with the existing icon-spin/pulse-ring/`data-icon-drift`
+  watermark treatment, just recolored, plus the grain + one muted teal ambient blob now standard on every
+  light section (see the homepage's "depth made universal" note above).
+- **"What it does"** does **not** reuse the mockup's 3-item stacked-bento (still 07) as-is: this page has
+  6 capabilities, and the mockup's own caption is explicit that layout was sized for a 3-item list, not
+  forced into a bigger one. The homepage's asymmetric bento (1 big tile + grid of small ones) was tried
+  first, sized the same fixed-`auto-rows` way the homepage bento used — and overflowed on 3 of the 5 small
+  tiles on mobile once real capability copy (longer and more length-variable than the homepage bento's
+  tight one-liners) wrapped past what the fixed row height allowed. Fixed by dropping the fixed-row-span
+  approach entirely for this page's content shape: one full-width lead tile (tinted `bold-mist`, no forced
+  height) stacked above a plain `grid-cols-1 sm:grid-cols-2 md:grid-cols-3` of the remaining five, every
+  tile sized to its own natural content height. **A fixed-`auto-rows` bento is only safe when the real
+  copy per tile is short and roughly uniform in length (the homepage bento); for longer or more
+  variable capability-page copy, use the full-width-lead-tile-plus-natural-height-grid shape instead,
+  verified on mobile specifically since that's the narrowest column width most likely to force an extra
+  wrap.**
+- **"What it watches"** became this page's one dark bookend (`.bold-depth-ink`, same shared recipe as
+  everywhere else), replacing the old `ocean-900` treatment. This is a deliberate shape change from the
+  old ocean template, where the *hero* was the page's dark moment; the Bold capability hero is light, so
+  the page needs its one dark break somewhere else in the content, and the existing signals section
+  (already visually distinct, already full-bleed) was the natural fit. Signal rows use a small mint dot
+  bullet instead of a repeated icon.
+- **"How it works"** stayed a plain 3-card row (thin border, hover tint, no tilt), not the homepage's
+  annotated-line diagram: the diagram device is reserved for the homepage and `/how-it-works` per the
+  existing sitewide convention (see "Hero backgrounds"/"Capability, narrative, and blog pages" above),
+  not meant to spread to every page with a 3-step process.
+- **FAQ** is a real single-open-at-a-time accordion now (`.bold-faq-row` + `data-faq-list` +
+  `src/scripts/faqAccordion.ts`, all built in checkpoint 1, this is their first real usage), not the old
+  static bordered blocks. The first question renders open by default (matches the mockup's own
+  reasoning: "demonstrates both states at once," and mirrors the Linear/Vercel convention the mockup
+  cites), the rest start closed via the `hidden` attribute.
+- `ReorderBackground.astro` and `src/scripts/reorderHero.ts` (the old "Threshold Drop" canvas hero) are
+  left on disk unused, same precedent as `FlowBackground.astro`/`HeroBackground.astro`. Every other
+  capability page's own `*Background.astro`/`*Hero.ts` pair will end up unused the same way as items 4-9
+  land; none need deleting as part of this rebuild.
+
+**Purple accents, added after direct feedback on `/reorder`: "I hate how the only color on the page are
+light mint green and one purple section... I want purple to be used more."** Explicitly scoped to accents
+*within* the light sections (not a second full dark band, and not a change to the homepage, both offered
+and declined), so the page stays mostly light. `bold-ink` now shows up repeatedly as small solid elements
+rather than only as body text and the one dark bookend: every numbered tag (bento tiles, how-it-works
+steps) is a small solid `bg-bold-ink` circle badge with `bold-paper` digits instead of plain mono text; the
+bento's lead tile switched from a `bold-mist` (mint) tint to `bg-bold-ink/[0.06]` with a `border-bold-ink/15`
+border; card/tile hover states switched from `hover:bg-bold-mist/20` to `hover:bg-bold-ink/[0.04]`; the FAQ's
+open row gets `aria-expanded:bg-bold-ink/[0.05]` and its chevron moved from `bold-taupe` to `bold-ink`; the
+hero's eyebrow icon now sits in a small solid `bg-bold-ink` circle instead of being a bare mint-deep icon;
+the "what it is" watermark icon/ring opacity was bumped slightly (14% to 20%, border 10% to 15%) for a bit
+more presence. **This is now the standing capability-page pattern, items 4-9 should carry it forward from
+the start** rather than shipping the mint-only version and retrofitting purple in afterward. The homepage
+(already approved) was explicitly left as-is, this treatment is not retroactive there unless asked.
+
+Two follow-up corrections from the same round of feedback, both real findings, not just taste:
+- The hero's eyebrow icon (bare `bolt`, next to the "REORDER" label) was tried inside a small solid
+  `bg-bold-ink` circle badge, matching the other new purple accents. Flagged directly as not working:
+  reverted back to the original bare `text-bold-mint-deep` icon, no circle. Not every accent position
+  wants the same treatment, a small icon next to a short mono label reads better as a plain colored
+  glyph than as a tiny badge.
+- **The hero orb was asked to go purple (from mint) and literal `ink` (#2E1630) does not work as a
+  blurred glow color, confirmed by testing it directly up to 32% opacity**: ink's lightness is only
+  ~14%, and alpha-blending a near-black color over `bold-paper` just desaturates to gray well before it
+  reads as "purple" to the eye, no matter how far you push the opacity short of making it an opaque
+  shape. The ambient teal blobs work at similar low opacities (~16-18%) specifically because teal itself
+  already has enough lightness to carry its hue through at that alpha; ink does not. Fixed by deriving a
+  lighter tint at ink's own hue instead of using ink directly: `#C998CD` is ink's ~295° hue held at the
+  same ~35% saturation but lifted to ~70% lightness, computed via HSL rather than picked by eye. **Any
+  future purple glow/wash on a light background should use this derived light tint (or recompute one the
+  same way for a different target lightness), never flat `ink` at low opacity**, that combination reads
+  as gray regardless of the opacity value chosen.
 
 ### Page structure
 
@@ -259,6 +1485,41 @@ match across **every** post on the site, not just the current page: every post i
 HTML (hidden via a class if it isn't on that particular page), and `src/scripts/blogFilter.ts` shows/hides
 across all of them once a filter is active, hiding the pagination controls while it does. Sidebar category
 counts are computed from the full collection, not the current page.
+
+**Every post needs an `excerpt`, standing rule as of 2026-10-11, separate from `description`.**
+Every post card (the `/blog` grid, the hero's "latest post" panel, a post page's "Related reading"
+cards) shows 2 lines of body text (`line-clamp-2`) under the title. Before this, that text was
+`post.data.description`, the same ~155-character string written for the SEO meta description/OG
+tag/schema (see "SEO metadata length limits" below), sized to use that whole 155-char budget. A
+155-char sentence almost never fits 2 lines on a card, so it was silently CSS-truncated mid-word
+with an ellipsis on every single post, flagged directly from a screenshot: "I dont like how the
+sentence is never finished." Fixed with a dedicated `excerpt` field in `content.config.ts`'s blog
+schema (`z.string().max(68)`, a hard build-time gate, not just a style guideline: a post whose
+excerpt runs over budget fails `astro check`/`astro build` outright instead of silently truncating
+on the live site), decoupling the two concerns: `description` stays the 155-char SEO string
+(meta/OG/schema, unchanged), `excerpt` is a short standalone hook sentence sized to actually fit a
+card. The 68-char cap isn't a guess: measured empirically via canvas `measureText()` against the
+real card description box at its narrowest actual rendered width (a 3-up grid row at exactly the
+`lg` breakpoint, 1024px viewport, ~259px per card, the tightest real width the card ever renders
+at), simulating word-wrap to find the longest text that still holds to 2 lines. ~70 characters was
+the measured ceiling; 68 leaves a couple characters of margin for font-metric variance between the
+canvas simulation and real DOM layout. All 45 existing posts got a real, hand-written excerpt
+(derived from that post's own title/description, not invented content, same accuracy discipline as
+everything else in this pipeline), backfilled via a script that validated every one against the
+68-char cap before touching any file, not written loose and hoped to fit. **A new post's
+frontmatter needs both `description` (155-char SEO string) and `excerpt` (68-char card hook) from
+day one**, continuing this same split; `astro build` will refuse to compile if `excerpt` is missing
+or over budget, so this isn't a rule that can be silently skipped.
+
+Is this an SEO fix, strictly speaking? Only indirectly, worth being precise about rather than
+overclaiming: `excerpt` never reaches a meta tag, OG tag, or schema block, so it doesn't change
+what a search engine shows in a SERP snippet, that's still entirely `description`'s job, untouched.
+The real benefits are (1) a genuinely better on-page experience (a card that ends on a complete,
+intentional sentence instead of a mid-word ellipsis reads as considerably more polished, which this
+project's own quality bar cares about regardless of SEO), and (2) a soft, real SEO-adjacent signal:
+the text sitting next to an internal link is something crawlers do use as topical context for the
+linked page, and a complete, on-topic sentence is cleaner context than a sentence fragment cut off
+mid-clause. It is not, and shouldn't be sold as, a ranking-factor change on its own.
 
 **Card design, redone 2026-09-13** at the user's request to mesh a reference design's compact card size with
 this site's own sidebar-filter organization (which the user preferred over the reference's pill-row filter).
