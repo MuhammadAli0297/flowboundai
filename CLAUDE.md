@@ -1656,8 +1656,9 @@ jobTitle: post.data.authorTitle}`, and the post hero also renders a small visibl
 {authorTitle}") next to the date, on the user's explicit request that this be more than schema-only, since a
 visible byline is a stronger E-E-A-T signal than hidden JSON-LD alone. **A new post's frontmatter needs both
 `author` and `authorTitle` set**, continuing the same round-robin rather than defaulting back to
-"Flowbound": count the existing 45 posts in publish-date order, the 46th post goes to whichever of the three
-names is next in the cycle (post 46 → Ryo Shibata, the cycle restarts).
+"Flowbound": count the existing posts in publish-date order and give the new one whichever of the three names is next
+in the cycle (post 46 went to Ryo Shibata and the cycle restarts there; with 50 posts as of 2026-10-18, the
+51st goes to Muhammad Ali).
 
 **8 posts have a real hand-built SVG diagram, added 2026-10-04, fixing another P1 from the same audit.**
 Before this, all 45 posts had zero embedded images of any kind, a closed door to Google Images discovery and
@@ -1787,6 +1788,31 @@ other rather than duplicating it. Same accuracy discipline as every batch: the l
 tie-in is careful to say Flowbound doesn't calculate customs duties or import paperwork, only that Shipping
 Optimization keeps the freight component of landed cost down and Pricing adjusts sell price when costs
 shift, since `services.ts` describes no customs/duty-calculation capability.
+
+**5 more posts added 2026-10-18**, dated 2026-10-02 through 2026-10-10 (every-other-day cadence continued
+from 2026-09-30), topics chosen from a gap check against all 45 existing posts plus a WebSearch pass on each
+keyword (top results were vendor blogs and glossaries, so a worked example plus a real formula can compete;
+no search-volume data was available, so keywords are informed picks, not measured): "Inventory Turnover
+Ratio, Explained" (Inventory Management, Ryo Shibata), "Supplier Scorecard: Metrics and Weights" (Supplier
+Management, Muhammad Hassan), "Dimensional Weight: How Carriers Bill Parcels" (Shipping & Logistics,
+Muhammad Ali), "AQL Sampling for Incoming Inspection" (Quality Monitoring, Ryo Shibata), and "The Real Cost
+of a Stockout" (Industry Insights, Muhammad Hassan). The catalog is 50 posts across 7 categories as of this
+batch; the next post (51st) goes to Muhammad Ali in the author round-robin. Each was checked by script
+against the standing rules (title + `| Flowbound` under 60, description under 155, excerpt under 69, 5+ body
+links, 3+ FAQ links, no em dashes, every internal link resolving) before `astro build`. Each differentiates
+from a neighbor rather than duplicating it (turnover owns the formula, not the dead-stock definitions;
+the scorecard post is the how-to-build version of the "suppliers already have a quality track record"
+argument; DIM weight is the parcel counterpart to freight class; AQL covers the sampling decision, not
+whether to inspect; stockout cost prices the problem safety stock solves). Accuracy notes worth repeating:
+the AQL post's tie-in says Inspection Tracking logs and flags results but Flowbound does not set sampling
+plans, the DIM weight post says Shipping Optimization compares carriers but does not calculate dimensional
+weight, and the scorecard post credits Quality Monitoring's existing "Supplier Quality Scorecards"
+capability for the data. **Two things to verify by hand, not independently confirmed**: the AQL post's
+sample-size code letter K / 125-unit sample and accept/reject numbers (written from memory of ISO 2859-1 /
+ANSI Z1.4, the post tells readers to verify against the standard), and the 139 divisor in the DIM weight post
+(framed as a common example, since search results disagreed on UPS). The stockout post's expedite cost and
+attrition figures are labeled assumptions. No SVG diagrams were built for this batch (turnover, DIM weight,
+and the stockout timeline were identified as good candidates, deferred).
 
 ### Data-driven pages vs. narrative pages
 

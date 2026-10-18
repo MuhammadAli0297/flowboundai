@@ -20,7 +20,7 @@ the fast alternative to an SAP implementation. Live at
 
 A static, server-render-free marketing site (Astro, `output: "static"`) covering a homepage, a
 product page, seven dedicated capability pages, three narrative service pages, a fully filterable
-blog (45 posts across 7 categories), and supporting pages, 154 built routes total (including a
+blog (50 posts across 7 categories), and supporting pages, 174 built routes total (including a
 uniquely generated OG share image per blog post). Built and maintained solo, end to end:
 architecture, visual design system, copywriting, SEO, and production deploys.
 
@@ -58,7 +58,7 @@ explicitly emulating `reducedMotion: 'no-preference'` to catch a real class of b
 machine's OS-level accessibility setting was silently masking (default screenshots always showed
 the static fallback frame, never the live animation).
 
-**A repeatable SEO content pipeline, not ad hoc blog posts.** Every post (45 as of this writing,
+**A repeatable SEO content pipeline, not ad hoc blog posts.** Every post (50 as of this writing,
 up from an original batch of 21) goes through the same defined process: competitor-article
 research against actual top-ranking pages (not vendor homepages), a content-gap analysis, a
 featured-snippet-targeted outline, a draft in a consistent voice, an EEAT self-review, and
